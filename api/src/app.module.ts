@@ -8,6 +8,12 @@ import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
 import { NktProfileModule } from './nkt-profile/nkt-profile.module';
 import { JobsModule } from './jobs/jobs.module';
+import { ApplicationsModule } from './applications/applications.module';
+import { EmployerModule } from './employer/employer.module';
+import { SavedJobsModule } from './saved-jobs/saved-jobs.module';
+import { AdminModule } from './admin/admin.module';
+import { NotificationsModule } from './notifications/notifications.module';
+import { StatsModule } from './stats/stats.module';
 
 @Module({
   imports: [
@@ -20,6 +26,12 @@ import { JobsModule } from './jobs/jobs.module';
     UploadModule,
     NktProfileModule,
     JobsModule,
+    ApplicationsModule,
+    EmployerModule,
+    SavedJobsModule,
+    AdminModule,
+    NotificationsModule,
+    StatsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
