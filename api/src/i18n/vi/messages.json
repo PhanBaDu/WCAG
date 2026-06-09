@@ -70,6 +70,7 @@
     "IS_STRING": "{property} phải là một chuỗi",
     "IS_IN": "{property} phải là một trong các giá trị sau: {constraint1}",
     "IMAGE_ONLY": "Chỉ cho phép tải lên file hình ảnh!",
-    "DOCUMENT_ONLY": "Chỉ cho phép tải lên tài liệu (PDF, DOC, DOCX)!"
+    "DOCUMENT_ONLY": "Chỉ cho phép tải lên tài liệu (PDF, DOC, DOCX)!",
+    "PASSWORD_STRENGTH": "Mật khẩu phải chứa ít nhất 1 chữ hoa, 1 chữ thường, 1 số và 1 ký tự đặc biệt"
   }
 }

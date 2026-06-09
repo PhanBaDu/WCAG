@@ -62,7 +62,7 @@ export class ApplicationsService {
           applicationId: application.id,
           status: 'SUBMITTED',
           changedBy: userId,
-          note: 'Ứng viên nộp hồ sơ',
+          note: 'Candidate submitted application',
         },
       });
 

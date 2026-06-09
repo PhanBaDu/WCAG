@@ -52,14 +52,14 @@ export class AuthService {
         await tx.nKTProfile.create({
           data: {
             userId: newUser.id,
-            fullName: dto.fullName || 'Người dùng mới',
+            fullName: dto.fullName || 'New User',
           },
         });
       } else if (dto.role === 'NTD') {
         await tx.employer.create({
           data: {
             userId: newUser.id,
-            companyName: dto.companyName || 'Công ty mới',
+            companyName: dto.companyName || 'New Company',
             isVerified: false,
           },
         });

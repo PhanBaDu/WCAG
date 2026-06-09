@@ -70,6 +70,7 @@
     "IS_STRING": "{property} must be a string",
     "IS_IN": "{property} must be one of the following values: {constraint1}",
     "IMAGE_ONLY": "Only image files are allowed!",
-    "DOCUMENT_ONLY": "Only document files (PDF, DOC, DOCX) are allowed!"
+    "DOCUMENT_ONLY": "Only document files (PDF, DOC, DOCX) are allowed!",
+    "PASSWORD_STRENGTH": "Password must contain at least 1 uppercase, 1 lowercase, 1 number, and 1 special character"
   }
 }
