@@ -1,0 +1,16 @@
+{
+  "auth": {
+    "REGISTER_SUCCESS": "Đăng ký thành công. Vui lòng kiểm tra email để xác thực.",
+    "LOGIN_SUCCESS": "Đăng nhập thành công",
+    "LOGOUT_SUCCESS": "Đăng xuất thành công",
+    "INVALID_CREDENTIALS": "Email hoặc mật khẩu không đúng",
+    "EMAIL_EXISTS": "Email đã được sử dụng",
+    "ACCOUNT_LOCKED": "Tài khoản đã bị khóa"
+  },
+  "validation": {
+    "IS_EMAIL": "Email không hợp lệ",
+    "MIN_LENGTH": "{property} tối thiểu {constraint1} ký tự",
+    "IS_STRING": "{property} phải là một chuỗi",
+    "IS_IN": "{property} phải là một trong các giá trị sau: {constraint1}"
+  }
+}

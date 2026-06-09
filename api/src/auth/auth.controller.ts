@@ -6,6 +6,7 @@
 
 import { Controller, Post, Body, HttpCode, HttpStatus, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { I18nService } from 'nestjs-i18n';
 import { AuthService } from './auth.service';
 import { RegisterDto } from './dto/register.dto';
 import { LoginDto } from './dto/login.dto';
@@ -16,7 +17,10 @@ import { ApiResponseDto } from '../common/dto/api-response.dto';
 @ApiTags('Auth')
 @Controller('auth')
 export class AuthController {
-  constructor(private readonly authService: AuthService) {}
+  constructor(
+    private readonly authService: AuthService,
+    private readonly i18n: I18nService,
+  ) {}
 
   @Post('register')
   @ApiOperation({ summary: 'Register a new account (NKT or NTD)' })
@@ -24,7 +28,7 @@ export class AuthController {
   @ApiResponse({ status: 409, description: 'Email already exists' })
   async register(@Body() dto: RegisterDto): Promise<ApiResponseDto> {
     const data = await this.authService.register(dto);
-    return ApiResponseDto.success(data, 'Đăng ký thành công. Vui lòng kiểm tra email để xác thực.');
+    return ApiResponseDto.success(data, this.i18n.t('messages.auth.REGISTER_SUCCESS'));
   }
 
   @Post('login')
@@ -34,7 +38,7 @@ export class AuthController {
   @ApiResponse({ status: 401, description: 'Invalid credentials' })
   async login(@Body() dto: LoginDto): Promise<ApiResponseDto> {
     const data = await this.authService.login(dto);
-    return ApiResponseDto.success(data, 'Đăng nhập thành công');
+    return ApiResponseDto.success(data, this.i18n.t('messages.auth.LOGIN_SUCCESS'));
   }
 
   @Post('forgot-password')

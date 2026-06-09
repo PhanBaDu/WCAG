@@ -8,6 +8,7 @@
 
 import { Injectable, ConflictException, UnauthorizedException, ForbiddenException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { I18nService } from 'nestjs-i18n';
 import * as bcrypt from 'bcrypt';
 import { PrismaService } from '../prisma/prisma.service';
 import { RegisterDto } from './dto/register.dto';
@@ -18,6 +19,7 @@ export class AuthService {
   constructor(
     private readonly prisma: PrismaService,
     private readonly jwtService: JwtService,
+    private readonly i18n: I18nService,
   ) {}
 
   async register(dto: RegisterDto) {
@@ -27,7 +29,7 @@ export class AuthService {
     });
 
     if (existingUser) {
-      throw new ConflictException('Email đã được sử dụng');
+      throw new ConflictException(this.i18n.t('messages.auth.EMAIL_EXISTS'));
     }
 
     // 2. Hash password with bcrypt (salt rounds = 12 as per rules)
@@ -78,16 +80,16 @@ export class AuthService {
 
     // Always use generic error for auth failures (Security best practice)
     if (!user) {
-      throw new UnauthorizedException('Email hoặc mật khẩu không đúng');
+      throw new UnauthorizedException(this.i18n.t('messages.auth.INVALID_CREDENTIALS'));
     }
 
     const isPasswordValid = await bcrypt.compare(dto.password, user.passwordHash);
     if (!isPasswordValid) {
-      throw new UnauthorizedException('Email hoặc mật khẩu không đúng');
+      throw new UnauthorizedException(this.i18n.t('messages.auth.INVALID_CREDENTIALS'));
     }
 
     if (!user.isActive) {
-      throw new ForbiddenException('Tài khoản đã bị khóa');
+      throw new ForbiddenException(this.i18n.t('messages.auth.ACCOUNT_LOCKED'));
     }
 
     // if (!user.isVerified) {
