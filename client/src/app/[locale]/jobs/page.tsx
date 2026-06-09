@@ -88,7 +88,7 @@ function JobsSearchContent() {
   const totalCount = isError || !data ? mockJobs.length : data.meta.total;
 
   return (
-    <div className="container py-8 md:py-12">
+    <div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-8 md:py-12">
       <div className="flex flex-col space-y-6">
         {/* Header & Search Bar */}
         <div className="flex flex-col md:flex-row gap-4 items-end">
@@ -209,7 +209,7 @@ function JobsSearchContent() {
 
 export default function JobsPage() {
   return (
-    <React.Suspense fallback={<div className="container py-12 flex justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" /></div>}>
+    <React.Suspense fallback={<div className="max-w-7xl mx-auto w-full px-4 sm:px-6 lg:px-8 py-12 flex justify-center"><div className="h-8 w-8 animate-spin rounded-full border-4 border-primary border-t-transparent" /></div>}>
       <JobsSearchContent />
     </React.Suspense>
   )

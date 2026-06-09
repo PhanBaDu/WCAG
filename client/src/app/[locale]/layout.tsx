@@ -5,10 +5,28 @@ import { routing } from '@/i18n/routing';
 import { Providers } from '@/components/providers';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
+import { Header } from '@/components/layout/header';
+import { Footer } from '@/components/layout/footer';
 import '../globals.css';
-import { Inter } from 'next/font/google';
+import { Inter, Lexend } from 'next/font/google';
 
-const inter = Inter({ subsets: ['latin', 'vietnamese'] });
+const inter = Inter({
+  subsets: ['latin', 'vietnamese'],
+  variable: '--font-inter',
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+  preload: true,
+  adjustFontFallback: true,
+});
+
+const lexend = Lexend({
+  subsets: ['latin', 'vietnamese'],
+  variable: '--font-lexend',
+  display: 'swap',
+  weight: ['400', '500', '600', '700'],
+  preload: false,
+  adjustFontFallback: true,
+});
 
 export function generateStaticParams() {
   return routing.locales.map((locale) => ({ locale }));
@@ -34,8 +52,8 @@ export default async function LocaleLayout({
   const messages = await getMessages();
 
   return (
-    <html lang={locale} suppressHydrationWarning>
-      <body className={inter.className}>
+    <html lang={locale} className={`${inter.variable} ${lexend.variable}`} suppressHydrationWarning>
+      <body className="font-sans antialiased">
         <NextIntlClientProvider messages={messages}>
           <Providers>
             <ThemeProvider
@@ -45,7 +63,9 @@ export default async function LocaleLayout({
               disableTransitionOnChange
             >
               <div className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20">
-                {children}
+                <Header />
+                <main className="flex-1 w-full">{children}</main>
+                <Footer />
               </div>
               <Toaster />
             </ThemeProvider>
