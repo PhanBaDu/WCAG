@@ -37,7 +37,7 @@ export const editFileName = (req, file, callback) => {
  */
 export const imageFileFilter = (req, file, callback) => {
   if (!file.originalname.match(/\.(jpg|jpeg|png|webp)$/)) {
-    return callback(new BadRequestException('Only image files are allowed!'), false);
+    return callback(new BadRequestException('messages.validation.IMAGE_ONLY'), false);
   }
   callback(null, true);
 };
@@ -47,7 +47,7 @@ export const imageFileFilter = (req, file, callback) => {
  */
 export const documentFileFilter = (req, file, callback) => {
   if (!file.originalname.match(/\.(pdf|doc|docx)$/)) {
-    return callback(new BadRequestException('Only document files (PDF, DOC, DOCX) are allowed!'), false);
+    return callback(new BadRequestException('messages.validation.DOCUMENT_ONLY'), false);
   }
   callback(null, true);
 };

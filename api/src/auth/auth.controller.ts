@@ -45,7 +45,7 @@ export class AuthController {
   @ApiOperation({ summary: 'Yêu cầu khôi phục mật khẩu' })
   async forgotPassword(@Body('email') email: string): Promise<ApiResponseDto> {
     await this.authService.forgotPassword(email);
-    return ApiResponseDto.success(null, 'Nếu email tồn tại, hướng dẫn khôi phục đã được gửi.');
+    return ApiResponseDto.success(null, this.i18n.t('messages.auth.FORGOT_PASSWORD_SUCCESS'));
   }
 
   @Post('reset-password')
@@ -55,7 +55,7 @@ export class AuthController {
     @Body('newPassword') newPassword: string
   ): Promise<ApiResponseDto> {
     await this.authService.resetPassword(token, newPassword);
-    return ApiResponseDto.success(null, 'Đặt lại mật khẩu thành công.');
+    return ApiResponseDto.success(null, this.i18n.t('messages.auth.RESET_PASSWORD_SUCCESS'));
   }
 
   @Post('logout')
@@ -65,6 +65,6 @@ export class AuthController {
   async logout(@Body('userId') userId: string, @Body('refreshToken') refreshToken: string): Promise<ApiResponseDto> {
     // In real app, userId comes from @CurrentUser() via JwtAuthGuard
     await this.authService.logout(userId, refreshToken);
-    return ApiResponseDto.success(null, 'Đăng xuất thành công');
+    return ApiResponseDto.success(null, this.i18n.t('messages.auth.LOGOUT_SUCCESS'));
   }
 }

@@ -97,7 +97,7 @@ describe('AuthService (Security Tests)', () => {
           email: 'notfound@example.com',
           password: 'Password123!',
         })
-      ).rejects.toThrow(new UnauthorizedException('Email hoặc mật khẩu không đúng'));
+      ).rejects.toThrow(new UnauthorizedException('messages.auth.INVALID_CREDENTIALS'));
     });
 
     it('should throw generic UnauthorizedException if password is wrong (Prevent Brute Force Analysis)', async () => {
@@ -117,7 +117,7 @@ describe('AuthService (Security Tests)', () => {
           email: 'user@example.com',
           password: 'WrongPassword!',
         })
-      ).rejects.toThrow(new UnauthorizedException('Email hoặc mật khẩu không đúng'));
+      ).rejects.toThrow(new UnauthorizedException('messages.auth.INVALID_CREDENTIALS'));
     });
   });
 });

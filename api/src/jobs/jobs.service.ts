@@ -5,6 +5,7 @@
  */
 
 import { Injectable, NotFoundException, ForbiddenException, ConflictException } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateJobDto } from './dto/create-job.dto';
 import { QueryJobDto } from './dto/query-job.dto';
@@ -12,7 +13,10 @@ import { Prisma } from '@prisma/client';
 
 @Injectable()
 export class JobsService {
-  constructor(private prisma: PrismaService) {}
+  constructor(
+    private prisma: PrismaService,
+    private readonly i18n: I18nService,
+  ) {}
 
   async findAll(query: QueryJobDto) {
     const { q, page = 1, limit = 20, province, industry, sortBy = 'date' } = query;
@@ -59,7 +63,7 @@ export class JobsService {
     });
 
     if (!job || job.deletedAt) {
-      throw new NotFoundException('Không tìm thấy tin tuyển dụng');
+      throw new NotFoundException(this.i18n.t('messages.job.NOT_FOUND'));
     }
 
     // Increment view async - usually via queue, doing directly for now
@@ -74,11 +78,11 @@ export class JobsService {
   async create(userId: string, dto: CreateJobDto) {
     const employer = await this.prisma.employer.findUnique({ where: { userId } });
     if (!employer) {
-      throw new ForbiddenException('Chỉ nhà tuyển dụng mới được đăng tin');
+      throw new ForbiddenException(this.i18n.t('messages.common.FORBIDDEN_EMPLOYER'));
     }
 
     if (!dto.acceptedDisabilityTypes?.length) {
-      throw new ConflictException('Phải chọn ít nhất 1 dạng khuyết tật được chấp nhận');
+      throw new ConflictException(this.i18n.t('messages.job.MUST_HAVE_DISABILITY'));
     }
 
     // Simple slug generator

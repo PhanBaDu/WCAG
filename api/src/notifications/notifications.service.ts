@@ -5,11 +5,15 @@
  */
 
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class NotificationsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly i18n: I18nService,
+  ) {}
 
   async getUserNotifications(userId: string, page = 1, limit = 20) {
     const [data, total] = await this.prisma.$transaction([
@@ -39,7 +43,7 @@ export class NotificationsService {
     });
 
     if (!notification || notification.userId !== userId) {
-      throw new NotFoundException('Thông báo không tồn tại');
+      throw new NotFoundException(this.i18n.t('messages.notification.NOT_FOUND'));
     }
 
     return this.prisma.notification.update({

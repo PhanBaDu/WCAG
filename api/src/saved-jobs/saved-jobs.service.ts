@@ -5,19 +5,23 @@
  */
 
 import { Injectable, ForbiddenException, ConflictException, NotFoundException } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
 import { PrismaService } from '../prisma/prisma.service';
 import { SaveJobDto } from './dto/save-job.dto';
 
 @Injectable()
 export class SavedJobsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly i18n: I18nService,
+  ) {}
 
   async saveJob(userId: string, dto: SaveJobDto) {
     const profile = await this.prisma.nKTProfile.findUnique({ where: { userId } });
-    if (!profile) throw new ForbiddenException('Chỉ NKT mới có thể lưu việc làm');
+    if (!profile) throw new ForbiddenException(this.i18n.t('messages.common.FORBIDDEN_NKT'));
 
     const job = await this.prisma.job.findUnique({ where: { id: dto.jobId } });
-    if (!job) throw new NotFoundException('Tin tuyển dụng không tồn tại');
+    if (!job) throw new NotFoundException(this.i18n.t('messages.job.NOT_FOUND'));
 
     const existing = await this.prisma.savedJob.findUnique({
       where: {
@@ -26,7 +30,7 @@ export class SavedJobsService {
     });
 
     if (existing) {
-      throw new ConflictException('Bạn đã lưu công việc này rồi');
+      throw new ConflictException(this.i18n.t('messages.saved_job.ALREADY_SAVED'));
     }
 
     return this.prisma.savedJob.create({
@@ -39,7 +43,7 @@ export class SavedJobsService {
 
   async getSavedJobs(userId: string) {
     const profile = await this.prisma.nKTProfile.findUnique({ where: { userId } });
-    if (!profile) throw new ForbiddenException('Chỉ NKT mới có thể xem việc làm đã lưu');
+    if (!profile) throw new ForbiddenException(this.i18n.t('messages.common.FORBIDDEN_NKT'));
 
     return this.prisma.savedJob.findMany({
       where: { nktProfileId: profile.id },
@@ -63,7 +67,7 @@ export class SavedJobsService {
 
   async removeSavedJob(userId: string, jobId: string) {
     const profile = await this.prisma.nKTProfile.findUnique({ where: { userId } });
-    if (!profile) throw new ForbiddenException('Chỉ NKT mới có thể bỏ lưu việc làm');
+    if (!profile) throw new ForbiddenException(this.i18n.t('messages.common.FORBIDDEN_NKT'));
 
     const existing = await this.prisma.savedJob.findUnique({
       where: {
@@ -72,7 +76,7 @@ export class SavedJobsService {
     });
 
     if (!existing) {
-      throw new NotFoundException('Việc làm chưa được lưu');
+      throw new NotFoundException(this.i18n.t('messages.saved_job.NOT_SAVED'));
     }
 
     await this.prisma.savedJob.delete({

@@ -6,6 +6,7 @@
 
 import { Controller, Get, Patch, Param, Query, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@nestjs/swagger';
+import { I18nService } from 'nestjs-i18n';
 import { NotificationsService } from './notifications.service';
 import { ApiResponseDto } from '../common/dto/api-response.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
@@ -16,7 +17,10 @@ import { CurrentUser } from '../common/decorators/current-user.decorator';
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 export class NotificationsController {
-  constructor(private readonly notificationsService: NotificationsService) {}
+  constructor(
+    private readonly notificationsService: NotificationsService,
+    private readonly i18n: I18nService,
+  ) {}
 
   @Get()
   @ApiOperation({ summary: 'Lấy danh sách thông báo của người dùng' })
@@ -32,7 +36,7 @@ export class NotificationsController {
     const l = limit ? parseInt(limit, 10) : 20;
     
     const result = await this.notificationsService.getUserNotifications(userId, p, l);
-    return ApiResponseDto.success(result, 'Lấy danh sách thông báo thành công');
+    return ApiResponseDto.success(result, this.i18n.t('messages.notification.FETCH_SUCCESS'));
   }
 
   @Patch('read-all')
@@ -40,7 +44,7 @@ export class NotificationsController {
   @ApiResponse({ status: 200 })
   async markAllAsRead(@CurrentUser('userId') userId: string): Promise<ApiResponseDto> {
     await this.notificationsService.markAllAsRead(userId);
-    return ApiResponseDto.success(null, 'Đã đánh dấu tất cả là đã đọc');
+    return ApiResponseDto.success(null, this.i18n.t('messages.notification.MARK_ALL_READ'));
   }
 
   @Patch(':id/read')
@@ -51,6 +55,6 @@ export class NotificationsController {
     @Param('id') notificationId: string
   ): Promise<ApiResponseDto> {
     const data = await this.notificationsService.markAsRead(userId, notificationId);
-    return ApiResponseDto.success(data, 'Đã đánh dấu là đã đọc');
+    return ApiResponseDto.success(data, this.i18n.t('messages.notification.MARK_READ'));
   }
 }

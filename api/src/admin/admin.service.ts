@@ -5,18 +5,22 @@
  */
 
 import { Injectable, ForbiddenException, NotFoundException } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
 import { PrismaService } from '../prisma/prisma.service';
 import { ReviewJobDto } from './dto/review-job.dto';
 import { UpdateUserStatusDto } from './dto/update-user-status.dto';
 
 @Injectable()
 export class AdminService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly i18n: I18nService,
+  ) {}
 
   private async checkAdminRole(userId: string) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (!user || user.role !== 'ADMIN') {
-      throw new ForbiddenException('Chỉ quản trị viên mới có quyền truy cập');
+      throw new ForbiddenException(this.i18n.t('messages.common.FORBIDDEN_ADMIN'));
     }
   }
 
@@ -37,11 +41,11 @@ export class AdminService {
     await this.checkAdminRole(userId);
     
     if (!['ACTIVE', 'REJECTED'].includes(dto.status)) {
-      throw new ForbiddenException('Trạng thái duyệt không hợp lệ');
+      throw new ForbiddenException(this.i18n.t('messages.admin.REVIEW_INVALID_STATUS'));
     }
 
     const job = await this.prisma.job.findUnique({ where: { id: jobId } });
-    if (!job) throw new NotFoundException('Tin tuyển dụng không tồn tại');
+    if (!job) throw new NotFoundException(this.i18n.t('messages.job.NOT_FOUND'));
 
     const updated = await this.prisma.job.update({
       where: { id: jobId },
@@ -76,8 +80,8 @@ export class AdminService {
     await this.checkAdminRole(adminId);
 
     const user = await this.prisma.user.findUnique({ where: { id: targetUserId } });
-    if (!user) throw new NotFoundException('Người dùng không tồn tại');
-    if (user.role === 'ADMIN') throw new ForbiddenException('Không thể khóa tài khoản Admin khác');
+    if (!user) throw new NotFoundException(this.i18n.t('messages.admin.USER_NOT_FOUND'));
+    if (user.role === 'ADMIN') throw new ForbiddenException(this.i18n.t('messages.admin.CANNOT_LOCK_ADMIN'));
 
     const updated = await this.prisma.user.update({
       where: { id: targetUserId },

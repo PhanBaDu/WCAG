@@ -5,12 +5,16 @@
  */
 
 import { Injectable, NotFoundException } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
 import { PrismaService } from '../prisma/prisma.service';
 import { UpdateNktProfileDto } from './dto/update-nkt-profile.dto';
 
 @Injectable()
 export class NktProfileService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly i18n: I18nService,
+  ) {}
 
   async getProfile(userId: string) {
     const profile = await this.prisma.nKTProfile.findUnique({
@@ -22,7 +26,7 @@ export class NktProfileService {
     });
 
     if (!profile) {
-      throw new NotFoundException('Không tìm thấy hồ sơ người khuyết tật');
+      throw new NotFoundException(this.i18n.t('messages.profile.NOT_FOUND'));
     }
 
     return profile;
@@ -31,7 +35,7 @@ export class NktProfileService {
   async updateProfile(userId: string, dto: UpdateNktProfileDto) {
     const profile = await this.prisma.nKTProfile.findUnique({ where: { userId } });
     if (!profile) {
-      throw new NotFoundException('Không tìm thấy hồ sơ người khuyết tật');
+      throw new NotFoundException(this.i18n.t('messages.profile.NOT_FOUND'));
     }
 
     // Filter out undefined values

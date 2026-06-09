@@ -6,6 +6,7 @@
 
 import { Controller, Get, Patch, Body, Param, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { I18nService } from 'nestjs-i18n';
 import { AdminService } from './admin.service';
 import { ReviewJobDto } from './dto/review-job.dto';
 import { UpdateUserStatusDto } from './dto/update-user-status.dto';
@@ -18,14 +19,17 @@ import { CurrentUser } from '../common/decorators/current-user.decorator';
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 export class AdminController {
-  constructor(private readonly adminService: AdminService) {}
+  constructor(
+    private readonly adminService: AdminService,
+    private readonly i18n: I18nService,
+  ) {}
 
   @Get('jobs/pending')
   @ApiOperation({ summary: 'Xem danh sách tin tuyển dụng chờ duyệt' })
   @ApiResponse({ status: 200 })
   async getPendingJobs(@CurrentUser('userId') userId: string): Promise<ApiResponseDto> {
     const data = await this.adminService.getPendingJobs(userId);
-    return ApiResponseDto.success(data, 'Lấy danh sách thành công');
+    return ApiResponseDto.success(data, this.i18n.t('messages.job.FETCH_SUCCESS'));
   }
 
   @Patch('jobs/:id/review')
@@ -37,7 +41,7 @@ export class AdminController {
     @Body() dto: ReviewJobDto
   ): Promise<ApiResponseDto> {
     const data = await this.adminService.reviewJob(userId, jobId, dto);
-    return ApiResponseDto.success(data, `Đã ${dto.status === 'ACTIVE' ? 'duyệt' : 'từ chối'} tin tuyển dụng`);
+    return ApiResponseDto.success(data, this.i18n.t('messages.admin.REVIEW_SUCCESS'));
   }
 
   @Get('users')
@@ -45,7 +49,7 @@ export class AdminController {
   @ApiResponse({ status: 200 })
   async getAllUsers(@CurrentUser('userId') userId: string): Promise<ApiResponseDto> {
     const data = await this.adminService.getAllUsers(userId);
-    return ApiResponseDto.success(data, 'Lấy danh sách thành công');
+    return ApiResponseDto.success(data, this.i18n.t('messages.common.SUCCESS'));
   }
 
   @Patch('users/:id/status')
@@ -57,6 +61,6 @@ export class AdminController {
     @Body() dto: UpdateUserStatusDto
   ): Promise<ApiResponseDto> {
     const data = await this.adminService.updateUserStatus(adminId, targetUserId, dto);
-    return ApiResponseDto.success(data, `Đã ${dto.isActive ? 'mở khóa' : 'khóa'} tài khoản`);
+    return ApiResponseDto.success(data, this.i18n.t('messages.admin.UPDATE_USER_SUCCESS'));
   }
 }

@@ -6,6 +6,7 @@
 
 import { Controller, Get, Patch, Body, Param, UseGuards } from '@nestjs/common';
 import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth } from '@nestjs/swagger';
+import { I18nService } from 'nestjs-i18n';
 import { ApplicationsService } from './applications.service';
 import { UpdateApplicationStatusDto } from './dto/update-application-status.dto';
 import { ApiResponseDto } from '../common/dto/api-response.dto';
@@ -17,7 +18,10 @@ import { CurrentUser } from '../common/decorators/current-user.decorator';
 @UseGuards(JwtAuthGuard)
 @ApiBearerAuth()
 export class EmployerApplicationsController {
-  constructor(private readonly applicationsService: ApplicationsService) {}
+  constructor(
+    private readonly applicationsService: ApplicationsService,
+    private readonly i18n: I18nService,
+  ) {}
 
   @Get('job/:jobId')
   @ApiOperation({ summary: 'Xem danh sách ứng viên nộp vào tin tuyển dụng (dành cho NTD)' })
@@ -27,7 +31,7 @@ export class EmployerApplicationsController {
     @Param('jobId') jobId: string
   ): Promise<ApiResponseDto> {
     const data = await this.applicationsService.getJobApplications(userId, jobId);
-    return ApiResponseDto.success(data, 'Lấy danh sách ứng viên thành công');
+    return ApiResponseDto.success(data, this.i18n.t('messages.application.FETCH_SUCCESS'));
   }
 
   @Patch(':id/status')
@@ -39,6 +43,6 @@ export class EmployerApplicationsController {
     @Body() dto: UpdateApplicationStatusDto
   ): Promise<ApiResponseDto> {
     const data = await this.applicationsService.updateApplicationStatus(userId, applicationId, dto);
-    return ApiResponseDto.success(data, 'Cập nhật trạng thái thành công');
+    return ApiResponseDto.success(data, this.i18n.t('messages.application.UPDATE_STATUS_SUCCESS'));
   }
 }

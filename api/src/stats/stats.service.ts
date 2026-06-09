@@ -5,16 +5,20 @@
  */
 
 import { Injectable, ForbiddenException } from '@nestjs/common';
+import { I18nService } from 'nestjs-i18n';
 import { PrismaService } from '../prisma/prisma.service';
 
 @Injectable()
 export class StatsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    private readonly i18n: I18nService,
+  ) {}
 
   async getAdminStats(userId: string) {
     const user = await this.prisma.user.findUnique({ where: { id: userId } });
     if (!user || user.role !== 'ADMIN') {
-      throw new ForbiddenException('Chỉ quản trị viên mới có quyền xem báo cáo');
+      throw new ForbiddenException(this.i18n.t('messages.common.FORBIDDEN_ADMIN'));
     }
 
     const [totalUsers, totalNKT, totalEmployers, totalJobs, activeJobs] = await Promise.all([
@@ -34,7 +38,7 @@ export class StatsService {
   async getEmployerStats(userId: string) {
     const employer = await this.prisma.employer.findUnique({ where: { userId } });
     if (!employer) {
-      throw new ForbiddenException('Chỉ nhà tuyển dụng mới có quyền xem báo cáo');
+      throw new ForbiddenException(this.i18n.t('messages.common.FORBIDDEN_EMPLOYER'));
     }
 
     const jobs = await this.prisma.job.findMany({
