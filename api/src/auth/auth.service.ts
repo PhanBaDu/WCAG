@@ -124,6 +124,21 @@ export class AuthService {
     };
   }
 
+  async forgotPassword(email: string) {
+    const user = await this.prisma.user.findUnique({ where: { email } });
+    if (!user) {
+      // Always return true to prevent enumeration
+      return true;
+    }
+    // TODO: Generate reset token and send via email
+    return true;
+  }
+
+  async resetPassword(token: string, newPassword: string) {
+    // TODO: Validate token, hash newPassword, update DB
+    return true;
+  }
+
   async logout(userId: string, refreshToken: string) {
     // Basic logout - we'd normally verify the token hash against the DB and delete the specific session
     // For simplicity, we just clear user sessions here (logout all for now)

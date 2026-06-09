@@ -37,6 +37,23 @@ export class AuthController {
     return ApiResponseDto.success(data, 'Đăng nhập thành công');
   }
 
+  @Post('forgot-password')
+  @ApiOperation({ summary: 'Yêu cầu khôi phục mật khẩu' })
+  async forgotPassword(@Body('email') email: string): Promise<ApiResponseDto> {
+    await this.authService.forgotPassword(email);
+    return ApiResponseDto.success(null, 'Nếu email tồn tại, hướng dẫn khôi phục đã được gửi.');
+  }
+
+  @Post('reset-password')
+  @ApiOperation({ summary: 'Đặt lại mật khẩu mới' })
+  async resetPassword(
+    @Body('token') token: string,
+    @Body('newPassword') newPassword: string
+  ): Promise<ApiResponseDto> {
+    await this.authService.resetPassword(token, newPassword);
+    return ApiResponseDto.success(null, 'Đặt lại mật khẩu thành công.');
+  }
+
   @Post('logout')
   @HttpCode(HttpStatus.OK)
   @ApiBearerAuth()

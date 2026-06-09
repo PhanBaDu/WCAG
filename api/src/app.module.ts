@@ -14,6 +14,7 @@ import { SavedJobsModule } from './saved-jobs/saved-jobs.module';
 import { AdminModule } from './admin/admin.module';
 import { NotificationsModule } from './notifications/notifications.module';
 import { StatsModule } from './stats/stats.module';
+import { CategoriesModule } from './categories/categories.module';
 
 @Module({
   imports: [
@@ -32,6 +33,7 @@ import { StatsModule } from './stats/stats.module';
     AdminModule,
     NotificationsModule,
     StatsModule,
+    CategoriesModule,
   ],
   controllers: [AppController],
   providers: [AppService],
