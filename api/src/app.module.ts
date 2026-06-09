@@ -6,6 +6,8 @@ import { AppService } from './app.service';
 import { UploadModule } from './upload/upload.module';
 import { PrismaModule } from './prisma/prisma.module';
 import { AuthModule } from './auth/auth.module';
+import { NktProfileModule } from './nkt-profile/nkt-profile.module';
+import { JobsModule } from './jobs/jobs.module';
 
 @Module({
   imports: [
@@ -16,6 +18,8 @@ import { AuthModule } from './auth/auth.module';
     PrismaModule,
     AuthModule,
     UploadModule,
+    NktProfileModule,
+    JobsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
