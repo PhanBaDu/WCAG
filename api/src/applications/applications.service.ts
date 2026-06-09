@@ -61,7 +61,6 @@ export class ApplicationsService {
         data: {
           applicationId: application.id,
           status: 'SUBMITTED',
-          changedBy: userId,
           note: 'Candidate submitted application',
         },
       });
@@ -81,7 +80,7 @@ export class ApplicationsService {
       include: {
         job: { select: { title: true, slug: true, employer: { select: { companyName: true } } } },
       },
-      orderBy: { appliedAt: 'desc' },
+      orderBy: { createdAt: 'desc' },
     });
   }
 
@@ -99,7 +98,7 @@ export class ApplicationsService {
       include: {
         nktProfile: { select: { fullName: true, disabilityTypes: true, skills: true } },
       },
-      orderBy: { appliedAt: 'desc' },
+      orderBy: { createdAt: 'desc' },
     });
   }
 
@@ -126,8 +125,7 @@ export class ApplicationsService {
         data: {
           applicationId: updated.id,
           status: dto.status,
-          changedBy: employerUserId,
-          note: dto.note,
+          note: dto.employerNote,
         },
       });
 

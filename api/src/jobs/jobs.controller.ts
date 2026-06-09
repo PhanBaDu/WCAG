@@ -9,6 +9,7 @@ import { ApiTags, ApiOperation, ApiResponse, ApiBearerAuth, ApiQuery } from '@ne
 import { I18nService } from 'nestjs-i18n';
 import { JobsService } from './jobs.service';
 import { CreateJobDto } from './dto/create-job.dto';
+import { QueryJobDto } from './dto/query-job.dto';
 import { ApiResponseDto } from '../common/dto/api-response.dto';
 import { JwtAuthGuard } from '../common/guards/jwt-auth.guard';
 import { CurrentUser } from '../common/decorators/current-user.decorator';
@@ -22,27 +23,22 @@ export class JobsController {
   ) {}
 
   @Get()
-  @ApiOperation({ summary: 'Lấy danh sách việc làm đang active (có phân trang)' })
-  @ApiQuery({ name: 'page', required: false, type: Number })
-  @ApiQuery({ name: 'limit', required: false, type: Number })
-  @ApiQuery({ name: 'search', required: false, type: String })
-  @ApiResponse({ status: 200 })
-  async findAll(
-    @Query('page') page?: string,
-    @Query('limit') limit?: string,
-    @Query('search') search?: string,
-  ): Promise<ApiResponseDto> {
-    const pageNum = page ? parseInt(page, 10) : 1;
-    const limitNum = limit ? parseInt(limit, 10) : 10;
-    const data = await this.jobsService.findAll(pageNum, limitNum, search);
-    return ApiResponseDto.success(data, this.i18n.t('messages.job.FETCH_SUCCESS'));
+  @ApiOperation({ summary: 'Tìm kiếm & lọc danh sách việc làm' })
+  @ApiResponse({ status: 200, description: 'Danh sách việc làm' })
+  async findAll(@Query() query: QueryJobDto): Promise<ApiResponseDto> {
+    const result = await this.jobsService.findAll(query);
+    return ApiResponseDto.paginated(
+      result.data,
+      { page: result.page, limit: result.limit, total: result.total, totalPages: result.totalPages },
+      this.i18n.t('messages.job.FETCH_SUCCESS')
+    );
   }
 
   @Get(':slug')
   @ApiOperation({ summary: 'Lấy chi tiết tin tuyển dụng theo slug' })
   @ApiResponse({ status: 200 })
   async findOne(@Param('slug') slug: string): Promise<ApiResponseDto> {
-    const data = await this.jobsService.findOne(slug);
+    const data = await this.jobsService.findOneBySlug(slug);
     return ApiResponseDto.success(data, this.i18n.t('messages.job.FETCH_SUCCESS'));
   }
 
