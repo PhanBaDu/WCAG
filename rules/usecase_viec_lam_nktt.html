@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Use Case Diagram – Cổng việc làm người khuyết tật</title>
+  <script src="https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      background: #f8f9fa;
+      color: #1a1a2e;
+      padding: 24px;
+    }
+    h1 {
+      font-size: 20px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: #1a1a2e;
+    }
+    p.sub {
+      font-size: 13px;
+      color: #666;
+      margin-bottom: 24px;
+    }
+    .diagram-container {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 24px;
+      overflow-x: auto;
+    }
+    .mermaid { width: 100%; }
+  </style>
+</head>
+<body>
+
+<h1>Use Case Diagram — Cổng thông tin việc làm cho người khuyết tật</h1>
+<p class="sub">33 use case · 4 actor · WCAG 2.2 compliant project</p>
+
+<div class="diagram-container">
+  <div class="mermaid">
+%%{init: {'theme': 'base', 'themeVariables': {'primaryColor': '#e8f4fd', 'primaryBorderColor': '#2980b9', 'primaryTextColor': '#1a1a2e', 'secondaryColor': '#eafaf1', 'tertiaryColor': '#fef9e7', 'fontFamily': 'Segoe UI, sans-serif', 'fontSize': '14px'}}}%%
+
+graph LR
+
+%% ─────────────── ACTORS ───────────────
+  NKT(["👤 Người khuyết tật\ntìm việc"])
+  NTD(["👔 Nhà tuyển dụng"])
+  ADM(["🛠️ Quản trị viên"])
+  SYS(["⚙️ Hệ thống\nthông báo"])
+
+%% ─────────────── NHÓM 1: XÁC THỰC TÀI KHOẢN ───────────────
+  subgraph AUTH ["🔐 Xác thực tài khoản"]
+    UC01["Đăng ký tài khoản"]
+    UC02["Đăng nhập / xác thực"]
+    UC03["Khôi phục mật khẩu"]
+    UC04["Đăng xuất"]
+  end
+
+%% ─────────────── NHÓM 2: TÌM KIẾM & ỨNG TUYỂN ───────────────
+  subgraph SEARCH ["🔍 Tìm kiếm & ứng tuyển"]
+    UC05["Tìm kiếm việc làm\ntheo dạng khuyết tật"]
+    UC06["Lọc & sắp xếp\nkết quả tìm kiếm"]
+    UC07["Xem chi tiết\ntin tuyển dụng"]
+    UC08["Ứng tuyển việc làm"]
+    UC09["Lưu tin tuyển dụng\nyêu thích"]
+    UC10["Xem lịch sử ứng tuyển"]
+  end
+
+%% ─────────────── NHÓM 3: QUẢN LÝ HỒ SƠ ───────────────
+  subgraph PROFILE ["📋 Quản lý hồ sơ cá nhân"]
+    UC11["Tạo & cập nhật\nhồ sơ cá nhân"]
+    UC12["Tải lên CV / hồ sơ"]
+    UC13["Khai báo dạng khuyết tật\n& nhu cầu hỗ trợ"]
+    UC14["Cài đặt thông báo\nviệc làm phù hợp"]
+  end
+
+%% ─────────────── NHÓM 4: NHÀ TUYỂN DỤNG ───────────────
+  subgraph EMPLOYER ["🏢 Nhà tuyển dụng"]
+    UC15["Đăng tin tuyển dụng"]
+    UC16["Quản lý tin tuyển dụng\n(sửa / xóa / đóng)"]
+    UC17["Xem hồ sơ ứng viên"]
+    UC18["Liên hệ ứng viên"]
+    UC19["Quản lý hồ sơ công ty"]
+    UC20["Đánh dấu & phân loại\nứng viên"]
+  end
+
+%% ─────────────── NHÓM 5: QUẢN TRỊ ───────────────
+  subgraph ADMIN ["⚙️ Quản trị hệ thống"]
+    UC21["Duyệt / từ chối\ntin tuyển dụng"]
+    UC22["Quản lý tài khoản\nngười dùng"]
+    UC23["Kiểm duyệt nội dung\nvi phạm"]
+    UC24["Quản lý danh mục\nngành nghề"]
+    UC25["Cấu hình & kiểm tra\nWCAG compliance"]
+    UC26["Quản lý nội dung\ntrang chủ"]
+    UC27["Xem & xuất\nlog hệ thống"]
+  end
+
+%% ─────────────── NHÓM 6: THÔNG BÁO TỰ ĐỘNG ───────────────
+  subgraph NOTIFY ["🔔 Thông báo tự động"]
+    UC28["Gửi email\nviệc làm phù hợp"]
+    UC29["Thông báo trạng thái\nđơn ứng tuyển"]
+    UC30["Nhắc nhở cập nhật\nhồ sơ"]
+  end
+
+%% ─────────────── NHÓM 7: BÁO CÁO ───────────────
+  subgraph REPORT ["📊 Báo cáo & thống kê"]
+    UC31["Xem thống kê\ntổng quan"]
+    UC32["Xuất báo cáo\ntuyển dụng"]
+    UC33["Thống kê\nWCAG compliance"]
+  end
+
+%% ─────────────── ASSOCIATIONS: NGƯỜI KHUYẾT TẬT ───────────────
+  NKT --> UC01
+  NKT --> UC02
+  NKT --> UC03
+  NKT --> UC04
+  NKT --> UC05
+  NKT --> UC06
+  NKT --> UC07
+  NKT --> UC08
+  NKT --> UC09
+  NKT --> UC10
+  NKT --> UC11
+  NKT --> UC12
+  NKT --> UC13
+  NKT --> UC14
+
+%% ─────────────── ASSOCIATIONS: NHÀ TUYỂN DỤNG ───────────────
+  NTD --> UC01
+  NTD --> UC02
+  NTD --> UC03
+  NTD --> UC04
+  NTD --> UC15
+  NTD --> UC16
+  NTD --> UC17
+  NTD --> UC18
+  NTD --> UC19
+  NTD --> UC20
+
+%% ─────────────── ASSOCIATIONS: QUẢN TRỊ VIÊN ───────────────
+  ADM --> UC01
+  ADM --> UC02
+  ADM --> UC21
+  ADM --> UC22
+  ADM --> UC23
+  ADM --> UC24
+  ADM --> UC25
+  ADM --> UC26
+  ADM --> UC27
+  ADM --> UC31
+  ADM --> UC32
+  ADM --> UC33
+
+%% ─────────────── ASSOCIATIONS: HỆ THỐNG THÔNG BÁO ───────────────
+  SYS -.-> UC28
+  SYS -.-> UC29
+  SYS -.-> UC30
+
+%% ─────────────── INCLUDE / EXTEND RELATIONSHIPS ───────────────
+  UC08 -. "«include»" .-> UC02
+  UC15 -. "«include»" .-> UC02
+  UC08 -. "«extend»" .-> UC28
+  UC14 -. "«extend»" .-> UC28
+  UC15 -. "«extend»" .-> UC21
+  UC11 -. "«extend»" .-> UC30
+
+%% ─────────────── STYLES ───────────────
+  classDef actor fill:#dbeafe,stroke:#2563eb,stroke-width:2px,color:#1e3a5f,font-weight:600
+  classDef auth fill:#ede9fe,stroke:#7c3aed,stroke-width:1px,color:#3b0764
+  classDef search fill:#dcfce7,stroke:#16a34a,stroke-width:1px,color:#14532d
+  classDef profile fill:#dbeafe,stroke:#2563eb,stroke-width:1px,color:#1e3a5f
+  classDef employer fill:#fef9c3,stroke:#ca8a04,stroke-width:1px,color:#713f12
+  classDef admin fill:#fee2e2,stroke:#dc2626,stroke-width:1px,color:#7f1d1d
+  classDef notify fill:#ffedd5,stroke:#ea580c,stroke-width:1px,color:#7c2d12
+  classDef report fill:#f0fdf4,stroke:#15803d,stroke-width:1px,color:#14532d
+
+  class NKT,NTD,ADM,SYS actor
+  class UC01,UC02,UC03,UC04 auth
+  class UC05,UC06,UC07,UC08,UC09,UC10 search
+  class UC11,UC12,UC13,UC14 profile
+  class UC15,UC16,UC17,UC18,UC19,UC20 employer
+  class UC21,UC22,UC23,UC24,UC25,UC26,UC27 admin
+  class UC28,UC29,UC30 notify
+  class UC31,UC32,UC33 report
+  </div>
+</div>
+
+<script>
+  mermaid.initialize({
+    startOnLoad: true,
+    securityLevel: 'loose',
+    flowchart: {
+      curve: 'basis',
+      padding: 20,
+      nodeSpacing: 40,
+      rankSpacing: 60,
+      htmlLabels: true,
+    }
+  });
+</script>
+
+</body>
+</html>
