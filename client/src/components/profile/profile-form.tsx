@@ -27,7 +27,6 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { toast } from "sonner"
 import { Loader2, User, Heart, Settings, UploadCloud, Briefcase } from "lucide-react"
 import { useNKTProfileQuery, useUpdateNKTProfileMutation } from "@/hooks/use-profile"
-import { DisabilityType } from "@/lib/types"
 
 const profileSchema = z.object({
   fullName: z.string().min(2, "Name is required"),
@@ -108,8 +107,8 @@ export function ProfileForm() {
       })
       toast.success(t("profileUpdated"))
       localStorage.removeItem("profile_draft")
-    } catch (error: any) {
-      toast.error(error.message || "Failed to update profile")
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Failed to update profile")
     }
   }
 

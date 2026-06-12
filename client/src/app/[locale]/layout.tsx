@@ -7,6 +7,7 @@ import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
+import { SkipNav } from '@/components/layout/skip-nav';
 import '../globals.css';
 import { Inter, Lexend } from 'next/font/google';
 
@@ -33,8 +34,8 @@ export function generateStaticParams() {
 }
 
 export const metadata = {
-  title: 'Job Portal for PwD',
-  description: 'Empowering People with Disabilities',
+  title: 'Cổng Việc Làm Người Khuyết Tật',
+  description: 'Giao diện tĩnh cho cổng việc làm người khuyết tật theo chuẩn WCAG 2.2 AA.',
 };
 
 export default async function LocaleLayout({
@@ -45,7 +46,7 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-  if (!routing.locales.includes(locale as any)) {
+  if (!routing.locales.includes(locale as (typeof routing.locales)[number])) {
     notFound();
   }
 
@@ -62,6 +63,7 @@ export default async function LocaleLayout({
               enableSystem
               disableTransitionOnChange
             >
+              <SkipNav />
               <div className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20">
                 <Header />
                 <main className="flex-1 w-full">{children}</main>

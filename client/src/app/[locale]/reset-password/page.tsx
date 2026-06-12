@@ -1,125 +1,131 @@
-"use client"
+import { Metadata } from 'next';
+import { ArrowLeft, LockKeyhole, ShieldCheck } from 'lucide-react';
+import { buttonVariants } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Link } from '@/i18n/routing';
 
-import * as React from "react"
-import { useTranslations } from "next-intl"
-import { z } from "zod"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { useRouter } from "@/i18n/routing"
-import { toast } from "sonner"
-import { Loader2 } from "lucide-react"
-import { useResetPasswordMutation } from "@/hooks/use-auth"
-import { useSearchParams } from "next/navigation"
+export const metadata: Metadata = {
+  title: 'Đặt lại mật khẩu | Cổng Việc Làm Người Khuyết Tật',
+  description: 'Giao diện tĩnh cho màn hình đặt lại mật khẩu.',
+};
 
-function ResetPasswordForm() {
-  const t = useTranslations("Auth")
-  const router = useRouter()
-  const searchParams = useSearchParams()
-  const token = searchParams.get("token")
-  
-  const { mutateAsync: resetPassword, isPending: isLoading } = useResetPasswordMutation()
+const copy = {
+  vi: {
+    back: 'Quay lại đăng nhập',
+    title: 'Đặt lại mật khẩu',
+    desc: 'Giao diện tĩnh của màn hình đổi mật khẩu sau khi người dùng mở liên kết từ email.',
+    newPass: 'Mật khẩu mới',
+    confirm: 'Xác nhận mật khẩu mới',
+    submit: 'Lưu mật khẩu mới',
+    noteTitle: 'Kiểm tra trước khi hoàn tất',
+    note1: 'Mật khẩu mới và xác nhận phải khớp nhau.',
+    note2: 'Nút lưu đủ lớn, dễ thấy và có focus ring.',
+    note3: 'Nếu không có token: hiển thị thông báo và liên kết quay về đăng nhập.',
+    backLogin: 'Quay lại đăng nhập',
+  },
+  en: {
+    back: 'Back to log in',
+    title: 'Reset password',
+    desc: 'Static layout of the password reset screen after a user opens the email link.',
+    newPass: 'New password',
+    confirm: 'Confirm new password',
+    submit: 'Save new password',
+    noteTitle: 'Check before finishing',
+    note1: 'The new password and confirmation must match.',
+    note2: 'The save button should be large, visible, and focused clearly.',
+    note3: 'If no token is present: show a message and a link back to log in.',
+    backLogin: 'Back to log in',
+  },
+} as const;
 
-  const formSchema = z.object({
-    password: z.string().min(8, { message: "Password must be at least 8 characters" })
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/, "Must contain uppercase, lowercase, number, and special character"),
-    confirmPassword: z.string(),
-  }).refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  })
+export default function ResetPasswordPage({ params }: { params: { locale: string } }) {
+  const locale = params.locale === 'en' ? 'en' : 'vi';
+  const t = copy[locale];
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { password: "", confirmPassword: "" },
-  })
+  return (
+    <main id="main-content" className="mx-auto flex min-h-screen w-full max-w-5xl items-center px-4 py-10 sm:px-6 lg:px-8">
+      <div className="w-full">
+        <Link href="/login" className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary">
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+          {t.back}
+        </Link>
 
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (!token) {
-      toast.error("Invalid or missing reset token")
-      return
-    }
+        <div className="grid gap-8 lg:grid-cols-[1fr_0.8fr]">
+          <Card className="border-none shadow-xl sm:border">
+            <CardHeader className="space-y-3 text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <LockKeyhole className="h-7 w-7" aria-hidden="true" />
+              </div>
+              <CardTitle className="text-2xl font-bold tracking-tight">{t.title}</CardTitle>
+              <CardDescription>{t.desc}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form className="space-y-4" noValidate>
+                <div className="space-y-2">
+                  <label htmlFor="new-password" className="text-sm font-medium">
+                    {t.newPass}
+                  </label>
+                  <input
+                    id="new-password"
+                    type="password"
+                    autoComplete="new-password"
+                    defaultValue="••••••••"
+                    className="h-12 w-full rounded-lg border border-input bg-background px-4 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  />
+                </div>
 
-    try {
-      await resetPassword({ token, newPassword: values.password })
-      toast.success("Mật khẩu đã được thay đổi thành công")
-      router.push("/login")
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Đã xảy ra lỗi")
-    }
-  }
+                <div className="space-y-2">
+                  <label htmlFor="confirm-new-password" className="text-sm font-medium">
+                    {t.confirm}
+                  </label>
+                  <input
+                    id="confirm-new-password"
+                    type="password"
+                    autoComplete="new-password"
+                    defaultValue="••••••••"
+                    className="h-12 w-full rounded-lg border border-input bg-background px-4 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  />
+                </div>
 
-  if (!token) {
-    return (
-      <div className="container flex min-h-screen items-center justify-center text-center">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight mb-2">Invalid Request</h1>
-          <p className="text-muted-foreground mb-6">No reset token found in the URL.</p>
-          <Button onClick={() => router.push("/login")}>{t("backToLogin")}</Button>
+                <button type="button" className="h-11 w-full rounded-lg bg-primary text-sm font-medium text-primary-foreground">
+                  {t.submit}
+                </button>
+              </form>
+            </CardContent>
+          </Card>
+
+          <Card className="border-none bg-muted/40 shadow-none sm:border">
+            <CardHeader>
+              <CardTitle className="text-xl">{t.noteTitle}</CardTitle>
+              <CardDescription>{locale === 'en' ? 'A side column to describe accessibility and confirmation rules.' : 'Một cột phụ để mô tả quy tắc truy cập và xác nhận.'}</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4 text-sm text-muted-foreground">
+              <div className="rounded-2xl border bg-background p-4">
+                <p className="font-medium text-foreground">{locale === 'en' ? 'Should include:' : 'Nên có:'}</p>
+                <ul className="mt-2 space-y-2">
+                  <li className="flex gap-2">
+                    <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                    {t.note1}
+                  </li>
+                  <li className="flex gap-2">
+                    <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                    {t.note2}
+                  </li>
+                </ul>
+              </div>
+              <div className="rounded-2xl border bg-background p-4">
+                <p className="font-medium text-foreground">{locale === 'en' ? 'If no token is present:' : 'Nếu không có token:'}</p>
+                <p className="mt-2">{t.note3}</p>
+              </div>
+            </CardContent>
+            <CardContent className="px-6 pb-6">
+              <Link href="/login" className={buttonVariants({ variant: 'outline', className: 'h-11 w-full rounded-lg' })}>
+                {t.backLogin}
+              </Link>
+            </CardContent>
+          </Card>
         </div>
       </div>
-    )
-  }
-
-  return (
-    <div className="container flex min-h-screen items-center justify-center">
-      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]">
-        <Card className="border-none shadow-none sm:border-solid sm:shadow-sm">
-          <CardHeader className="space-y-1 text-center">
-            <CardTitle className="text-2xl font-bold tracking-tight">{t("resetPasswordTitle")}</CardTitle>
-            <CardDescription>
-              {t("resetPasswordDesc")}
-            </CardDescription>
-          </CardHeader>
-          <CardContent>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="password">{t("newPassword")}</Label>
-                <Input 
-                  id="password"
-                  type="password" 
-                  placeholder="••••••••" 
-                  autoComplete="new-password"
-                  disabled={isLoading} 
-                  {...form.register("password")} 
-                />
-                {form.formState.errors.password && (
-                  <p className="text-sm font-medium text-destructive">{form.formState.errors.password.message}</p>
-                )}
-              </div>
-              <div className="space-y-2">
-                <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
-                <Input 
-                  id="confirmPassword"
-                  type="password" 
-                  placeholder="••••••••" 
-                  autoComplete="new-password"
-                  disabled={isLoading} 
-                  {...form.register("confirmPassword")} 
-                />
-                {form.formState.errors.confirmPassword && (
-                  <p className="text-sm font-medium text-destructive">{form.formState.errors.confirmPassword.message}</p>
-                )}
-              </div>
-              <Button className="w-full h-11 mt-4" type="submit" disabled={isLoading}>
-                {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                {isLoading ? t("submitting") : t("resetPasswordButton")}
-              </Button>
-            </form>
-          </CardContent>
-        </Card>
-      </div>
-    </div>
-  )
-}
-
-export default function ResetPasswordPage() {
-  return (
-    <React.Suspense fallback={<div className="flex min-h-screen items-center justify-center"><Loader2 className="h-8 w-8 animate-spin" /></div>}>
-      <ResetPasswordForm />
-    </React.Suspense>
-  )
+    </main>
+  );
 }

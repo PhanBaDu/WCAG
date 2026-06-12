@@ -13,11 +13,20 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/axios';
 
+type EmployerJob = {
+  id: string;
+  title: string;
+  status: 'APPROVED' | 'PENDING' | 'CLOSED';
+  applicationsCount: number;
+  expiresAt: string;
+  createdAt: string;
+};
+
 export function useCreateJobMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (jobData: any) => {
+    mutationFn: async (jobData: Record<string, unknown>): Promise<unknown> => {
       const { data } = await api.post('/jobs', jobData);
       return data;
     },
@@ -30,7 +39,7 @@ export function useCreateJobMutation() {
 export function useEmployerJobsQuery() {
   return useQuery({
     queryKey: ['employer-jobs'],
-    queryFn: async () => {
+    queryFn: async (): Promise<EmployerJob[]> => {
       // Mock Data for now
       return [
         {

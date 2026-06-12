@@ -1,6 +1,28 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/axios';
 
+type LoginCredentials = {
+  email: string;
+  password: string;
+};
+
+type RegisterPayload = {
+  email: string;
+  password: string;
+  role: 'NKT' | 'NTD';
+  fullName?: string;
+  companyName?: string;
+};
+
+type ResetPasswordPayload = {
+  token: string;
+  newPassword: string;
+};
+
+type AuthResponse = {
+  accessToken: string;
+};
+
 export const authKeys = {
   all: ['auth'] as const,
   user: () => [...authKeys.all, 'user'] as const,
@@ -24,11 +46,11 @@ export function useLoginMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async (credentials: any) => {
-      const { data } = await api.post('/auth/login', credentials);
+    mutationFn: async (credentials: LoginCredentials): Promise<AuthResponse> => {
+      const { data } = await api.post<AuthResponse>('/auth/login', credentials);
       return data;
     },
-    onSuccess: (data) => {
+    onSuccess: (data: AuthResponse) => {
       if (typeof window !== 'undefined') {
         localStorage.setItem('accessToken', data.accessToken);
       }
@@ -40,7 +62,7 @@ export function useLoginMutation() {
 // 3. Register
 export function useRegisterMutation() {
   return useMutation({
-    mutationFn: async (userData: any) => {
+    mutationFn: async (userData: RegisterPayload): Promise<unknown> => {
       const { data } = await api.post('/auth/register', userData);
       return data;
     },
@@ -78,7 +100,7 @@ export function useForgotPasswordMutation() {
 // 6. Reset Password
 export function useResetPasswordMutation() {
   return useMutation({
-    mutationFn: async (payload: any) => {
+    mutationFn: async (payload: ResetPasswordPayload): Promise<unknown> => {
       const { data } = await api.post('/auth/reset-password', payload);
       return data;
     },

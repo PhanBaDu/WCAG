@@ -1,196 +1,209 @@
-"use client"
+import { Metadata } from 'next';
+import { ArrowLeft, BadgeCheck, Building2, HeartHandshake, ShieldCheck } from 'lucide-react';
+import { buttonVariants } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Link } from '@/i18n/routing';
 
-import * as React from "react"
-import { useTranslations } from "next-intl"
-import { z } from "zod"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Label } from "@/components/ui/label"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Link, useRouter } from "@/i18n/routing"
-import { toast } from "sonner"
-import { Accessibility, Loader2, ArrowLeft } from "lucide-react"
-import { useRegisterMutation } from "@/hooks/use-auth"
+export const metadata: Metadata = {
+  title: 'Đăng ký | Cổng Việc Làm Người Khuyết Tật',
+  description: 'Giao diện tĩnh trang đăng ký với lựa chọn vai trò NKT/NTD.',
+};
 
-export default function RegisterPage() {
-  const t = useTranslations("Auth")
-  const router = useRouter()
-  const { mutateAsync: register, isPending: isLoading } = useRegisterMutation()
+const copy = {
+  vi: {
+    title: 'Tạo tài khoản',
+    desc: 'Form static để chốt UI trước khi thêm validation và API.',
+    back: 'Quay lại trang chủ',
+    asideTitle: 'Tạo tài khoản',
+    asideHeading: 'Một form đăng ký tĩnh để kiểm tra bố cục và thứ tự nhập liệu',
+    asideDesc: 'Chọn vai trò, nhập thông tin cơ bản và xem cách các vùng nội dung được sắp xếp theo quy tắc tiếp cận.',
+    quote: 'Người tìm việc và nhà tuyển dụng đều cần một biểu mẫu rõ ràng, có nhãn đầy đủ và không phụ thuộc placeholder.',
+    role: 'Vai trò',
+    roleNKT: 'Người khuyết tật tìm việc',
+    roleNTD: 'Nhà tuyển dụng',
+    name: 'Họ và tên / Tên công ty',
+    email: 'Email',
+    password: 'Mật khẩu',
+    confirm: 'Xác nhận mật khẩu',
+    noteTitle: 'Lưu ý về tiếp cận',
+    note1: 'Tất cả input đều có label.',
+    note2: 'Mật khẩu dùng autocomplete chuẩn.',
+    submit: 'Tạo tài khoản',
+    loginNote: 'Đã có tài khoản?',
+    login: 'Đăng nhập',
+    browse: 'Duyệt việc làm trước',
+  },
+  en: {
+    title: 'Create an account',
+    desc: 'Static form to lock the UI before validation and API work.',
+    back: 'Back to home',
+    asideTitle: 'Sign up',
+    asideHeading: 'A static registration form to verify layout and input order',
+    asideDesc: 'Choose a role, enter basic details, and inspect how the content areas are arranged for accessibility.',
+    quote: 'Job seekers and employers both need a clear form with visible labels, not placeholder-only hints.',
+    role: 'Role',
+    roleNKT: 'Job seeker',
+    roleNTD: 'Employer',
+    name: 'Full name / Company name',
+    email: 'Email',
+    password: 'Password',
+    confirm: 'Confirm password',
+    noteTitle: 'Accessibility notes',
+    note1: 'Every input has a visible label.',
+    note2: 'Password uses standard autocomplete.',
+    submit: 'Create account',
+    loginNote: 'Already have an account?',
+    login: 'Log in',
+    browse: 'Browse jobs first',
+  },
+} as const;
 
-  const formSchema = z.object({
-    email: z.string().email({ message: "Invalid email format" }),
-    password: z.string().min(8, { message: "Password must be at least 8 characters" })
-      .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])/, "Must contain uppercase, lowercase, number, and special character"),
-    confirmPassword: z.string(),
-    role: z.enum(["NKT", "NTD"]),
-    fullName: z.string().optional(),
-    companyName: z.string().optional(),
-  }).refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords do not match",
-    path: ["confirmPassword"],
-  }).refine((data) => {
-    if (data.role === "NKT") return !!data.fullName && data.fullName.length >= 2;
-    return true;
-  }, {
-    message: "Full name is required",
-    path: ["fullName"]
-  }).refine((data) => {
-    if (data.role === "NTD") return !!data.companyName && data.companyName.length >= 2;
-    return true;
-  }, {
-    message: "Company name is required",
-    path: ["companyName"]
-  })
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      email: "",
-      password: "",
-      confirmPassword: "",
-      role: "NKT",
-      fullName: "",
-      companyName: "",
-    },
-  })
-
-  const selectedRole = form.watch("role")
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      await register({
-        email: values.email,
-        password: values.password,
-        role: values.role,
-        fullName: values.fullName,
-        companyName: values.companyName
-      })
-      toast.success("Vui lòng kiểm tra email để xác thực tài khoản")
-      router.push("/login")
-    } catch (error: any) {
-      if (error.response?.status === 409) {
-        toast.error("Email này đã được sử dụng")
-      } else {
-        toast.error(error.response?.data?.message || "Đã xảy ra lỗi khi đăng ký")
-      }
-    }
-  }
+export default function RegisterPage({ params }: { params: { locale: string } }) {
+  const locale = params.locale === 'en' ? 'en' : 'vi';
+  const t = copy[locale];
 
   return (
-    <div className="container relative min-h-screen flex-col items-center justify-center grid lg:max-w-none lg:grid-cols-2 lg:px-0 py-10 lg:py-0">
-      <Link
-        href="/"
-        className="absolute left-4 top-4 md:left-8 md:top-8 flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        Back
-      </Link>
-      <div className="relative hidden h-full flex-col bg-muted p-10 text-white lg:flex dark:border-r">
-        <div className="absolute inset-0 bg-primary" />
-        <div className="relative z-20 flex items-center gap-2 text-lg font-medium">
-          <Accessibility className="h-6 w-6" />
+    <main id="main-content" className="grid min-h-screen lg:grid-cols-2">
+      <div className="hidden bg-slate-950 p-10 text-white lg:flex lg:flex-col lg:justify-between">
+        <div className="flex items-center gap-2 text-lg font-semibold">
+          <Building2 className="h-6 w-6" aria-hidden="true" />
           AccessJobs
         </div>
-        <div className="relative z-20 mt-auto">
-          <blockquote className="space-y-2">
-            <p className="text-lg">
-              "Building an inclusive workforce isn't just about doing the right thing, it's about finding the best talent. This platform makes it possible."
-            </p>
-            <footer className="text-sm">TechCorp Inc. - Inclusive Employer</footer>
-          </blockquote>
+        <div className="max-w-md space-y-6">
+          <p className="text-sm font-medium uppercase tracking-[0.2em] text-white/70">
+            {t.asideTitle}
+          </p>
+          <h1 className="text-4xl font-bold tracking-tight">
+            {t.asideHeading}
+          </h1>
+          <p className="text-base leading-relaxed text-white/85">
+            {t.asideDesc}
+          </p>
+        </div>
+        <div className="rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur">
+          <p className="text-sm leading-relaxed">
+            “{t.quote}”
+          </p>
         </div>
       </div>
-      <div className="p-4 lg:p-8 flex items-center justify-center">
-        <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[450px]">
-          <Card className="border-none shadow-none sm:border-solid sm:shadow-sm">
-            <CardHeader className="space-y-1 text-center">
-              <CardTitle className="text-2xl font-bold tracking-tight">{t("register")}</CardTitle>
+
+      <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-10">
+        <div className="w-full max-w-lg">
+          <Link href="/" className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary">
+            <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+            {t.back}
+          </Link>
+
+          <Card className="border-none shadow-xl sm:border">
+            <CardHeader className="space-y-3 text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <HeartHandshake className="h-7 w-7" aria-hidden="true" />
+              </div>
+              <CardTitle className="text-2xl font-bold tracking-tight">{t.title}</CardTitle>
+              <CardDescription>{t.desc}</CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form className="space-y-4" noValidate>
                 <div className="space-y-2">
-                  <Label htmlFor="role">{t("role")}</Label>
-                  <Select 
-                    onValueChange={(value) => form.setValue("role", value as "NKT" | "NTD")} 
-                    defaultValue={form.watch("role")} 
-                    disabled={isLoading}
+                  <label htmlFor="role" className="text-sm font-medium">
+                    {t.role}
+                  </label>
+                  <select
+                    id="role"
+                    defaultValue="NKT"
+                    className="h-12 w-full rounded-lg border border-input bg-background px-4 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                   >
-                    <SelectTrigger id="role">
-                      <SelectValue placeholder="Select a role" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="NKT">{t("roleNKT")}</SelectItem>
-                      <SelectItem value="NTD">{t("roleNTD")}</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  {form.formState.errors.role && (
-                    <p className="text-sm font-medium text-destructive">{form.formState.errors.role.message}</p>
-                  )}
+                    <option value="NKT">{t.roleNKT}</option>
+                    <option value="NTD">{t.roleNTD}</option>
+                  </select>
                 </div>
-
-                {selectedRole === "NKT" ? (
-                  <div className="space-y-2">
-                    <Label htmlFor="fullName">{t("fullName")}</Label>
-                    <Input id="fullName" placeholder={t("fullNamePlaceholder")} autoComplete="name" disabled={isLoading} {...form.register("fullName")} />
-                    {form.formState.errors.fullName && (
-                      <p className="text-sm font-medium text-destructive">{form.formState.errors.fullName.message}</p>
-                    )}
-                  </div>
-                ) : (
-                  <div className="space-y-2">
-                    <Label htmlFor="companyName">{t("companyName")}</Label>
-                    <Input id="companyName" placeholder={t("companyNamePlaceholder")} autoComplete="organization" disabled={isLoading} {...form.register("companyName")} />
-                    {form.formState.errors.companyName && (
-                      <p className="text-sm font-medium text-destructive">{form.formState.errors.companyName.message}</p>
-                    )}
-                  </div>
-                )}
 
                 <div className="space-y-2">
-                  <Label htmlFor="email">{t("email")}</Label>
-                  <Input id="email" placeholder="name@example.com" autoComplete="email" disabled={isLoading} {...form.register("email")} />
-                  {form.formState.errors.email && (
-                    <p className="text-sm font-medium text-destructive">{form.formState.errors.email.message}</p>
-                  )}
+                  <label htmlFor="name" className="text-sm font-medium">
+                    {t.name}
+                  </label>
+                  <input
+                    id="name"
+                    type="text"
+                    autoComplete="name"
+                    defaultValue="Nguyễn Văn A"
+                    className="h-12 w-full rounded-lg border border-input bg-background px-4 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  />
                 </div>
 
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <label htmlFor="email" className="text-sm font-medium">
+                    {t.email}
+                  </label>
+                  <input
+                    id="email"
+                    type="email"
+                    autoComplete="email"
+                    defaultValue="user@example.com"
+                    className="h-12 w-full rounded-lg border border-input bg-background px-4 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                  />
+                </div>
+
+                <div className="grid gap-4 md:grid-cols-2">
                   <div className="space-y-2">
-                    <Label htmlFor="password">{t("password")}</Label>
-                    <Input id="password" type="password" placeholder="••••••••" autoComplete="new-password" disabled={isLoading} {...form.register("password")} />
-                    {form.formState.errors.password && (
-                      <p className="text-sm font-medium text-destructive">{form.formState.errors.password.message}</p>
-                    )}
+                    <label htmlFor="password" className="text-sm font-medium">
+                      {t.password}
+                    </label>
+                    <input
+                      id="password"
+                      type="password"
+                      autoComplete="new-password"
+                      defaultValue="••••••••"
+                      className="h-12 w-full rounded-lg border border-input bg-background px-4 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                    />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="confirmPassword">{t("confirmPassword")}</Label>
-                    <Input id="confirmPassword" type="password" placeholder="••••••••" autoComplete="new-password" disabled={isLoading} {...form.register("confirmPassword")} />
-                    {form.formState.errors.confirmPassword && (
-                      <p className="text-sm font-medium text-destructive">{form.formState.errors.confirmPassword.message}</p>
-                    )}
+                    <label htmlFor="confirmPassword" className="text-sm font-medium">
+                      {t.confirm}
+                    </label>
+                    <input
+                      id="confirmPassword"
+                      type="password"
+                      autoComplete="new-password"
+                      defaultValue="••••••••"
+                      className="h-12 w-full rounded-lg border border-input bg-background px-4 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
+                    />
                   </div>
                 </div>
 
-                <Button className="w-full h-11 mt-4" type="submit" disabled={isLoading}>
-                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {isLoading ? t("submitting") : t("registerButton")}
-                </Button>
+                <div className="rounded-2xl border border-dashed bg-muted/40 p-4 text-sm text-muted-foreground">
+                  <p className="font-medium text-foreground">{t.noteTitle}</p>
+                  <ul className="mt-2 space-y-2">
+                    <li className="flex gap-2">
+                      <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                      {t.note1}
+                    </li>
+                    <li className="flex gap-2">
+                      <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                      {t.note2}
+                    </li>
+                  </ul>
+                </div>
+
+                <button type="button" className="h-11 w-full rounded-lg bg-primary text-sm font-medium text-primary-foreground">
+                  {t.submit}
+                </button>
               </form>
             </CardContent>
-            <CardFooter className="flex flex-col items-center justify-center border-t p-6 pb-2">
+            <CardFooter className="flex flex-col gap-3 border-t p-6">
               <p className="text-center text-sm text-muted-foreground">
-                {t("alreadyHaveAccount")}{" "}
+                {t.loginNote}{' '}
                 <Link href="/login" className="font-semibold text-primary hover:underline">
-                  {t("loginButton")}
+                  {t.login}
                 </Link>
               </p>
+              <Link href="/jobs" className={buttonVariants({ variant: 'outline', className: 'h-11 w-full rounded-lg' })}>
+                {t.browse}
+              </Link>
             </CardFooter>
           </Card>
         </div>
       </div>
-    </div>
-  )
+    </main>
+  );
 }

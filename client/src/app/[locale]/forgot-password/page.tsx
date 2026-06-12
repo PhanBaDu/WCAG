@@ -1,106 +1,121 @@
-"use client"
+import { Metadata } from 'next';
+import { ArrowLeft, MailCheck, ShieldCheck } from 'lucide-react';
+import { buttonVariants } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Link } from '@/i18n/routing';
 
-import * as React from "react"
-import { useTranslations } from "next-intl"
-import { z } from "zod"
-import { useForm } from "react-hook-form"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Link, useRouter } from "@/i18n/routing"
-import { toast } from "sonner"
-import { Loader2, ArrowLeft, MailCheck } from "lucide-react"
-import { useForgotPasswordMutation } from "@/hooks/use-auth"
+export const metadata: Metadata = {
+  title: 'Khôi phục mật khẩu | Cổng Việc Làm Người Khuyết Tật',
+  description: 'Giao diện tĩnh cho bước yêu cầu đặt lại mật khẩu.',
+};
 
-export default function ForgotPasswordPage() {
-  const t = useTranslations("Auth")
-  const router = useRouter()
-  const { mutateAsync: forgotPassword, isPending: isLoading } = useForgotPasswordMutation()
-  const [isSent, setIsSent] = React.useState(false)
+const copy = {
+  vi: {
+    back: 'Quay lại đăng nhập',
+    title: 'Quên mật khẩu',
+    desc: 'Đây là giao diện tĩnh của màn hình yêu cầu đặt lại mật khẩu. Không có xử lý gửi email thật.',
+    email: 'Email',
+    submit: 'Gửi liên kết khôi phục',
+    nextTitle: 'Gợi ý hiển thị',
+    note1: 'Label rõ ràng cho email.',
+    note2: 'Nút gửi đủ lớn và dễ focus.',
+    note3: 'Sau khi gửi, người dùng sẽ nhìn thấy màn hình xác nhận đã nhận email.',
+    backLogin: 'Quay lại đăng nhập',
+  },
+  en: {
+    back: 'Back to log in',
+    title: 'Forgot password',
+    desc: 'This is the static layout for the password reset request screen. No real email sending is connected yet.',
+    email: 'Email',
+    submit: 'Send reset link',
+    nextTitle: 'Display notes',
+    note1: 'A clear label for the email field.',
+    note2: 'A large, easy-to-focus send button.',
+    note3: 'After sending, users would see a confirmation that the email was received.',
+    backLogin: 'Back to log in',
+  },
+} as const;
 
-  const formSchema = z.object({
-    email: z.string().email({ message: "Invalid email" }),
-  })
-
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: { email: "" },
-  })
-
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    try {
-      await forgotPassword(values.email)
-      setIsSent(true)
-      toast.success("Đã gửi email khôi phục mật khẩu")
-    } catch (error: any) {
-      toast.error(error.response?.data?.message || "Đã xảy ra lỗi")
-    }
-  }
+export default function ForgotPasswordPage({ params }: { params: { locale: string } }) {
+  const locale = params.locale === 'en' ? 'en' : 'vi';
+  const t = copy[locale];
 
   return (
-    <div className="container flex min-h-screen items-center justify-center">
-      <Link
-        href="/login"
-        className="absolute left-4 top-4 md:left-8 md:top-8 flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary transition-colors"
-      >
-        <ArrowLeft className="h-4 w-4" />
-        {t("backToLogin")}
-      </Link>
-      
-      <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[400px]">
-        {isSent ? (
-          <Card className="border-none shadow-none sm:border-solid sm:shadow-sm text-center">
-            <CardHeader>
-              <div className="flex justify-center mb-4">
-                <div className="rounded-full bg-primary/10 p-4 text-primary">
-                  <MailCheck className="h-8 w-8" />
-                </div>
+    <main id="main-content" className="mx-auto flex min-h-screen w-full max-w-5xl items-center px-4 py-10 sm:px-6 lg:px-8">
+      <div className="w-full">
+        <Link href="/login" className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary">
+          <ArrowLeft className="h-4 w-4" aria-hidden="true" />
+          {t.back}
+        </Link>
+
+        <div className="grid gap-8 lg:grid-cols-[1fr_0.8fr]">
+          <Card className="border-none shadow-xl sm:border">
+            <CardHeader className="space-y-3 text-center">
+              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
+                <MailCheck className="h-7 w-7" aria-hidden="true" />
               </div>
-              <CardTitle className="text-2xl font-bold tracking-tight">Check your email</CardTitle>
-              <CardDescription className="text-base">
-                We have sent a password recover link to <strong>{form.getValues().email}</strong>.
-              </CardDescription>
-            </CardHeader>
-            <CardFooter>
-              <Button className="w-full h-11" variant="outline" onClick={() => router.push("/login")}>
-                {t("backToLogin")}
-              </Button>
-            </CardFooter>
-          </Card>
-        ) : (
-          <Card className="border-none shadow-none sm:border-solid sm:shadow-sm">
-            <CardHeader className="space-y-1 text-center">
-              <CardTitle className="text-2xl font-bold tracking-tight">{t("forgotPasswordTitle")}</CardTitle>
-              <CardDescription>
-                {t("forgotPasswordDesc")}
-              </CardDescription>
+              <CardTitle className="text-2xl font-bold tracking-tight">{t.title}</CardTitle>
+              <CardDescription>{t.desc}</CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <form className="space-y-4" noValidate>
                 <div className="space-y-2">
-                  <Label htmlFor="email">{t("email")}</Label>
-                  <Input 
-                    id="email"
-                    placeholder="name@example.com" 
-                    autoComplete="email" 
-                    disabled={isLoading} 
-                    {...form.register("email")} 
+                  <label htmlFor="reset-email" className="text-sm font-medium">
+                    {t.email}
+                  </label>
+                  <input
+                    id="reset-email"
+                    type="email"
+                    autoComplete="email"
+                    defaultValue="user@example.com"
+                    className="h-12 w-full rounded-lg border border-input bg-background px-4 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
                   />
-                  {form.formState.errors.email && (
-                    <p className="text-sm font-medium text-destructive">{form.formState.errors.email.message}</p>
-                  )}
                 </div>
-                <Button className="w-full h-11" type="submit" disabled={isLoading}>
-                  {isLoading && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-                  {isLoading ? t("submitting") : t("sendResetLink")}
-                </Button>
+
+                <button type="button" className="h-11 w-full rounded-lg bg-primary text-sm font-medium text-primary-foreground">
+                  {t.submit}
+                </button>
               </form>
             </CardContent>
+            <CardFooter className="border-t p-6">
+              <p className="text-sm text-muted-foreground">
+                {t.note3}
+              </p>
+            </CardFooter>
           </Card>
-        )}
+
+          <Card className="border-none bg-muted/40 shadow-none sm:border">
+            <CardHeader>
+              <CardTitle className="text-xl">{t.nextTitle}</CardTitle>
+              <CardDescription>{locale === 'en' ? 'Supporting content to lock the UI first.' : 'Khối nội dung phụ trợ để chốt UI trước.'}</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4 text-sm text-muted-foreground">
+              <div className="rounded-2xl border bg-background p-4">
+                <p className="font-medium text-foreground">{locale === 'en' ? 'Should include:' : 'Nên có:'}</p>
+                <ul className="mt-2 space-y-2">
+                  <li className="flex gap-2">
+                    <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                    {t.note1}
+                  </li>
+                  <li className="flex gap-2">
+                    <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
+                    {t.note2}
+                  </li>
+                </ul>
+              </div>
+              <div className="rounded-2xl border bg-background p-4">
+                <p className="font-medium text-foreground">{locale === 'en' ? 'After sending:' : 'Trạng thái sau gửi:'}</p>
+                <p className="mt-2">{locale === 'en' ? 'Show a confirmation card and a button to return to log in.' : 'Hiển thị card xác nhận đã gửi email, có nút quay lại đăng nhập.'}</p>
+              </div>
+            </CardContent>
+            <CardFooter className="px-6 pb-6">
+              <Link href="/login" className={buttonVariants({ variant: 'outline', className: 'h-11 w-full rounded-lg' })}>
+                {t.backLogin}
+              </Link>
+            </CardFooter>
+          </Card>
+        </div>
       </div>
-    </div>
-  )
+    </main>
+  );
 }

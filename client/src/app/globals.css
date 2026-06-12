@@ -129,5 +129,12 @@
   }
   html {
     @apply font-sans;
+    scroll-padding-top: 5rem;
+  }
+
+  :where(a, button, input, select, textarea, summary, [role="button"]):focus-visible {
+    outline: 3px solid oklch(0.809 0.134 83.31);
+    outline-offset: 3px;
+    border-radius: 0.5rem;
   }
 }

@@ -114,8 +114,8 @@ export function JobForm() {
       if (values.status === 'PENDING') {
         router.push("/employer/dashboard")
       }
-    } catch (error: any) {
-      toast.error(error.message || "Something went wrong")
+    } catch (error: unknown) {
+      toast.error(error instanceof Error ? error.message : "Something went wrong")
     }
   }
 
