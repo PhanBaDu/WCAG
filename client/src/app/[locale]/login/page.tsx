@@ -50,8 +50,9 @@ const copy = {
   },
 } as const;
 
-export default function LoginPage({ params }: { params: { locale: string } }) {
-  const locale = params.locale === 'en' ? 'en' : 'vi';
+export default async function LoginPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: routeLocale } = await params;
+  const locale = routeLocale === 'en' ? 'en' : 'vi';
   const t = copy[locale];
   return (
     <main id="main-content" className="grid min-h-screen lg:grid-cols-2">

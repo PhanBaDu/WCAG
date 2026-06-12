@@ -80,8 +80,9 @@ const copy = {
   },
 } as const;
 
-export default function CreateJobPage({ params }: { params: { locale: string } }) {
-  const locale = params.locale === 'en' ? 'en' : 'vi';
+export default async function CreateJobPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: routeLocale } = await params;
+  const locale = routeLocale === 'en' ? 'en' : 'vi';
   const t = copy[locale];
   return (
     <main id="main-content" className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">

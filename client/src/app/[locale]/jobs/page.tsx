@@ -135,8 +135,28 @@ const copy = {
   },
 } as const;
 
-export default function JobsPage({ params }: { params: { locale: string } }) {
-  const locale = params.locale === 'en' ? 'en' : 'vi';
+const jobThumbnails: Record<string, { src: string; alt: string }> = {
+  'nhan-vien-ho-tro-khach-hang': {
+    src: '/job-support.svg',
+    alt: 'Illustration for customer support role',
+  },
+  'chuyen-vien-noi-dung': {
+    src: '/job-content.svg',
+    alt: 'Illustration for content specialist role',
+  },
+  'nhan-vien-nhap-lieu': {
+    src: '/job-data.svg',
+    alt: 'Illustration for data entry role',
+  },
+  'tro-ly-hanh-chinh': {
+    src: '/job-admin.svg',
+    alt: 'Illustration for administrative assistant role',
+  },
+} as const;
+
+export default async function JobsPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: routeLocale } = await params;
+  const locale = routeLocale === 'en' ? 'en' : 'vi';
   const t = copy[locale];
 
   return (
@@ -177,15 +197,20 @@ export default function JobsPage({ params }: { params: { locale: string } }) {
                 </div>
               </div>
             </div>
-            <div className="relative min-h-[280px] bg-slate-50">
-              <Image
-                src="/jobs-hero.svg"
-                alt={locale === 'en' ? 'Accessible jobs illustration' : 'Minh hoạ việc làm tiếp cận'}
-                fill
-                priority
-                sizes="(max-width: 1024px) 100vw, 45vw"
-                className="object-cover"
-              />
+            <div className="relative min-h-[280px] overflow-hidden bg-slate-50">
+                <Image
+                  src="/now-hiring.png"
+                  alt={locale === 'en' ? 'Now hiring sign illustration' : 'Minh hoạ bảng tuyển dụng'}
+                  fill
+                  priority
+                  sizes="(max-width: 1024px) 100vw, 45vw"
+                  className="object-contain p-4"
+                />
+              <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/45 to-transparent p-4 text-xs font-medium text-white">
+                {locale === 'en'
+                  ? 'Now Hiring sign · CC BY-SA 3.0 · Wikimedia Commons'
+                  : 'Bảng Now Hiring · CC BY-SA 3.0 · Wikimedia Commons'}
+              </div>
             </div>
           </CardContent>
         </Card>
@@ -283,6 +308,15 @@ export default function JobsPage({ params }: { params: { locale: string } }) {
           <div className="grid gap-4 sm:grid-cols-2">
             {t.jobs.map((job) => (
               <Card key={job.slug} className="border-none shadow-lg transition-transform duration-200 hover:-translate-y-1">
+                <div className="relative aspect-[16/9] overflow-hidden rounded-t-3xl bg-slate-100">
+                  <Image
+                    src={jobThumbnails[job.slug]?.src ?? '/job-support.svg'}
+                    alt={locale === 'en' ? jobThumbnails[job.slug]?.alt ?? 'Job illustration' : 'Minh hoạ việc làm'}
+                    fill
+                    sizes="(max-width: 640px) 100vw, 50vw"
+                    className="object-cover"
+                  />
+                </div>
                 <CardHeader>
                   <div className="flex items-start justify-between gap-4">
                     <div className="flex items-start gap-3">

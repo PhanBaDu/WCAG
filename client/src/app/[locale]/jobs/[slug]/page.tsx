@@ -87,20 +87,22 @@ const copy = {
   },
 } as const;
 
-export async function generateMetadata({ params }: { params: { locale: string; slug: string } }): Promise<Metadata> {
-  const locale = params.locale === 'en' ? 'en' : 'vi';
+export async function generateMetadata({ params }: { params: Promise<{ locale: string; slug: string }> }): Promise<Metadata> {
+  const { locale: routeLocale, slug } = await params;
+  const locale = routeLocale === 'en' ? 'en' : 'vi';
   const job = copy[locale];
   return {
     title:
       locale === 'en'
-        ? `${job.title} (${params.slug}) - ${job.company} | Accessible Jobs`
-        : `${job.title} (${params.slug}) - ${job.company} | Cổng Việc Làm Người Khuyết Tật`,
+        ? `${job.title} (${slug}) - ${job.company} | Accessible Jobs`
+        : `${job.title} (${slug}) - ${job.company} | Cổng Việc Làm Người Khuyết Tật`,
     description: job.description.slice(0, 160),
   };
 }
 
-export default function JobDetailPage({ params }: { params: { locale: string; slug: string } }) {
-  const locale = params.locale === 'en' ? 'en' : 'vi';
+export default async function JobDetailPage({ params }: { params: Promise<{ locale: string; slug: string }> }) {
+  const { locale: routeLocale, slug } = await params;
+  const locale = routeLocale === 'en' ? 'en' : 'vi';
   const job = copy[locale];
   return (
     <main id="main-content" className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
@@ -244,7 +246,7 @@ export default function JobDetailPage({ params }: { params: { locale: string; sl
             <CardContent className="space-y-4">
               <div className="rounded-2xl border bg-background p-4">
                 <p className="text-sm font-medium text-muted-foreground">{job.jobCode}</p>
-                <p className="mt-1 font-semibold">{params.slug}</p>
+                <p className="mt-1 font-semibold">{slug}</p>
               </div>
               <div className="rounded-2xl border bg-background p-4">
                 <p className="text-sm font-medium text-muted-foreground">{job.deadline}</p>

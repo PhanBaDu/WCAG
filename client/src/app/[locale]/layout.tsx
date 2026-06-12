@@ -8,6 +8,7 @@ import { Toaster } from '@/components/ui/sonner';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { SkipNav } from '@/components/layout/skip-nav';
+import { FocusLoop } from '@/components/layout/focus-loop';
 import '../globals.css';
 import { Inter, Lexend } from 'next/font/google';
 
@@ -64,11 +65,12 @@ export default async function LocaleLayout({
               disableTransitionOnChange
             >
               <SkipNav />
-              <div className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20">
+              <div data-app-shell="true" className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20">
                 <Header />
                 <main className="flex-1 w-full">{children}</main>
                 <Footer />
               </div>
+              <FocusLoop />
               <Toaster />
             </ThemeProvider>
           </Providers>

@@ -35,16 +35,28 @@ export function Header() {
         </Link>
 
         <nav className="hidden md:flex items-center gap-6 text-sm font-medium" aria-label={isEn ? 'Primary navigation' : 'Điều hướng chính'}>
-          <Link href="/" className="transition-colors hover:text-primary">
+          <Link
+            href="/"
+            className="gov-focus rounded-md px-1.5 py-1 transition-colors hover:text-primary"
+          >
             {nav.home}
           </Link>
-          <Link href="/jobs" className="transition-colors text-muted-foreground hover:text-primary">
+          <Link
+            href="/jobs"
+            className="gov-focus rounded-md px-1.5 py-1 text-muted-foreground transition-colors hover:text-primary"
+          >
             {nav.jobs}
           </Link>
-          <Link href="/employer/jobs/create" className="transition-colors text-muted-foreground hover:text-primary">
+          <Link
+            href="/employer/jobs/create"
+            className="gov-focus rounded-md px-1.5 py-1 text-muted-foreground transition-colors hover:text-primary"
+          >
             {nav.employers}
           </Link>
-          <Link href="/profile" className="transition-colors text-muted-foreground hover:text-primary">
+          <Link
+            href="/profile"
+            className="gov-focus rounded-md px-1.5 py-1 text-muted-foreground transition-colors hover:text-primary"
+          >
             {nav.profile}
           </Link>
         </nav>

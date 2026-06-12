@@ -38,8 +38,9 @@ const copy = {
   },
 } as const;
 
-export default function ResetPasswordPage({ params }: { params: { locale: string } }) {
-  const locale = params.locale === 'en' ? 'en' : 'vi';
+export default async function ResetPasswordPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: routeLocale } = await params;
+  const locale = routeLocale === 'en' ? 'en' : 'vi';
   const t = copy[locale];
 
   return (

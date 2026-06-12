@@ -1,6 +1,8 @@
 import { ArrowRight, Building2, HeartHandshake, Search, ShieldCheck } from 'lucide-react';
+import Image from 'next/image';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { KeyboardShortcutsDemo } from '@/components/layout/keyboard-shortcuts-demo';
 import { Link } from '@/i18n/routing';
 
 const copy = {
@@ -158,8 +160,9 @@ const copy = {
   },
 } as const;
 
-export default function LandingPage({ params }: { params: { locale: string } }) {
-  const locale = params.locale === 'en' ? 'en' : 'vi';
+export default async function LandingPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: routeLocale } = await params;
+  const locale = routeLocale === 'en' ? 'en' : 'vi';
   const t = copy[locale];
   return (
     <main id="main-content">
@@ -180,13 +183,13 @@ export default function LandingPage({ params }: { params: { locale: string } }) 
             </p>
 
             <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-              <Link href="/jobs" className={buttonVariants({ size: 'lg', className: 'h-12 rounded-full px-8' })}>
+              <Link href="/jobs" className={buttonVariants({ size: 'lg', className: 'gov-focus h-12 rounded-full px-8' })}>
                 {t.primaryCta}
                 <Search className="ml-2 h-4 w-4" aria-hidden="true" />
               </Link>
               <Link
                 href="/register?role=NTD"
-                className={buttonVariants({ size: 'lg', variant: 'secondary', className: 'h-12 rounded-full px-8' })}
+                className={buttonVariants({ size: 'lg', variant: 'secondary', className: 'gov-focus h-12 rounded-full px-8' })}
               >
                 {t.secondaryCta}
                 <Building2 className="ml-2 h-4 w-4" aria-hidden="true" />
@@ -202,6 +205,42 @@ export default function LandingPage({ params }: { params: { locale: string } }) 
               </div>
             ))}
           </div>
+
+          <Card className="mx-auto mt-8 overflow-hidden border-none shadow-xl">
+            <CardContent className="grid gap-0 p-0 md:grid-cols-[1fr_1.2fr]">
+              <div className="flex flex-col justify-between bg-primary/5 p-6">
+                <div className="space-y-3">
+                  <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">
+                    {locale === 'en' ? 'Photo preview' : 'Ảnh minh hoạ'}
+                  </p>
+                  <h2 className="text-2xl font-bold tracking-tight">
+                    {locale === 'en' ? 'A softer, more human feel' : 'Giao diện mềm hơn, có cảm xúc hơn'}
+                  </h2>
+                  <p className="text-sm leading-relaxed text-muted-foreground">
+                    {locale === 'en'
+                      ? 'A real illustration helps the page feel less flat while keeping the visual hierarchy simple and readable.'
+                      : 'Một ảnh thật/ minh hoạ giúp trang bớt phẳng mà vẫn giữ hierarchy rõ ràng và dễ đọc.'}
+                  </p>
+                </div>
+                <p className="mt-6 text-xs leading-relaxed text-muted-foreground">
+                  {locale === 'en'
+                    ? 'Source: Wikimedia Commons · CC0 (no attribution required, but kept as a nice-to-have visual).'
+                    : 'Nguồn: Wikimedia Commons · CC0 (không bắt buộc ghi công, nhưng vẫn giữ như một chi tiết đẹp).'}
+                </p>
+              </div>
+
+              <div className="relative min-h-[280px] overflow-hidden bg-slate-50">
+                <Image
+                  src="/human-resources.png"
+                  alt={locale === 'en' ? 'Human resources and team support illustration' : 'Minh hoạ nhân sự và hỗ trợ đội ngũ'}
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 100vw, 60vw"
+                  className="object-cover"
+                />
+              </div>
+            </CardContent>
+          </Card>
         </div>
       </section>
 
@@ -262,13 +301,13 @@ export default function LandingPage({ params }: { params: { locale: string } }) 
                 <CardDescription>{t.actionsDesc}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Link href="/login" className={buttonVariants({ variant: 'outline', className: 'h-12 w-full justify-start rounded-xl' })}>
+                <Link href="/login" className={buttonVariants({ variant: 'outline', className: 'gov-focus h-12 w-full justify-start rounded-xl' })}>
                   {locale === 'en' ? 'Log in' : 'Đăng nhập tài khoản'}
                 </Link>
-                <Link href="/register" className={buttonVariants({ className: 'h-12 w-full justify-start rounded-xl' })}>
+                <Link href="/register" className={buttonVariants({ className: 'gov-focus h-12 w-full justify-start rounded-xl' })}>
                   {locale === 'en' ? 'Create an account' : 'Tạo tài khoản mới'}
                 </Link>
-                <Link href="/jobs" className={buttonVariants({ variant: 'secondary', className: 'h-12 w-full justify-start rounded-xl' })}>
+                <Link href="/jobs" className={buttonVariants({ variant: 'secondary', className: 'gov-focus h-12 w-full justify-start rounded-xl' })}>
                   {locale === 'en' ? 'Browse all jobs' : 'Xem toàn bộ việc làm'}
                 </Link>
               </CardContent>
@@ -285,11 +324,11 @@ export default function LandingPage({ params }: { params: { locale: string } }) 
               {t.footerDesc}
             </p>
             <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-              <Link href="/register" className={buttonVariants({ size: 'lg', className: 'h-12 rounded-full px-8' })}>
+              <Link href="/register" className={buttonVariants({ size: 'lg', className: 'gov-focus h-12 rounded-full px-8' })}>
                 {t.footerPrimary}
                 <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
               </Link>
-              <Link href="/employer/dashboard" className={buttonVariants({ size: 'lg', variant: 'outline', className: 'h-12 rounded-full px-8' })}>
+              <Link href="/employer/dashboard" className={buttonVariants({ size: 'lg', variant: 'outline', className: 'gov-focus h-12 rounded-full px-8' })}>
                 {t.footerSecondary}
               </Link>
             </div>
@@ -368,6 +407,10 @@ export default function LandingPage({ params }: { params: { locale: string } }) 
                 </CardContent>
               </Card>
             </div>
+          </div>
+
+          <div className="mt-8">
+            <KeyboardShortcutsDemo locale={locale} />
           </div>
         </div>
       </section>

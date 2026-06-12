@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { BadgeCheck, Briefcase, Heart, Settings, UploadCloud, User } from 'lucide-react';
+import Image from 'next/image';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
@@ -126,8 +127,9 @@ const copy = {
   },
 } as const;
 
-export default function ProfilePage({ params }: { params: { locale: string } }) {
-  const locale = params.locale === 'en' ? 'en' : 'vi';
+export default async function ProfilePage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: routeLocale } = await params;
+  const locale = routeLocale === 'en' ? 'en' : 'vi';
   const t = copy[locale];
   return (
     <main id="main-content" className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
@@ -139,7 +141,27 @@ export default function ProfilePage({ params }: { params: { locale: string } }) 
         </div>
 
         <div className="w-full max-w-sm rounded-3xl border bg-card p-5 shadow-sm">
-          <div className="flex items-center justify-between text-sm font-medium">
+          <div className="relative min-h-[180px] overflow-hidden rounded-2xl bg-slate-50">
+            <Image
+              src="/career-change-rockets.svg"
+              alt={locale === 'en' ? 'Career change and job search illustration' : 'Minh hoạ chuyển nghề và tìm việc'}
+              fill
+              sizes="(max-width: 768px) 100vw, 28vw"
+              className="object-contain p-4"
+            />
+          </div>
+          <div className="mt-4">
+            <p className="text-sm font-medium uppercase tracking-[0.16em] text-muted-foreground">
+              {locale === 'en' ? 'Career support' : 'Hỗ trợ nghề nghiệp'}
+            </p>
+            <p className="mt-1 text-sm font-semibold">{locale === 'en' ? 'Guided job search' : 'Tìm việc có định hướng'}</p>
+            <p className="mt-2 text-xs text-muted-foreground">
+              {locale === 'en'
+                ? 'A visual cue for users who are updating their profile and preparing to apply.'
+                : 'Một tín hiệu trực quan cho người dùng đang cập nhật hồ sơ và chuẩn bị ứng tuyển.'}
+            </p>
+          </div>
+          <div className="mt-5 flex items-center justify-between text-sm font-medium">
             <span>{t.completionLabel}</span>
             <span>72%</span>
           </div>

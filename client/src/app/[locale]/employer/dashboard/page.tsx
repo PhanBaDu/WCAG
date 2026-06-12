@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { ArrowUpRight, Clock3, Plus, Sparkles, Users } from 'lucide-react';
+import Image from 'next/image';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
@@ -68,8 +69,9 @@ const copy = {
   },
 } as const;
 
-export default function EmployerDashboardPage({ params }: { params: { locale: string } }) {
-  const locale = params.locale === 'en' ? 'en' : 'vi';
+export default async function EmployerDashboardPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale: routeLocale } = await params;
+  const locale = routeLocale === 'en' ? 'en' : 'vi';
   const t = copy[locale];
   return (
     <main id="main-content" className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
@@ -101,6 +103,40 @@ export default function EmployerDashboardPage({ params }: { params: { locale: st
           </Card>
         ))}
       </div>
+
+      <Card className="mt-8 overflow-hidden border-none shadow-xl">
+        <CardContent className="grid gap-0 p-0 lg:grid-cols-[0.9fr_1.1fr]">
+          <div className="flex flex-col justify-between bg-primary/5 p-6">
+            <div className="space-y-3">
+              <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">
+                {locale === 'en' ? 'Dashboard visual' : 'Minh hoạ dashboard'}
+              </p>
+              <h2 className="text-2xl font-bold tracking-tight">
+                {locale === 'en' ? 'Keep the dashboard alive with a visual block' : 'Giữ dashboard có điểm nhấn bằng hình ảnh'}
+              </h2>
+              <p className="text-sm leading-relaxed text-muted-foreground">
+                {locale === 'en'
+                  ? 'A clean illustration helps the employer area feel less text-heavy and gives the eye a natural resting point.'
+                  : 'Một minh hoạ sạch sẽ giúp khu nhà tuyển dụng bớt nặng chữ và có điểm nghỉ mắt tự nhiên.'}
+              </p>
+            </div>
+            <p className="mt-6 text-xs leading-relaxed text-muted-foreground">
+              {locale === 'en'
+                ? 'Source: local SVG asset built from project shapes, so no external licensing risk.'
+                : 'Nguồn: SVG nội bộ do project tạo ra, không có rủi ro giấy phép từ bên ngoài.'}
+            </p>
+          </div>
+          <div className="relative min-h-[280px] overflow-hidden bg-slate-50">
+            <Image
+              src="/human-resources.png"
+              alt={locale === 'en' ? 'Human resources illustration for employers' : 'Minh hoạ nhân sự dành cho nhà tuyển dụng'}
+              fill
+              sizes="(max-width: 1024px) 100vw, 55vw"
+              className="object-contain p-6"
+            />
+          </div>
+        </CardContent>
+      </Card>
 
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.5fr_0.9fr]">
         <Card className="border-none shadow-lg">
