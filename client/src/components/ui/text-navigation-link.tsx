@@ -11,8 +11,8 @@ export function TextNavigationLink({ className, current, ...props }: TextNavigat
     <Link
       aria-current={current ? 'page' : undefined}
       className={cn(
-        'inline-flex items-center rounded-md px-1.5 py-1 text-[#1d70b8] underline decoration-[1px] underline-offset-4 decoration-[#1d70b8] transition-[color,text-decoration-thickness,background-color] duration-150 hover:text-[#003078] hover:decoration-[2px] hover:decoration-[#003078] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#003078] focus-visible:ring-offset-2 focus-visible:ring-offset-background focus-visible:text-[#003078] focus-visible:decoration-[2px] focus-visible:decoration-[#003078]',
-        current && 'text-[#003078] decoration-[2px] decoration-[#003078]',
+        'inline-flex items-center rounded-none px-0 py-0 text-lg text-[#0b0c0c] underline decoration-[2px] underline-offset-4 decoration-[#0b0c0c] transition-[color,text-decoration-thickness,background-color] duration-150 hover:text-[#0b0c0c] hover:decoration-[3px] hover:decoration-[#0b0c0c] focus-visible:bg-[#ffdd00] focus-visible:text-[#0b0c0c] focus-visible:decoration-[4px] focus-visible:decoration-[#0b0c0c] focus-visible:outline-none focus-visible:ring-0',
+        current && 'text-[#0b0c0c] decoration-[3px] decoration-[#0b0c0c]',
         className
       )}
       {...props}

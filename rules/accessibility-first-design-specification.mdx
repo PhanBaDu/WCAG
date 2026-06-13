@@ -226,13 +226,24 @@ This rule defines the product-wide UI and interaction specification for the job 
 ### SPEC-ID: LINK-INTERACTION-001 Text Navigation Link
 - **Purpose:** Provide a reusable specification for navigation text links that must remain discoverable without hover and become more prominent on hover and focus.
 - **Structure Rules:** Text navigation links must display an underline in the default state and the underline must span the full clickable text.
-- **Interaction Rules:** Hover must strengthen both text emphasis and underline emphasis without changing layout; focus must be more prominent than hover and must apply to the full interactive region.
+- **Interaction Rules:** Text navigation links must be black by default, remain black on hover while strengthening the underline, and use a yellow background on keyboard focus across the full interactive region.
 - **Keyboard Navigation Rules:** `Tab` must move to the next link, `Shift + Tab` must move to the previous link, and `Enter` must activate the focused link.
-- **Focus Rules:** Focus treatment must be visible immediately, must not depend on hover, and must remain readable.
+- **Focus Rules:** Focus treatment must be visible immediately, must not depend on hover, and must be stronger than hover through both the background treatment and the underline emphasis.
 - **Accessibility Rules:** Links must remain recognizable without relying on color alone and must not depend on hover for discoverability.
 - **Screen Reader Expectations:** The link must be announced as a link with a meaningful destination; focus state does not change the accessible name.
 - **Content Writing Rules:** The text must clearly describe the destination or section.
 - **Anti-Patterns:** Do not hide the underline by default, do not use hover-only cues, and do not let focus be weaker than hover.
+
+### SPEC-ID: LINK-INTERACTION-002 Brand Logo Link
+- **Purpose:** Provide a recognizable, keyboard-accessible brand entry point at the top of the site.
+- **Structure Rules:** The app logo and wordmark, when linked, must be treated as a single interactive element with one accessible name.
+- **Interaction Rules:** In the default state, the brand link may appear minimal; when hovered it may strengthen visually, and when keyboard-focused it must show a combined emphasis using underline and a clear background treatment across the full clickable region.
+- **Keyboard Navigation Rules:** `Tab` must reach the brand link early in the page order, before primary navigation links.
+- **Focus Rules:** Focus must apply to the entire brand link region, not only the text or icon, and the focus treatment must be stronger than hover.
+- **Accessibility Rules:** The brand link must remain recognisable without relying on color alone and must not lose clarity on light or dark surfaces.
+- **Screen Reader Expectations:** The brand link must expose a concise accessible name that identifies the product and destination.
+- **Content Writing Rules:** The visible brand text must remain short, stable, and consistent across pages.
+- **Anti-Patterns:** Do not show only a text underline without a visible background focus treatment; do not split the logo, title, and suffix into separate tab stops.
 
 ## 4. Buttons
 
