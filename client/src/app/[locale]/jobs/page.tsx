@@ -3,6 +3,8 @@ import { Building2, Filter, MapPin, Search } from 'lucide-react';
 import Image from 'next/image';
 import { buttonVariants } from '@/components/ui/button';
 import { PageBreadcrumb } from '@/components/layout/page-breadcrumb';
+import { SearchLottie } from '@/components/home/search-lottie';
+import { JobsLottie } from '@/components/home/jobs-lottie';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
 
@@ -258,6 +260,8 @@ export default async function JobsPage({ params }: { params: Promise<{ locale: s
             </CardContent>
           </Card>
 
+          <SearchLottie />
+
           <Card className="border-none shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-xl">
@@ -315,6 +319,8 @@ export default async function JobsPage({ params }: { params: Promise<{ locale: s
               </div>
             </CardContent>
           </Card>
+
+          <JobsLottie />
 
           <div className="grid gap-4 sm:grid-cols-2">
             {t.jobs.map((job) => (

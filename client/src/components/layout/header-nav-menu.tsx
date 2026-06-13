@@ -1,6 +1,6 @@
 "use client";
 
-import { MenuIcon } from 'lucide-react';
+import { MenuIcon, XIcon } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { usePathname } from '@/i18n/routing';
 import { LangToggle } from '@/components/lang-toggle';
@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { GovButtonLink } from '@/components/ui/gov-button';
 import {
   Sheet,
+  SheetClose,
   SheetContent,
   SheetHeader,
   SheetTitle,
@@ -23,6 +24,8 @@ type NavLabels = {
   login: string;
   register: string;
   menu: string;
+  menuTitle: string;
+  closeMenu: string;
   primaryNav: string;
 };
 
@@ -59,10 +62,23 @@ export function HeaderNavMenu({ labels, isCurrent }: HeaderNavMenuProps) {
         id="header-nav-menu"
         side="left"
         className="w-full max-w-xs gap-0 p-0 sm:max-w-sm"
-        showCloseButton
+        showCloseButton={false}
       >
-        <SheetHeader className="border-b px-4 py-4">
-          <SheetTitle>{labels.menu}</SheetTitle>
+        <SheetHeader className="flex-row items-center justify-between gap-3 border-b px-4 py-3">
+          <SheetTitle>{labels.menuTitle}</SheetTitle>
+          <SheetClose
+            render={
+              <Button
+                type="button"
+                variant="ghost"
+                size="icon-xs"
+                className="shrink-0 !border-b-[1px] active:translate-y-0"
+              />
+            }
+          >
+            <XIcon aria-hidden="true" />
+            <span className="sr-only">{labels.closeMenu}</span>
+          </SheetClose>
         </SheetHeader>
 
         <nav

@@ -133,6 +133,18 @@
     scroll-padding-top: 5rem;
   }
 
+  :where(a, button, summary, [role="button"], label[for], select, input[type="checkbox"], input[type="radio"], input[type="submit"], input[type="button"], input[type="reset"]) {
+    cursor: pointer;
+  }
+
+  :where(button:disabled, select:disabled, input:disabled, [aria-disabled="true"]) {
+    cursor: not-allowed;
+  }
+
+  :where(input:not([type="checkbox"]):not([type="radio"]):not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="file"])) {
+    cursor: text;
+  }
+
   :where(a, button, summary, [role="button"]):focus-visible {
     outline: 3px solid color-mix(in oklch, var(--primary) 24%, black);
     outline-offset: 3px;
@@ -151,6 +163,7 @@
 
   .gov-link {
     color: #1d70b8;
+    cursor: pointer;
     text-decoration-line: underline;
     text-decoration-color: #1d70b8;
     text-decoration-thickness: 1px;

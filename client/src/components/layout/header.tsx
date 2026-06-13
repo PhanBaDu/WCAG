@@ -22,6 +22,8 @@ export function Header() {
         login: 'Log in',
         register: 'Register',
         menu: 'Open menu',
+        menuTitle: 'Menu',
+        closeMenu: 'Close menu',
         primaryNav: 'Primary navigation',
       }
     : {
@@ -31,7 +33,9 @@ export function Header() {
         profile: 'Hồ sơ',
         login: 'Đăng nhập',
         register: 'Đăng ký',
-        menu: 'Mở menu',
+        menu: 'Mở danh mục',
+        menuTitle: 'Danh mục',
+        closeMenu: 'Đóng danh mục',
         primaryNav: 'Điều hướng chính',
       };
 

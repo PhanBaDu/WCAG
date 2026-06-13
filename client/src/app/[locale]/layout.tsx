@@ -9,6 +9,7 @@ import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { SkipNav } from '@/components/layout/skip-nav';
 import { KeyboardShortcutsDialog } from '@/components/layout/keyboard-shortcuts-dialog';
+import { ScrollRestoration } from '@/components/layout/scroll-restoration';
 import '../globals.css';
 import { Inter, Lexend } from 'next/font/google';
 
@@ -56,6 +57,11 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={`${inter.variable} ${lexend.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased">
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){if('scrollRestoration' in history){history.scrollRestoration='manual';}window.scrollTo(0,0);})();`,
+          }}
+        />
         <NextIntlClientProvider messages={messages}>
           <Providers>
             <ThemeProvider
@@ -73,6 +79,7 @@ export default async function LocaleLayout({
                 </main>
                 <Footer />
               </div>
+              <ScrollRestoration />
               <KeyboardShortcutsDialog />
               <Toaster />
             </ThemeProvider>

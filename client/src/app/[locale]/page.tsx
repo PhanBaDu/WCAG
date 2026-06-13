@@ -1,6 +1,8 @@
 import { ArrowRight, Building2, HeartHandshake, Search, ShieldCheck } from 'lucide-react';
-import Image from 'next/image';
+import { AnimatedStatValue } from '@/components/home/animated-stat-value';
+import { ConnectLottie } from '@/components/home/connect-lottie';
 import { HeroLottie } from '@/components/home/hero-lottie';
+import { LottieAnimation } from '@/components/home/lottie-animation';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
@@ -38,12 +40,28 @@ const copy = {
     illustrationLabel: 'Cơ hội việc làm hòa nhập',
     illustrationTitle: 'Kết nối con người với công việc phù hợp',
     illustrationDesc:
-      'Chúng tôi tin mỗi người đều xứng đáng có cơ hội làm việc trong môi trường tôn trọng khả năng và nhu cầu cá nhân.',
+      'Chúng tôi kết nối người tìm việc với cơ hội thực sự phù hợp — nơi kỹ năng được công nhận, nhu cầu hỗ trợ cá nhân được tôn trọng, và quy trình tuyển dụng rõ ràng, dễ tiếp cận cho cả ứng viên lẫn doanh nghiệp muốn xây dựng môi trường làm việc hòa nhập.',
     illustrationAlt: 'Minh hoạ đội ngũ nhân sự và hỗ trợ tại nơi làm việc',
     stats: [
-      { value: '1,200+', label: 'Việc làm thân thiện' },
-      { value: '350+', label: 'Nhà tuyển dụng' },
-      { value: '24/7', label: 'Truy cập và tìm kiếm' },
+      {
+        value: '1,200+',
+        countTo: 1200,
+        suffix: '+',
+        label: 'Việc làm thân thiện',
+        lottie: '/lottie/02897fe8-1188-11ee-b779-7b1675fa93d5.json',
+      },
+      {
+        value: '350+',
+        countTo: 350,
+        suffix: '+',
+        label: 'Nhà tuyển dụng',
+        lottie: '/lottie/d76e9edc-1188-11ee-86f2-c3028b649406.json',
+      },
+      {
+        value: '24/7',
+        label: 'Truy cập và tìm kiếm',
+        lottie: '/lottie/62c9d8c4-1180-11ee-8c03-4375fe273ca8.json',
+      },
     ],
     highlights: [
       {
@@ -98,12 +116,28 @@ const copy = {
     illustrationLabel: 'Inclusive job opportunities',
     illustrationTitle: 'Connecting people with the right work',
     illustrationDesc:
-      'We believe everyone deserves a fair chance to work in an environment that respects their abilities and individual needs.',
+      'We connect job seekers with roles that truly fit — where skills are valued, individual support needs are respected, and the hiring process stays clear and accessible for both candidates and employers building inclusive workplaces.',
     illustrationAlt: 'Illustration of human resources and team support at work',
     stats: [
-      { value: '1,200+', label: 'Accessible jobs' },
-      { value: '350+', label: 'Employers' },
-      { value: '24/7', label: 'Browse anytime' },
+      {
+        value: '1,200+',
+        countTo: 1200,
+        suffix: '+',
+        label: 'Accessible jobs',
+        lottie: '/lottie/02897fe8-1188-11ee-b779-7b1675fa93d5.json',
+      },
+      {
+        value: '350+',
+        countTo: 350,
+        suffix: '+',
+        label: 'Employers',
+        lottie: '/lottie/d76e9edc-1188-11ee-86f2-c3028b649406.json',
+      },
+      {
+        value: '24/7',
+        label: 'Browse anytime',
+        lottie: '/lottie/62c9d8c4-1180-11ee-8c03-4375fe273ca8.json',
+      },
     ],
     highlights: [
       {
@@ -164,43 +198,54 @@ export default async function LandingPage({ params }: { params: Promise<{ locale
             <HeroLottie />
           </div>
 
-          <div className="mt-14 grid gap-4 rounded-3xl bg-muted p-4 sm:grid-cols-3 sm:p-6">
+          <div className="mt-14 grid gap-4 rounded-3xl bg-muted p-4 sm:grid-cols-3">
             {t.stats.map((stat) => (
-              <div key={stat.label} className="rounded-2xl bg-background p-6 text-center">
-                <div className="text-3xl font-bold tracking-tight">{stat.value}</div>
+              <div
+                key={stat.label}
+                className="flex flex-col items-center overflow-hidden rounded-2xl bg-background p-6 text-center"
+              >
+                <AnimatedStatValue
+                  value={stat.value}
+                  countTo={'countTo' in stat ? stat.countTo : undefined}
+                  suffix={'suffix' in stat ? stat.suffix : undefined}
+                />
                 <div className="mt-2 text-sm text-muted-foreground">{stat.label}</div>
+                {'lottie' in stat && stat.lottie ? (
+                  <div className="mt-4 w-full">
+                    <LottieAnimation
+                      src={stat.lottie}
+                      className="w-full max-w-[320px]"
+                      frameMax
+                      maxWidth={320}
+                      maxHeight={320}
+                    />
+                  </div>
+                ) : null}
               </div>
             ))}
           </div>
 
-          <Card className="mx-auto mt-8 overflow-hidden border-none shadow-xl">
-            <CardContent className="grid gap-0 p-0 md:grid-cols-[1fr_1.2fr]">
-              <div className="flex flex-col justify-between bg-primary/5 p-6">
+          <div className="mx-auto mt-8 rounded-3xl bg-muted p-4">
+            <div className="grid gap-4 md:grid-cols-2">
+              <div className="flex flex-col justify-center rounded-2xl bg-background p-6">
                 <div className="space-y-3">
-                  <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">
+                  <p className="text-sm font-medium text-primary">
                     {t.illustrationLabel}
                   </p>
                   <h2 className="text-2xl font-bold tracking-tight">
                     {t.illustrationTitle}
                   </h2>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
+                  <p className="text-base leading-relaxed tracking-normal text-muted-foreground">
                     {t.illustrationDesc}
                   </p>
                 </div>
               </div>
 
-              <div className="relative min-h-[280px] overflow-hidden bg-slate-50">
-                <Image
-                  src="/human-resources.png"
-                  alt={t.illustrationAlt}
-                  fill
-                  priority
-                  sizes="(max-width: 768px) 100vw, 60vw"
-                  className="object-cover"
-                />
+              <div className="flex min-h-[280px] items-center justify-center rounded-2xl bg-background p-6">
+                <ConnectLottie />
               </div>
-            </CardContent>
-          </Card>
+            </div>
+          </div>
         </div>
       </section>
 

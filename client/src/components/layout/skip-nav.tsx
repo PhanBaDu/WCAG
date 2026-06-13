@@ -34,6 +34,16 @@ export function SkipNav() {
   }, []);
 
   useEffect(() => {
+    const showSkipNav = () => {
+      hasShownRef.current = true;
+      setIsVisible(true);
+    };
+
+    window.addEventListener('accessjobs:show-skip-nav', showSkipNav);
+    return () => window.removeEventListener('accessjobs:show-skip-nav', showSkipNav);
+  }, []);
+
+  useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
       if (event.key !== 'Tab' || isVisible || hasShownRef.current || !keyboardModeRef.current) {
         return;
