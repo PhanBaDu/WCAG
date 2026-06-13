@@ -80,7 +80,7 @@ export function LottieAnimation({
   }
 
   return (
-    <div className={cn('mx-auto', className)} aria-hidden="true">
+    <div className={cn('mx-auto flex w-full justify-center', className)} aria-hidden="true">
       <Lottie
         animationData={animationData}
         loop

@@ -34,7 +34,9 @@ export function NotFoundView() {
       aria-labelledby="not-found-title"
       className="mx-auto flex min-h-screen w-full max-w-xl flex-col items-center justify-center px-4 py-16 text-center sm:px-6 lg:px-8"
     >
-      <NotFoundLottie />
+      <div className="flex w-full justify-center">
+        <NotFoundLottie />
+      </div>
       <h1 id="not-found-title" className="mt-6 text-3xl font-bold tracking-tight text-foreground">
         {t.title}
       </h1>

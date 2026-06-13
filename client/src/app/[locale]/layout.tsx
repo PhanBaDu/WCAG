@@ -57,20 +57,9 @@ export default async function LocaleLayout({
   return (
     <html lang={locale} className={`${inter.variable} ${lexend.variable}`} suppressHydrationWarning>
       <body className="font-sans antialiased">
-        <script
-          dangerouslySetInnerHTML={{
-            __html: `(function(){if('scrollRestoration' in history){history.scrollRestoration='manual';}window.scrollTo(0,0);})();`,
-          }}
-        />
         <NextIntlClientProvider messages={messages}>
           <Providers>
-            <ThemeProvider
-              attribute="class"
-              defaultTheme="light"
-              forcedTheme="light"
-              enableSystem={false}
-              disableTransitionOnChange
-            >
+            <ThemeProvider>
               <SkipNav />
               <ChromeModeProvider>
                 <AppShell>{children}</AppShell>
