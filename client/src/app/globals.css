@@ -176,4 +176,10 @@
     text-decoration-color: #003078;
     text-decoration-thickness: 2px;
   }
+
+  .gov-section-divider {
+    margin: 0;
+    border: 0;
+    border-top: 4px solid var(--primary);
+  }
 }

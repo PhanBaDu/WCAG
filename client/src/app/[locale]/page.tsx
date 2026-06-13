@@ -1,10 +1,9 @@
-import { ArrowRight, Building2, HeartHandshake, Search, ShieldCheck } from 'lucide-react';
+import { ArrowRight, Building2, Search } from 'lucide-react';
 import { AnimatedStatValue } from '@/components/home/animated-stat-value';
 import { ConnectLottie } from '@/components/home/connect-lottie';
 import { HeroLottie } from '@/components/home/hero-lottie';
 import { LottieAnimation } from '@/components/home/lottie-animation';
 import { buttonVariants } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
 
 const copy = {
@@ -65,19 +64,16 @@ const copy = {
     ],
     highlights: [
       {
-        icon: ShieldCheck,
         title: 'Dễ tiếp cận, dễ thao tác',
         description:
           'Giao diện rõ ràng, dùng tốt bằng bàn phím và trên nhiều thiết bị — để bạn tập trung vào việc quan trọng.',
       },
       {
-        icon: Building2,
         title: 'Cho người tìm việc và nhà tuyển dụng',
         description:
           'Người tìm việc khám phá cơ hội; nhà tuyển dụng đăng tin và quản lý ứng viên trên cùng một hệ thống.',
       },
       {
-        icon: HeartHandshake,
         title: 'Môi trường tôn trọng và hòa nhập',
         description:
           'Thông tin công việc minh bạch, quy trình đơn giản — hướng tới kết nối bền vững giữa ứng viên và doanh nghiệp.',
@@ -141,19 +137,16 @@ const copy = {
     ],
     highlights: [
       {
-        icon: ShieldCheck,
         title: 'Accessible and easy to use',
         description:
           'A clear interface that works well with the keyboard and across devices — so you can focus on what matters.',
       },
       {
-        icon: Building2,
         title: 'For job seekers and employers',
         description:
           'Job seekers explore opportunities; employers post roles and manage candidates in one place.',
       },
       {
-        icon: HeartHandshake,
         title: 'Respectful and inclusive',
         description:
           'Transparent job information and a simple process — built for lasting connections between candidates and employers.',
@@ -168,7 +161,7 @@ export default async function LandingPage({ params }: { params: Promise<{ locale
   const t = copy[locale];
   return (
     <div>
-      <section className="relative overflow-hidden pt-24 pb-20">
+      <section className="relative overflow-hidden pt-24 pb-0">
         <div className="absolute inset-x-0 top-24 -z-10 mx-auto h-[28rem] w-[28rem] rounded-full bg-primary/5 blur-3xl" />
         <div className="absolute right-0 top-0 -z-10 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl" />
 
@@ -246,10 +239,12 @@ export default async function LandingPage({ params }: { params: Promise<{ locale
               </div>
             </div>
           </div>
+
+          <hr className="gov-section-divider mt-12" aria-hidden="true" />
         </div>
       </section>
 
-      <section className="bg-muted/40 py-20">
+      <section className="bg-background pb-0 pt-8">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto mb-10 max-w-2xl text-center">
             <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t.sectionTitle}</h2>
@@ -258,65 +253,61 @@ export default async function LandingPage({ params }: { params: Promise<{ locale
             </p>
           </div>
 
-          <div className="grid gap-6 md:grid-cols-3">
-            {t.highlights.map((item) => {
-              const Icon = item.icon;
-
-              return (
-                <Card key={item.title} className="border-none shadow-lg transition-transform duration-200 hover:-translate-y-1">
-                  <CardHeader>
-                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
-                      <Icon className="h-6 w-6" aria-hidden="true" />
-                    </div>
-                    <CardTitle className="text-xl">{item.title}</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <CardDescription className="text-base leading-relaxed">{item.description}</CardDescription>
-                  </CardContent>
-                </Card>
-              );
-            })}
+          <div className="grid gap-4 md:grid-cols-3">
+            {t.highlights.map((item) => (
+              <div
+                key={item.title}
+                className="rounded-2xl bg-gradient-to-br from-primary/10 via-background to-sky-100/70 p-6 transition-transform duration-200 hover:-translate-y-1 dark:from-primary/20 dark:via-background dark:to-primary/10"
+              >
+                <h3 className="text-xl font-semibold">{item.title}</h3>
+                <p className="mt-2 text-base leading-relaxed text-muted-foreground">
+                  {item.description}
+                </p>
+              </div>
+            ))}
           </div>
+
+          <hr className="gov-section-divider mt-12" aria-hidden="true" />
         </div>
       </section>
 
-      <section className="py-20">
+      <section className="bg-background pb-0 pt-8">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-            <Card className="overflow-hidden border-none shadow-lg">
-              <CardHeader className="bg-primary/5">
-                <CardTitle className="text-2xl">{t.quickTitle}</CardTitle>
-                <CardDescription>{t.quickDesc}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-4 p-6">
+            <div className="rounded-2xl bg-background">
+              <div className="space-y-2">
+                <h2 className="text-2xl font-semibold">{t.quickTitle}</h2>
+                <p className="text-muted-foreground">{t.quickDesc}</p>
+              </div>
+              <div className="mt-6 space-y-4">
                 {t.quickSteps.map((step, index) => (
-                  <div key={step} className="flex gap-4 rounded-2xl border p-4">
+                  <div key={step} className="flex gap-4 rounded-2xl bg-muted p-4">
                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
                       {index + 1}
                     </div>
                     <p className="text-sm leading-relaxed text-muted-foreground">{step}</p>
                   </div>
                 ))}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
 
-            <Card className="border-none shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-2xl">{t.actionsTitle}</CardTitle>
-                <CardDescription>{t.actionsDesc}</CardDescription>
-              </CardHeader>
-              <CardContent className="space-y-3">
+            <div className="rounded-2xl bg-background">
+              <div className="space-y-2">
+                <h2 className="text-2xl font-semibold">{t.actionsTitle}</h2>
+                <p className="text-muted-foreground">{t.actionsDesc}</p>
+              </div>
+              <div className="mt-6 space-y-3">
                 {t.actionLinks.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
-                    className="group flex items-start gap-4 rounded-2xl border border-transparent bg-background p-4 transition-colors hover:border-border hover:bg-muted/30"
+                    className="group flex items-start gap-4 rounded-2xl p-4 outline-none transition-colors focus-visible:outline-none focus-visible:ring-0"
                   >
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-muted text-foreground transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-muted text-foreground transition-colors group-hover:bg-[#ffdd00] group-focus-visible:bg-[#ffdd00]">
                       <ArrowRight className="h-5 w-5" aria-hidden="true" />
                     </span>
                     <span className="min-w-0">
-                      <span className="gov-link block text-base font-semibold">
+                      <span className="gov-link inline text-base font-semibold transition-[background-color] duration-150 hover:bg-[#ffdd00] hover:text-[#1d70b8] hover:decoration-[#1d70b8] hover:[text-decoration-thickness:1px] group-hover:bg-[#ffdd00] group-hover:text-[#1d70b8] group-hover:decoration-[#1d70b8] group-hover:[text-decoration-thickness:1px] group-focus-visible:bg-[#ffdd00] group-focus-visible:text-[#1d70b8] group-focus-visible:decoration-[#1d70b8] group-focus-visible:[text-decoration-thickness:1px]">
                         {item.label}
                       </span>
                       <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
@@ -325,27 +316,31 @@ export default async function LandingPage({ params }: { params: Promise<{ locale
                     </span>
                   </Link>
                 ))}
-              </CardContent>
-            </Card>
+              </div>
+            </div>
           </div>
+
+          <hr className="gov-section-divider mt-12" aria-hidden="true" />
         </div>
       </section>
 
-      <section className="border-t bg-background py-20">
+      <section className="bg-background pb-20 pt-8">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="rounded-3xl bg-primary/5 p-8 text-center sm:p-12">
-            <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t.footerTitle}</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
-              {t.footerDesc}
-            </p>
-            <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-              <Link href="/register" className={buttonVariants({ size: 'lg', className: 'h-12 rounded-full px-8' })}>
-                {t.footerPrimary}
-                <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
-              </Link>
-              <Link href="/employer/dashboard" className={buttonVariants({ size: 'lg', variant: 'outline', className: 'h-12 rounded-full px-8' })}>
-                {t.footerSecondary}
-              </Link>
+          <div className="rounded-3xl bg-muted p-4">
+            <div className="rounded-2xl bg-background p-8 text-center sm:p-12">
+              <h2 className="text-3xl font-bold tracking-tight sm:text-4xl">{t.footerTitle}</h2>
+              <p className="mx-auto mt-4 max-w-2xl text-lg text-muted-foreground">
+                {t.footerDesc}
+              </p>
+              <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
+                <Link href="/register" className={buttonVariants({ size: 'lg', className: 'h-12 rounded-full px-8' })}>
+                  {t.footerPrimary}
+                  <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
+                </Link>
+                <Link href="/employer/dashboard" className={buttonVariants({ size: 'lg', variant: 'outline', className: 'h-12 rounded-full px-8' })}>
+                  {t.footerSecondary}
+                </Link>
+              </div>
             </div>
           </div>
         </div>
