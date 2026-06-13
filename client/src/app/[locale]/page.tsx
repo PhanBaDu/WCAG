@@ -3,6 +3,7 @@ import { AnimatedStatValue } from '@/components/home/animated-stat-value';
 import { ConnectLottie } from '@/components/home/connect-lottie';
 import { HeroLottie } from '@/components/home/hero-lottie';
 import { LottieAnimation } from '@/components/home/lottie-animation';
+import { QuickStepRow } from '@/components/home/quick-steps-stepper';
 import { buttonVariants } from '@/components/ui/button';
 import { Link } from '@/i18n/routing';
 
@@ -16,20 +17,29 @@ const copy = {
     secondaryCta: 'Đăng tin tuyển dụng',
     sectionTitle: 'Vì sao chọn AccessJobs VN?',
     sectionDesc:
-      'Nền tảng được thiết kế để mọi người — dù là người tìm việc hay nhà tuyển dụng — đều có thể bắt đầu nhanh và hoàn thành việc cần làm.',
-    quickTitle: 'Bắt đầu trong vài phút',
-    quickDesc: 'Ba bước đơn giản để bạn vào đúng hướng, không cần học quy trình phức tạp.',
+      'AccessJobs VN tập trung vào kết nối việc làm thực tế — giúp ứng viên tìm đúng cơ hội và doanh nghiệp tiếp cận đúng người.',
+    quickTitle: 'Từ tìm kiếm đến ứng tuyển',
+    quickDesc: 'Quy trình cơ bản trên nền tảng dành cho người tìm việc và nhà tuyển dụng.',
     quickSteps: [
-      'Duyệt việc làm và lọc theo kỹ năng, địa điểm hoặc hình thức làm việc.',
-      'Đọc mô tả công việc, quyền lợi và thông tin hỗ trợ tiếp cận tại nơi làm việc.',
-      'Tạo hồ sơ, ứng tuyển hoặc đăng tin tuyển dụng khi bạn đã sẵn sàng.',
+      {
+        title: 'Tìm kiếm việc làm',
+        description: 'Lọc theo ngành, kỹ năng, địa điểm và hình thức làm việc.',
+      },
+      {
+        title: 'Xem chi tiết tin tuyển dụng',
+        description: 'Đọc mô tả công việc, yêu cầu và thông tin doanh nghiệp.',
+      },
+      {
+        title: 'Ứng tuyển hoặc đăng tin',
+        description: 'Tạo tài khoản, nộp hồ sơ hoặc đăng tin tuyển dụng mới.',
+      },
     ],
-    actionsTitle: 'Hành động nhanh',
-    actionsDesc: 'Chọn việc cần làm ngay — mọi liên kết đưa bạn thẳng tới đúng khu vực.',
+    actionsTitle: 'Truy cập nhanh',
+    actionsDesc: 'Vào thẳng các khu vực thường dùng trên AccessJobs VN.',
     actionLinks: [
-      { href: '/jobs', label: 'Tìm việc phù hợp', description: 'Duyệt danh sách việc làm và lọc theo nhu cầu của bạn.' },
-      { href: '/register', label: 'Tạo hồ sơ ứng viên', description: 'Lưu thông tin một lần để ứng tuyển nhanh hơn.' },
-      { href: '/register?role=NTD', label: 'Đăng tin tuyển dụng', description: 'Đăng vị trí mới và tiếp cận ứng viên phù hợp.' },
+      { href: '/jobs', label: 'Danh sách việc làm', description: 'Khám phá tin tuyển dụng đang mở và lọc theo tiêu chí của bạn.' },
+      { href: '/register', label: 'Đăng ký ứng viên', description: 'Tạo hồ sơ một lần để ứng tuyển nhiều vị trí.' },
+      { href: '/register?role=NTD', label: 'Đăng tin tuyển dụng', description: 'Đăng vị trí mới và tiếp nhận hồ sơ ứng viên.' },
     ],
     footerTitle: 'Sẵn sàng tìm việc hoặc tuyển dụng?',
     footerDesc:
@@ -64,19 +74,19 @@ const copy = {
     ],
     highlights: [
       {
-        title: 'Dễ tiếp cận, dễ thao tác',
+        title: 'Tìm việc và tuyển dụng một chỗ',
         description:
-          'Giao diện rõ ràng, dùng tốt bằng bàn phím và trên nhiều thiết bị — để bạn tập trung vào việc quan trọng.',
+          'Một nền tảng cho người tìm việc lẫn doanh nghiệp — từ đăng tin, ứng tuyển đến quản lý hồ sơ.',
       },
       {
-        title: 'Cho người tìm việc và nhà tuyển dụng',
+        title: 'Thông tin công việc rõ ràng',
         description:
-          'Người tìm việc khám phá cơ hội; nhà tuyển dụng đăng tin và quản lý ứng viên trên cùng một hệ thống.',
+          'Mô tả vị trí, yêu cầu và quyền lợi được trình bày đầy đủ để bạn quyết định nhanh hơn.',
       },
       {
-        title: 'Môi trường tôn trọng và hòa nhập',
+        title: 'Hướng tới việc làm hòa nhập',
         description:
-          'Thông tin công việc minh bạch, quy trình đơn giản — hướng tới kết nối bền vững giữa ứng viên và doanh nghiệp.',
+          'Kết nối người khuyết tật với cơ hội việc làm phù hợp, minh bạch và đáng tin cậy.',
       },
     ],
   },
@@ -89,20 +99,29 @@ const copy = {
     secondaryCta: 'Post a job',
     sectionTitle: 'Why AccessJobs VN?',
     sectionDesc:
-      'The platform is built so everyone — job seekers and employers alike — can get started quickly and finish what they came to do.',
-    quickTitle: 'Get started in minutes',
-    quickDesc: 'Three simple steps to point you in the right direction, without a complicated process.',
+      'AccessJobs VN focuses on real hiring outcomes — helping candidates find the right roles and employers reach the right people.',
+    quickTitle: 'From search to application',
+    quickDesc: 'The core workflow on the platform for job seekers and employers.',
     quickSteps: [
-      'Browse jobs and filter by skills, location, or work arrangement.',
-      'Read the role description, benefits, and workplace accessibility information.',
-      'Create a profile, apply, or post a job when you are ready.',
+      {
+        title: 'Search job listings',
+        description: 'Filter by industry, skills, location, and work arrangement.',
+      },
+      {
+        title: 'Review role details',
+        description: 'Read the job description, requirements, and company information.',
+      },
+      {
+        title: 'Apply or post a job',
+        description: 'Create an account, submit an application, or publish a new opening.',
+      },
     ],
-    actionsTitle: 'Quick actions',
-    actionsDesc: 'Pick what you need to do — each link takes you straight to the right area.',
+    actionsTitle: 'Quick access',
+    actionsDesc: 'Jump straight to the areas you use most on AccessJobs VN.',
     actionLinks: [
-      { href: '/jobs', label: 'Find suitable jobs', description: 'Browse the job list and filter by what you need.' },
-      { href: '/register', label: 'Create a candidate profile', description: 'Save your details once and apply faster.' },
-      { href: '/register?role=NTD', label: 'Post a job', description: 'Publish a new role and reach suitable candidates.' },
+      { href: '/jobs', label: 'Job listings', description: 'Browse open roles and filter by your criteria.' },
+      { href: '/register', label: 'Candidate sign-up', description: 'Create a profile once and apply to multiple roles.' },
+      { href: '/register?role=NTD', label: 'Post a job', description: 'Publish a new opening and receive applications.' },
     ],
     footerTitle: 'Ready to find a job or hire someone?',
     footerDesc:
@@ -137,19 +156,19 @@ const copy = {
     ],
     highlights: [
       {
-        title: 'Accessible and easy to use',
+        title: 'Jobs and hiring in one place',
         description:
-          'A clear interface that works well with the keyboard and across devices — so you can focus on what matters.',
+          'One platform for job seekers and businesses — from posting roles and applying to managing profiles.',
       },
       {
-        title: 'For job seekers and employers',
+        title: 'Clear job information',
         description:
-          'Job seekers explore opportunities; employers post roles and manage candidates in one place.',
+          'Role descriptions, requirements, and benefits are presented in full so you can decide faster.',
       },
       {
-        title: 'Respectful and inclusive',
+        title: 'Built for inclusive employment',
         description:
-          'Transparent job information and a simple process — built for lasting connections between candidates and employers.',
+          'Connecting persons with disabilities to suitable, transparent, and trustworthy job opportunities.',
       },
     ],
   },
@@ -273,51 +292,51 @@ export default async function LandingPage({ params }: { params: Promise<{ locale
 
       <section className="bg-background pb-0 pt-8">
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-            <div className="rounded-2xl bg-background">
-              <div className="space-y-2">
-                <h2 className="text-2xl font-semibold">{t.quickTitle}</h2>
-                <p className="text-muted-foreground">{t.quickDesc}</p>
-              </div>
-              <div className="mt-6 space-y-4">
-                {t.quickSteps.map((step, index) => (
-                  <div key={step} className="flex gap-4 rounded-2xl bg-muted p-4">
-                    <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary text-sm font-semibold text-primary-foreground">
-                      {index + 1}
-                    </div>
-                    <p className="text-sm leading-relaxed text-muted-foreground">{step}</p>
-                  </div>
-                ))}
-              </div>
+          <div className="grid gap-8 md:grid-cols-2">
+            <div className="space-y-2">
+              <h2 className="text-2xl font-semibold">{t.quickTitle}</h2>
+              <p className="text-base text-muted-foreground">{t.quickDesc}</p>
             </div>
+            <div className="space-y-2">
+              <h2 className="text-2xl font-semibold">{t.actionsTitle}</h2>
+              <p className="text-base text-muted-foreground">{t.actionsDesc}</p>
+            </div>
+          </div>
 
-            <div className="rounded-2xl bg-background">
-              <div className="space-y-2">
-                <h2 className="text-2xl font-semibold">{t.actionsTitle}</h2>
-                <p className="text-muted-foreground">{t.actionsDesc}</p>
-              </div>
-              <div className="mt-6 space-y-3">
-                {t.actionLinks.map((item) => (
-                  <Link
-                    key={item.href}
-                    href={item.href}
-                    className="group flex items-start gap-4 rounded-2xl p-4 outline-none transition-colors focus-visible:outline-none focus-visible:ring-0"
-                  >
-                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-muted text-foreground transition-colors group-hover:bg-[#ffdd00] group-focus-visible:bg-[#ffdd00]">
-                      <ArrowRight className="h-5 w-5" aria-hidden="true" />
-                    </span>
-                    <span className="min-w-0">
-                      <span className="gov-link inline text-base font-semibold transition-[background-color] duration-150 hover:bg-[#ffdd00] hover:text-[#1d70b8] hover:decoration-[#1d70b8] hover:[text-decoration-thickness:1px] group-hover:bg-[#ffdd00] group-hover:text-[#1d70b8] group-hover:decoration-[#1d70b8] group-hover:[text-decoration-thickness:1px] group-focus-visible:bg-[#ffdd00] group-focus-visible:text-[#1d70b8] group-focus-visible:decoration-[#1d70b8] group-focus-visible:[text-decoration-thickness:1px]">
-                        {item.label}
+          <div className="mt-6" role="list">
+            {t.quickSteps.map((step, index) => {
+              const action = t.actionLinks[index];
+              const isLast = index === t.quickSteps.length - 1;
+
+              return (
+                <div
+                  key={step.title}
+                  role="listitem"
+                  className={`grid grid-cols-1 gap-6 pb-8 md:grid-cols-2 md:items-start md:gap-8 ${isLast ? 'pb-0' : ''}`}
+                >
+                  <QuickStepRow step={step} index={index} isLast={isLast} />
+
+                  {action ? (
+                    <Link
+                      href={action.href}
+                      className="group flex items-start gap-4 outline-none focus-visible:outline-none focus-visible:ring-0"
+                    >
+                      <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-muted text-foreground transition-colors group-hover:bg-[#ffdd00] group-focus-visible:bg-[#ffdd00]">
+                        <ArrowRight className="h-5 w-5" aria-hidden="true" />
                       </span>
-                      <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
-                        {item.description}
+                      <span className="min-w-0 pt-1">
+                        <span className="gov-link inline text-base font-semibold transition-[background-color] duration-150 hover:bg-[#ffdd00] hover:text-[#1d70b8] hover:decoration-[#1d70b8] hover:[text-decoration-thickness:1px] group-hover:bg-[#ffdd00] group-hover:text-[#1d70b8] group-hover:decoration-[#1d70b8] group-hover:[text-decoration-thickness:1px] group-focus-visible:bg-[#ffdd00] group-focus-visible:text-[#1d70b8] group-focus-visible:decoration-[#1d70b8] group-focus-visible:[text-decoration-thickness:1px]">
+                          {action.label}
+                        </span>
+                        <span className="mt-1 block text-base leading-relaxed text-muted-foreground">
+                          {action.description}
+                        </span>
                       </span>
-                    </span>
-                  </Link>
-                ))}
-              </div>
-            </div>
+                    </Link>
+                  ) : null}
+                </div>
+              );
+            })}
           </div>
 
           <hr className="gov-section-divider mt-12" aria-hidden="true" />
