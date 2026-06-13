@@ -1,11 +1,17 @@
+"use client";
+
 import { useLocale } from 'next-intl';
+import { usePathname } from '@/i18n/routing';
+import { useCompactHeader } from '@/hooks/use-compact-header';
 import { LangToggle } from '@/components/lang-toggle';
+import { HeaderNavMenu } from '@/components/layout/header-nav-menu';
 import { GovButtonLink } from '@/components/ui/gov-button';
 import { TextNavigationLink } from '@/components/ui/text-navigation-link';
 import { SiteBrand } from '@/components/layout/site-brand';
 
 export function Header() {
   const locale = useLocale();
+  const pathname = usePathname();
   const isEn = locale === 'en';
   const nav = isEn
     ? {
@@ -15,6 +21,8 @@ export function Header() {
         profile: 'Profile',
         login: 'Log in',
         register: 'Register',
+        menu: 'Open menu',
+        primaryNav: 'Primary navigation',
       }
     : {
         home: 'Trang chủ',
@@ -23,38 +31,82 @@ export function Header() {
         profile: 'Hồ sơ',
         login: 'Đăng nhập',
         register: 'Đăng ký',
+        menu: 'Mở menu',
+        primaryNav: 'Điều hướng chính',
       };
+
+  const { containerRef, measureRef, compact } = useCompactHeader([locale]);
+
+  const isCurrent = (href: string) => {
+    if (href === '/') return pathname === '/';
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
+  const navLinks = (
+    <>
+      <TextNavigationLink href="/" current={isCurrent('/')} className="shrink-0 whitespace-nowrap">
+        {nav.home}
+      </TextNavigationLink>
+      <TextNavigationLink href="/jobs" current={isCurrent('/jobs')} className="shrink-0 whitespace-nowrap">
+        {nav.jobs}
+      </TextNavigationLink>
+      <TextNavigationLink
+        href="/employer/jobs/create"
+        current={isCurrent('/employer/jobs/create')}
+        className="shrink-0 whitespace-nowrap"
+      >
+        {nav.employers}
+      </TextNavigationLink>
+      <TextNavigationLink href="/profile" current={isCurrent('/profile')} className="shrink-0 whitespace-nowrap">
+        {nav.profile}
+      </TextNavigationLink>
+    </>
+  );
+
+  const authActions = (
+    <>
+      <LangToggle />
+      <GovButtonLink href="/login" size="sm" className="shrink-0 px-4">
+        {nav.login}
+      </GovButtonLink>
+      <GovButtonLink href="/register" size="sm" variant="default" className="shrink-0 px-4">
+        {nav.register}
+      </GovButtonLink>
+    </>
+  );
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-      <div className="mx-auto grid h-16 w-full max-w-7xl grid-cols-[1fr_auto_1fr] items-center px-4 sm:px-6 lg:px-8">
-        <SiteBrand className="justify-self-start" />
+      <div
+        ref={containerRef}
+        className="relative mx-auto flex h-16 w-full max-w-7xl items-center justify-between gap-3 px-4 sm:px-6 lg:px-8"
+      >
+        <div
+          ref={measureRef}
+          aria-hidden="true"
+          className="pointer-events-none invisible absolute top-0 left-0 flex h-16 w-max max-w-none items-center gap-3 whitespace-nowrap"
+        >
+          <SiteBrand className="shrink-0" />
+          <nav className="flex shrink-0 items-center gap-4">{navLinks}</nav>
+          <div className="flex shrink-0 items-center gap-2">{authActions}</div>
+        </div>
 
-        <nav className="hidden md:flex items-center justify-self-center gap-6 text-sm font-medium" aria-label={isEn ? 'Primary navigation' : 'Điều hướng chính'}>
-          <TextNavigationLink href="/">
-            {nav.home}
-          </TextNavigationLink>
-          <TextNavigationLink href="/jobs">
-            {nav.jobs}
-          </TextNavigationLink>
-          <TextNavigationLink href="/employer/jobs/create">
-            {nav.employers}
-          </TextNavigationLink>
-          <TextNavigationLink href="/profile">
-            {nav.profile}
-          </TextNavigationLink>
-        </nav>
+        <SiteBrand className="shrink-0" />
 
-        <div className="flex items-center justify-self-end gap-3">
-          <LangToggle />
-          <div className="hidden sm:flex items-center gap-2">
-            <GovButtonLink href="/login" size="sm" className="px-4">
-              {nav.login}
-            </GovButtonLink>
-            <GovButtonLink href="/register" size="sm" variant="default" className="px-4">
-              {nav.register}
-            </GovButtonLink>
-          </div>
+        {!compact && (
+          <nav
+            className="flex shrink-0 items-center justify-center gap-4 text-sm font-medium xl:gap-6"
+            aria-label={nav.primaryNav}
+          >
+            {navLinks}
+          </nav>
+        )}
+
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
+          {!compact && authActions}
+          {compact && (
+            <HeaderNavMenu labels={nav} isCurrent={isCurrent} />
+          )}
         </div>
       </div>
     </header>

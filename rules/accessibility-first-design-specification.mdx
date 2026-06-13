@@ -227,6 +227,7 @@ This rule defines the product-wide UI and interaction specification for the job 
 - **Purpose:** Provide a reusable specification for navigation text links that must remain discoverable without hover and become more prominent on hover and focus.
 - **Structure Rules:** Text navigation links must display an underline in the default state and the underline must span the full clickable text.
 - **Interaction Rules:** Text navigation links must be black by default, remain black on hover while strengthening the underline, and use a yellow background on keyboard focus across the full interactive region.
+- **Current Page Rules:** When a text navigation link represents the current page, both the text and the underline must switch to a strong primary emphasis state so the active tab is immediately recognizable without needing hover or focus.
 - **Keyboard Navigation Rules:** `Tab` must move to the next link, `Shift + Tab` must move to the previous link, and `Enter` must activate the focused link.
 - **Focus Rules:** Focus treatment must be visible immediately, must not depend on hover, and must be stronger than hover through both the background treatment and the underline emphasis.
 - **Accessibility Rules:** Links must remain recognizable without relying on color alone and must not depend on hover for discoverability.
@@ -244,6 +245,17 @@ This rule defines the product-wide UI and interaction specification for the job 
 - **Screen Reader Expectations:** The brand link must expose a concise accessible name that identifies the product and destination.
 - **Content Writing Rules:** The visible brand text must remain short, stable, and consistent across pages.
 - **Anti-Patterns:** Do not show only a text underline without a visible background focus treatment; do not split the logo, title, and suffix into separate tab stops.
+
+### SPEC-ID: SHORTCUT-001 Global Shortcut Help
+- **Purpose:** Provide a site-wide keyboard help dialog for accessibility and discoverability.
+- **Structure Rules:** The shortcut help must be available globally from every page and must present only relevant, product-specific keyboard guidance.
+- **Interaction Rules:** `Shift + ?` must open the shortcut help dialog, and `Escape` must close it.
+- **Keyboard Navigation Rules:** The dialog must trap focus while open, return focus to the invoking context when closed, and remain operable by keyboard only.
+- **Focus Rules:** The open dialog must receive initial focus in a predictable place, and close actions must be reachable without a mouse.
+- **Accessibility Rules:** The shortcut list must be readable by screen readers, must use semantic grouping, and must not depend on images or color alone.
+- **Screen Reader Expectations:** The dialog title and each shortcut must be announced clearly, with key labels separated from their descriptions.
+- **Content Writing Rules:** Shortcuts must describe practical site actions; avoid dumping unrelated browser or operating-system shortcuts.
+- **Anti-Patterns:** Do not create hidden shortcuts without documentation; do not show a noisy demo panel in normal page content.
 
 ## 4. Buttons
 

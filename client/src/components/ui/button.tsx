@@ -4,7 +4,7 @@ import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
 
 const govButtonBase =
-  "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-none border border-[#0b0c0c] border-b-[4px] border-b-[#0b0c0c] bg-white px-4 py-2.5 text-sm font-normal text-[#0b0c0c] transition-[transform,background-color] duration-150 outline-none select-none hover:bg-[#ececec] active:translate-y-[1px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
+  "inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-none border border-[#0b0c0c] border-b-[4px] border-b-[#0b0c0c] bg-white px-4 py-2.5 text-sm font-normal text-[#0b0c0c] transition-[transform,background-color] duration-150 outline-none select-none hover:bg-[#ececec] focus-visible:bg-[#ffdd00] focus-visible:text-[#0b0c0c] focus-visible:outline-none focus-visible:ring-0 active:translate-y-[1px] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4"
 
 const buttonVariants = cva(
   `${govButtonBase} focus-visible:outline-none aria-invalid:border-destructive aria-invalid:ring-3 aria-invalid:ring-destructive/20 dark:aria-invalid:border-destructive/50 dark:aria-invalid:ring-destructive/40`,

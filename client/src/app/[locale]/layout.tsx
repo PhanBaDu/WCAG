@@ -8,7 +8,7 @@ import { Toaster } from '@/components/ui/sonner';
 import { Header } from '@/components/layout/header';
 import { Footer } from '@/components/layout/footer';
 import { SkipNav } from '@/components/layout/skip-nav';
-import { FocusLoop } from '@/components/layout/focus-loop';
+import { KeyboardShortcutsDialog } from '@/components/layout/keyboard-shortcuts-dialog';
 import '../globals.css';
 import { Inter, Lexend } from 'next/font/google';
 
@@ -73,7 +73,7 @@ export default async function LocaleLayout({
                 </main>
                 <Footer />
               </div>
-              <FocusLoop />
+              <KeyboardShortcutsDialog />
               <Toaster />
             </ThemeProvider>
           </Providers>

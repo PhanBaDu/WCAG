@@ -1,5 +1,6 @@
 import { ArrowRight, Building2, HeartHandshake, Search, ShieldCheck } from 'lucide-react';
 import Image from 'next/image';
+import { HeroLottie } from '@/components/home/hero-lottie';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
@@ -9,30 +10,36 @@ const copy = {
     eyebrow: 'Cổng việc làm cho người khuyết tật',
     title: 'Kết nối việc làm dễ tiếp cận cho người khuyết tật',
     description:
-      'Trang chủ tĩnh giới thiệu cổng việc làm, nơi người tìm việc và nhà tuyển dụng có thể bắt đầu các luồng chính một cách rõ ràng, gọn gàng và dễ dùng.',
+      'AccessJobs VN giúp người tìm việc khám phá cơ hội phù hợp với khả năng và nhu cầu hỗ trợ, đồng thời hỗ trợ nhà tuyển dụng tiếp cận ứng viên tài năng trong môi trường làm việc hòa nhập.',
     primaryCta: 'Tìm việc ngay',
     secondaryCta: 'Đăng tin tuyển dụng',
-    sectionTitle: 'Dành cho từng nhóm người dùng',
+    sectionTitle: 'Vì sao chọn AccessJobs VN?',
     sectionDesc:
-      'Bố cục này giúp nhìn nhanh vai trò của từng khu vực trong hệ thống trước khi gắn dữ liệu thật.',
-    quickTitle: 'Quy trình sử dụng nhanh',
-    quickDesc: 'Luồng giao diện tĩnh được chia thành ba bước đơn giản.',
+      'Nền tảng được thiết kế để mọi người — dù là người tìm việc hay nhà tuyển dụng — đều có thể bắt đầu nhanh và hoàn thành việc cần làm.',
+    quickTitle: 'Bắt đầu trong vài phút',
+    quickDesc: 'Ba bước đơn giản để bạn vào đúng hướng, không cần học quy trình phức tạp.',
     quickSteps: [
-      'Người tìm việc duyệt danh sách việc làm và lọc theo nhu cầu.',
-      'Mở chi tiết công việc để đọc mô tả, quyền lợi và hỗ trợ tiếp cận.',
-      'Chuyển sang đăng ký, đăng nhập hoặc khu vực nhà tuyển dụng nếu cần.',
+      'Duyệt việc làm và lọc theo kỹ năng, địa điểm hoặc hình thức làm việc.',
+      'Đọc mô tả công việc, quyền lợi và thông tin hỗ trợ tiếp cận tại nơi làm việc.',
+      'Tạo hồ sơ, ứng tuyển hoặc đăng tin tuyển dụng khi bạn đã sẵn sàng.',
     ],
     actionsTitle: 'Hành động nhanh',
-    actionsDesc: 'Ba liên kết tĩnh giúp người dùng vào đúng luồng ngay lập tức.',
+    actionsDesc: 'Chọn việc cần làm ngay — mọi liên kết đưa bạn thẳng tới đúng khu vực.',
     actionLinks: [
-      { href: '/jobs', label: 'Tìm việc phù hợp', description: 'Duyệt danh sách việc làm và lọc theo nhu cầu.' },
-      { href: '/register', label: 'Tạo hồ sơ ứng viên', description: 'Bắt đầu hồ sơ để ứng tuyển nhanh hơn.' },
-      { href: '/register?role=NTD', label: 'Đăng tin tuyển dụng', description: 'Tạo tin tuyển dụng thân thiện với NKT.' },
+      { href: '/jobs', label: 'Tìm việc phù hợp', description: 'Duyệt danh sách việc làm và lọc theo nhu cầu của bạn.' },
+      { href: '/register', label: 'Tạo hồ sơ ứng viên', description: 'Lưu thông tin một lần để ứng tuyển nhanh hơn.' },
+      { href: '/register?role=NTD', label: 'Đăng tin tuyển dụng', description: 'Đăng vị trí mới và tiếp cận ứng viên phù hợp.' },
     ],
-    footerTitle: 'Sẵn sàng xem giao diện tiếp theo?',
-    footerDesc: 'Các trang còn lại trong app cũng được làm static để bạn có thể chốt bố cục trước khi gắn dữ liệu thật.',
+    footerTitle: 'Sẵn sàng tìm việc hoặc tuyển dụng?',
+    footerDesc:
+      'Tạo tài khoản miễn phí để lưu hồ sơ, theo dõi tin tuyển dụng hoặc đăng vị trí mới cho doanh nghiệp của bạn.',
     footerPrimary: 'Bắt đầu ngay',
-    footerSecondary: 'Xem dashboard NTD',
+    footerSecondary: 'Xem khu vực nhà tuyển dụng',
+    illustrationLabel: 'Cơ hội việc làm hòa nhập',
+    illustrationTitle: 'Kết nối con người với công việc phù hợp',
+    illustrationDesc:
+      'Chúng tôi tin mỗi người đều xứng đáng có cơ hội làm việc trong môi trường tôn trọng khả năng và nhu cầu cá nhân.',
+    illustrationAlt: 'Minh hoạ đội ngũ nhân sự và hỗ trợ tại nơi làm việc',
     stats: [
       { value: '1,200+', label: 'Việc làm thân thiện' },
       { value: '350+', label: 'Nhà tuyển dụng' },
@@ -41,18 +48,21 @@ const copy = {
     highlights: [
       {
         icon: ShieldCheck,
-        title: 'An toàn và dễ tiếp cận',
-        description: 'Thiết kế theo WCAG 2.2 AA với focus rõ ràng, tương phản tốt và thao tác bàn phím đầy đủ.',
+        title: 'Dễ tiếp cận, dễ thao tác',
+        description:
+          'Giao diện rõ ràng, dùng tốt bằng bàn phím và trên nhiều thiết bị — để bạn tập trung vào việc quan trọng.',
       },
       {
         icon: Building2,
-        title: 'Dành cho NKT và NTD',
-        description: 'Giao diện mẫu cho người tìm việc, nhà tuyển dụng và khu vực quản trị trong cùng hệ thống.',
+        title: 'Cho người tìm việc và nhà tuyển dụng',
+        description:
+          'Người tìm việc khám phá cơ hội; nhà tuyển dụng đăng tin và quản lý ứng viên trên cùng một hệ thống.',
       },
       {
         icon: HeartHandshake,
-        title: 'Trải nghiệm thân thiện',
-        description: 'Bố cục tĩnh, dễ quét nhanh, ưu tiên nội dung rõ ràng và mạch lạc trước khi gắn dữ liệu động.',
+        title: 'Môi trường tôn trọng và hòa nhập',
+        description:
+          'Thông tin công việc minh bạch, quy trình đơn giản — hướng tới kết nối bền vững giữa ứng viên và doanh nghiệp.',
       },
     ],
   },
@@ -60,30 +70,36 @@ const copy = {
     eyebrow: 'Job portal for persons with disabilities',
     title: 'Connecting accessible jobs for persons with disabilities',
     description:
-      'A static home page introducing the job portal, where job seekers and employers can start the core flows quickly and clearly.',
+      'AccessJobs VN helps job seekers find roles that match their skills and support needs, while helping employers reach talented candidates in an inclusive workplace.',
     primaryCta: 'Find jobs now',
     secondaryCta: 'Post a job',
-    sectionTitle: 'Built for each user group',
+    sectionTitle: 'Why AccessJobs VN?',
     sectionDesc:
-      'This layout helps show what each area of the system is for before real data is connected.',
-    quickTitle: 'Quick user flow',
-    quickDesc: 'The static UI is split into three simple steps.',
+      'The platform is built so everyone — job seekers and employers alike — can get started quickly and finish what they came to do.',
+    quickTitle: 'Get started in minutes',
+    quickDesc: 'Three simple steps to point you in the right direction, without a complicated process.',
     quickSteps: [
-      'Job seekers browse the job list and narrow it down with filters.',
-      'Open a job detail page to read the description, benefits, and accessibility support.',
-      'Move on to register, log in, or the employer area when needed.',
+      'Browse jobs and filter by skills, location, or work arrangement.',
+      'Read the role description, benefits, and workplace accessibility information.',
+      'Create a profile, apply, or post a job when you are ready.',
     ],
     actionsTitle: 'Quick actions',
-    actionsDesc: 'Three static links that take people straight into the core flows.',
+    actionsDesc: 'Pick what you need to do — each link takes you straight to the right area.',
     actionLinks: [
-      { href: '/jobs', label: 'Find suitable jobs', description: 'Browse and filter the job list by need.' },
-      { href: '/register', label: 'Create a candidate profile', description: 'Start a profile to apply faster.' },
-      { href: '/register?role=NTD', label: 'Post a job', description: 'Create an inclusive job post for candidates.' },
+      { href: '/jobs', label: 'Find suitable jobs', description: 'Browse the job list and filter by what you need.' },
+      { href: '/register', label: 'Create a candidate profile', description: 'Save your details once and apply faster.' },
+      { href: '/register?role=NTD', label: 'Post a job', description: 'Publish a new role and reach suitable candidates.' },
     ],
-    footerTitle: 'Ready to see the next screen?',
-    footerDesc: 'The remaining app screens are static too, so you can lock the layout before wiring real data.',
+    footerTitle: 'Ready to find a job or hire someone?',
+    footerDesc:
+      'Create a free account to save your profile, track job posts, or publish new openings for your organisation.',
     footerPrimary: 'Get started',
-    footerSecondary: 'View employer dashboard',
+    footerSecondary: 'View employer area',
+    illustrationLabel: 'Inclusive job opportunities',
+    illustrationTitle: 'Connecting people with the right work',
+    illustrationDesc:
+      'We believe everyone deserves a fair chance to work in an environment that respects their abilities and individual needs.',
+    illustrationAlt: 'Illustration of human resources and team support at work',
     stats: [
       { value: '1,200+', label: 'Accessible jobs' },
       { value: '350+', label: 'Employers' },
@@ -92,18 +108,21 @@ const copy = {
     highlights: [
       {
         icon: ShieldCheck,
-        title: 'Safe and accessible',
-        description: 'WCAG 2.2 AA-friendly design with visible focus, strong contrast, and full keyboard support.',
+        title: 'Accessible and easy to use',
+        description:
+          'A clear interface that works well with the keyboard and across devices — so you can focus on what matters.',
       },
       {
         icon: Building2,
         title: 'For job seekers and employers',
-        description: 'A sample interface for job seekers, employers, and the admin area in one system.',
+        description:
+          'Job seekers explore opportunities; employers post roles and manage candidates in one place.',
       },
       {
         icon: HeartHandshake,
-        title: 'Friendly experience',
-        description: 'A static layout that is easy to scan, with clear and concise content before dynamic data is added.',
+        title: 'Respectful and inclusive',
+        description:
+          'Transparent job information and a simple process — built for lasting connections between candidates and employers.',
       },
     ],
   },
@@ -121,9 +140,6 @@ export default async function LandingPage({ params }: { params: Promise<{ locale
 
         <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl text-center">
-            <p className="mb-4 text-sm font-medium uppercase tracking-[0.2em] text-primary">
-              {t.eyebrow}
-            </p>
             <h1 className="text-4xl font-bold tracking-tight sm:text-5xl md:text-6xl">
               {t.title}
             </h1>
@@ -144,9 +160,11 @@ export default async function LandingPage({ params }: { params: Promise<{ locale
                 <Building2 className="ml-2 h-4 w-4" aria-hidden="true" />
               </Link>
             </div>
+
+            <HeroLottie />
           </div>
 
-          <div className="mt-14 grid gap-4 rounded-3xl border bg-card/70 p-4 shadow-sm backdrop-blur sm:grid-cols-3 sm:p-6">
+          <div className="mt-14 grid gap-4 rounded-3xl bg-muted p-4 sm:grid-cols-3 sm:p-6">
             {t.stats.map((stat) => (
               <div key={stat.label} className="rounded-2xl bg-background p-6 text-center">
                 <div className="text-3xl font-bold tracking-tight">{stat.value}</div>
@@ -160,28 +178,21 @@ export default async function LandingPage({ params }: { params: Promise<{ locale
               <div className="flex flex-col justify-between bg-primary/5 p-6">
                 <div className="space-y-3">
                   <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">
-                    {locale === 'en' ? 'Photo preview' : 'Ảnh minh hoạ'}
+                    {t.illustrationLabel}
                   </p>
                   <h2 className="text-2xl font-bold tracking-tight">
-                    {locale === 'en' ? 'A softer, more human feel' : 'Giao diện mềm hơn, có cảm xúc hơn'}
+                    {t.illustrationTitle}
                   </h2>
                   <p className="text-sm leading-relaxed text-muted-foreground">
-                    {locale === 'en'
-                      ? 'A real illustration helps the page feel less flat while keeping the visual hierarchy simple and readable.'
-                      : 'Một ảnh thật/ minh hoạ giúp trang bớt phẳng mà vẫn giữ hierarchy rõ ràng và dễ đọc.'}
+                    {t.illustrationDesc}
                   </p>
                 </div>
-                <p className="mt-6 text-xs leading-relaxed text-muted-foreground">
-                  {locale === 'en'
-                    ? 'Source: Wikimedia Commons · CC0 (no attribution required, but kept as a nice-to-have visual).'
-                    : 'Nguồn: Wikimedia Commons · CC0 (không bắt buộc ghi công, nhưng vẫn giữ như một chi tiết đẹp).'}
-                </p>
               </div>
 
               <div className="relative min-h-[280px] overflow-hidden bg-slate-50">
                 <Image
                   src="/human-resources.png"
-                  alt={locale === 'en' ? 'Human resources and team support illustration' : 'Minh hoạ nhân sự và hỗ trợ đội ngũ'}
+                  alt={t.illustrationAlt}
                   fill
                   priority
                   sizes="(max-width: 768px) 100vw, 60vw"

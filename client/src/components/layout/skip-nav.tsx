@@ -9,10 +9,33 @@ export function SkipNav() {
   const linkRef = useRef<HTMLAnchorElement>(null);
   const rootRef = useRef<HTMLDivElement>(null);
   const hasShownRef = useRef(false);
+  const keyboardModeRef = useRef(true);
+
+  useEffect(() => {
+    const handlePointerDown = () => {
+      keyboardModeRef.current = false;
+    };
+
+    const handleKeyDownMode = (event: KeyboardEvent) => {
+      if (event.key === 'Tab') {
+        keyboardModeRef.current = true;
+      }
+    };
+
+    window.addEventListener('pointerdown', handlePointerDown, true);
+    window.addEventListener('mousedown', handlePointerDown, true);
+    window.addEventListener('keydown', handleKeyDownMode, true);
+
+    return () => {
+      window.removeEventListener('pointerdown', handlePointerDown, true);
+      window.removeEventListener('mousedown', handlePointerDown, true);
+      window.removeEventListener('keydown', handleKeyDownMode, true);
+    };
+  }, []);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (event.key !== 'Tab' || isVisible || hasShownRef.current) {
+      if (event.key !== 'Tab' || isVisible || hasShownRef.current || !keyboardModeRef.current) {
         return;
       }
 
