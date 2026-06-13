@@ -1,54 +1,80 @@
 import { Metadata } from 'next';
-import { ArrowLeft, BadgeCheck, Building2, EyeOff, ShieldCheck } from 'lucide-react';
+import { Suspense } from 'react';
+import { ArrowLeft } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
-import { PageBreadcrumb } from '@/components/layout/page-breadcrumb';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
+import { AuthAsideLottie } from '@/components/auth/auth-aside-lottie';
+import { LoginForm } from '@/components/auth/login-form';
 import { SiteBrand } from '@/components/layout/site-brand';
 
 export const metadata: Metadata = {
-  title: 'Đăng nhập | Cổng Việc Làm Người Khuyết Tật',
-  description: 'Giao diện tĩnh màn hình đăng nhập theo rules WCAG 2.2 AA.',
+  title: 'Đăng nhập | AccessJobs VN',
+  description: 'Đăng nhập AccessJobs VN để quản lý hồ sơ, theo dõi ứng tuyển và tin tuyển dụng.',
 };
 
 const copy = {
   vi: {
     title: 'Đăng nhập',
-    desc: 'Chỉ hiển thị giao diện form, chưa xử lý submit.',
+    desc: 'Truy cập hồ sơ, theo dõi đơn ứng tuyển và quản lý tin tuyển dụng của bạn.',
     back: 'Quay lại trang chủ',
     email: 'Email',
     password: 'Mật khẩu',
     forgot: 'Quên mật khẩu?',
     login: 'Đăng nhập',
+    loggingIn: 'Đang đăng nhập…',
     registerNote: 'Chưa có tài khoản?',
     register: 'Đăng ký ngay',
     browse: 'Xem việc làm trước',
-    hintsTitle: 'Gợi ý tiếp cận',
-    hint1: 'Mỗi field có label rõ ràng.',
-    hint2: 'Password hiển thị bằng kiểu input chuẩn.',
-    asideTitle: 'Khu vực đăng nhập',
-    asideHeading: 'Giao diện đăng nhập đơn giản, rõ ràng và dễ tiếp cận',
-    asideDesc: 'Đây là bản static để chốt bố cục form, nhắc lại quy tắc nhập liệu và hiển thị thông báo hỗ trợ trước khi nối dữ liệu thật.',
-    quote: 'Thiết kế tối giản giúp người dùng đọc nhanh, tab nhanh và hiểu ngay luồng xác thực.',
+    benefitsTitle: 'Sau khi đăng nhập, bạn có thể',
+    benefit1: 'Cập nhật hồ sơ và ứng tuyển nhanh hơn.',
+    benefit2: 'Theo dõi tin đã nộp hoặc tin tuyển dụng đã đăng.',
+    asideTitle: 'AccessJobs VN',
+    asideHeading: 'Chào mừng trở lại',
+    asideDesc:
+      'Đăng nhập để xem việc làm, cập nhật hồ sơ và tiếp tục ứng tuyển — dù bạn đang tìm việc hay tuyển dụng.',
+    emailRequired: 'Vui lòng nhập email',
+    emailInvalid: 'Email không hợp lệ',
+    passwordRequired: 'Vui lòng nhập mật khẩu',
+    passwordMin: 'Mật khẩu tối thiểu 8 ký tự',
+    formAriaLabel: 'Form đăng nhập AccessJobs VN',
+    required: '(bắt buộc)',
+    errorSummaryTitle: 'Không thể gửi form',
+    errorSummary: 'Vui lòng sửa các lỗi sau trước khi đăng nhập.',
+    showPassword: 'Hiện mật khẩu',
+    hidePassword: 'Ẩn mật khẩu',
+    fieldComplete: 'Đã hoàn thành',
   },
   en: {
     title: 'Log in',
-    desc: 'Static form layout only, no submit logic yet.',
+    desc: 'Access your profile, track applications, and manage your job posts.',
     back: 'Back to home',
     email: 'Email',
     password: 'Password',
     forgot: 'Forgot password?',
     login: 'Log in',
+    loggingIn: 'Signing in…',
     registerNote: "Don't have an account?",
     register: 'Create one now',
     browse: 'Browse jobs first',
-    hintsTitle: 'Accessibility notes',
-    hint1: 'Each field has a clear label.',
-    hint2: 'Password uses a standard input type.',
-    asideTitle: 'Login area',
-    asideHeading: 'A simple, clear, and accessible login screen',
-    asideDesc: 'This static version helps lock the form layout, input order, and support messaging before wiring real data.',
-    quote: 'A minimal design helps people read quickly, tab quickly, and understand the authentication flow immediately.',
+    benefitsTitle: 'Once you are signed in, you can',
+    benefit1: 'Update your profile and apply faster.',
+    benefit2: 'Track submitted applications or published job posts.',
+    asideTitle: 'AccessJobs VN',
+    asideHeading: 'Welcome back',
+    asideDesc:
+      'Sign in to browse jobs, update your profile, and continue applying — whether you are hiring or looking for work.',
+    emailRequired: 'Please enter your email',
+    emailInvalid: 'Enter a valid email address',
+    passwordRequired: 'Please enter your password',
+    passwordMin: 'Password must be at least 8 characters',
+    formAriaLabel: 'AccessJobs VN sign-in form',
+    required: '(required)',
+    errorSummaryTitle: 'Unable to submit the form',
+    errorSummary: 'Please fix the following errors before signing in.',
+    showPassword: 'Show password',
+    hidePassword: 'Hide password',
+    fieldComplete: 'Completed',
   },
 } as const;
 
@@ -56,117 +82,45 @@ export default async function LoginPage({ params }: { params: Promise<{ locale: 
   const { locale: routeLocale } = await params;
   const locale = routeLocale === 'en' ? 'en' : 'vi';
   const t = copy[locale];
-  const crumbs = locale === 'en'
-    ? [
-        { label: 'Home', href: '/' },
-        { label: 'Account' },
-        { label: 'Log in' },
-      ]
-    : [
-        { label: 'Trang chủ', href: '/' },
-        { label: 'Tài khoản' },
-        { label: 'Đăng nhập' },
-      ];
   return (
-    <main id="main-content" className="grid min-h-screen lg:grid-cols-2">
-      <div className="lg:col-span-2 mx-auto w-full max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
-        <PageBreadcrumb items={crumbs} />
-      </div>
-      <div className="hidden bg-primary p-10 text-primary-foreground lg:flex lg:flex-col lg:justify-between">
+    <main id="main-content" tabIndex={-1} className="grid min-h-screen outline-none lg:grid-cols-2">
+      <div className="hidden bg-black p-10 text-white lg:flex lg:flex-col">
         <SiteBrand tone="inverse" className="border-white/20" />
-        <div className="max-w-md space-y-6">
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary-foreground/80">
-            {t.asideTitle}
-          </p>
-          <h1 className="text-4xl font-bold tracking-tight">
-            {t.asideHeading}
-          </h1>
-          <p className="text-base leading-relaxed text-primary-foreground/90">
-            {t.asideDesc}
-          </p>
-        </div>
-        <div className="rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur">
-          <p className="text-sm leading-relaxed">
-            “{t.quote}”
-          </p>
+        <div className="mt-16 max-w-xl space-y-4">
+          <p className="text-sm font-medium text-white/70">{t.asideTitle}</p>
+          <h1 className="text-4xl font-bold tracking-tight">{t.asideHeading}</h1>
+          <p className="text-base leading-relaxed text-white/85">{t.asideDesc}</p>
+          <div className="pt-4">
+            <AuthAsideLottie />
+          </div>
         </div>
       </div>
 
       <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-10">
         <div className="w-full max-w-md">
-          <Link href="/" className="gov-link mb-6 inline-flex items-center gap-2 text-sm font-medium">
+          <Link href="/" className="gov-link mb-6 inline-flex w-fit items-center gap-2 text-sm font-medium">
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             {t.back}
           </Link>
 
           <Card className="border-none shadow-xl sm:border">
             <CardHeader className="space-y-3 text-center">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <ShieldCheck className="h-7 w-7" aria-hidden="true" />
-              </div>
               <CardTitle className="text-2xl font-bold tracking-tight">{t.title}</CardTitle>
               <CardDescription>{t.desc}</CardDescription>
             </CardHeader>
             <CardContent>
-              <form className="space-y-4" noValidate>
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium">
-                    {t.email}
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    autoComplete="email"
-                    defaultValue="user@example.com"
-                    className="h-12 w-full rounded-lg border border-input bg-background px-4 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between gap-4">
-                    <label htmlFor="password" className="text-sm font-medium">
-                      {t.password}
-                    </label>
-                    <Link href="/forgot-password" className="gov-link text-sm font-medium">
-                      {t.forgot}
-                    </Link>
-                  </div>
-                  <input
-                    id="password"
-                    type="password"
-                    autoComplete="current-password"
-                    defaultValue="••••••••"
-                    className="h-12 w-full rounded-lg border border-input bg-background px-4 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                  />
-                </div>
-
-                <div className="rounded-2xl border border-dashed bg-muted/40 p-4 text-sm text-muted-foreground">
-                  <p className="font-medium text-foreground">{t.hintsTitle}</p>
-                  <ul className="mt-2 space-y-2">
-                    <li className="flex gap-2">
-                      <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                      {t.hint1}
-                    </li>
-                    <li className="flex gap-2">
-                      <EyeOff className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                      {t.hint2}
-                    </li>
-                  </ul>
-                </div>
-
-                <button type="button" className="h-11 w-full rounded-lg bg-primary text-sm font-medium text-primary-foreground">
-                  {t.login}
-                </button>
-              </form>
+              <Suspense fallback={<p className="text-sm text-muted-foreground">{t.loggingIn}</p>}>
+                <LoginForm labels={t} />
+              </Suspense>
             </CardContent>
-            <CardFooter className="flex flex-col gap-3 border-t p-6">
+            <CardFooter className="mx-6 mb-6 flex flex-col gap-3 rounded-xl border-t-0 bg-muted/50 p-6">
               <p className="text-center text-sm text-muted-foreground">
                 {t.registerNote}{' '}
                 <Link href="/register" className="gov-link font-semibold">
                   {t.register}
                 </Link>
               </p>
-              <Link href="/jobs" className={buttonVariants({ variant: 'outline', className: 'h-11 w-full rounded-lg' })}>
+              <Link href="/jobs" className={buttonVariants({ variant: 'outline', className: 'h-11 w-full' })}>
                 {t.browse}
               </Link>
             </CardFooter>

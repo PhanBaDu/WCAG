@@ -1,62 +1,93 @@
 import { Metadata } from 'next';
-import { ArrowLeft, BadgeCheck, Building2, HeartHandshake, ShieldCheck } from 'lucide-react';
+import { ArrowLeft } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
-import { PageBreadcrumb } from '@/components/layout/page-breadcrumb';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
+import { AuthAsideLottie } from '@/components/auth/auth-aside-lottie';
+import { RegisterForm } from '@/components/auth/register-form';
 import { SiteBrand } from '@/components/layout/site-brand';
 
 export const metadata: Metadata = {
-  title: 'Đăng ký | Cổng Việc Làm Người Khuyết Tật',
-  description: 'Giao diện tĩnh trang đăng ký với lựa chọn vai trò NKT/NTD.',
+  title: 'Đăng ký | AccessJobs VN',
+  description: 'Tạo tài khoản AccessJobs VN để tìm việc hoặc đăng tin tuyển dụng.',
 };
 
 const copy = {
   vi: {
     title: 'Tạo tài khoản',
-    desc: 'Form static để chốt UI trước khi thêm validation và API.',
+    desc: 'Tham gia miễn phí để tìm việc phù hợp hoặc tiếp cận ứng viên trên AccessJobs VN.',
     back: 'Quay lại trang chủ',
-    asideTitle: 'Tạo tài khoản',
-    asideHeading: 'Một form đăng ký tĩnh để kiểm tra bố cục và thứ tự nhập liệu',
-    asideDesc: 'Chọn vai trò, nhập thông tin cơ bản và xem cách các vùng nội dung được sắp xếp theo quy tắc tiếp cận.',
-    quote: 'Người tìm việc và nhà tuyển dụng đều cần một biểu mẫu rõ ràng, có nhãn đầy đủ và không phụ thuộc placeholder.',
-    role: 'Vai trò',
-    roleNKT: 'Người khuyết tật tìm việc',
+    asideTitle: 'AccessJobs VN',
+    asideHeading: 'Gia nhập AccessJobs VN',
+    asideDesc: 'Miễn phí cho người tìm việc và doanh nghiệp. Chỉ mất vài phút để bắt đầu.',
+    role: 'Bạn đăng ký với tư cách',
+    roleNKT: 'Người tìm việc',
     roleNTD: 'Nhà tuyển dụng',
     name: 'Họ và tên / Tên công ty',
     email: 'Email',
     password: 'Mật khẩu',
     confirm: 'Xác nhận mật khẩu',
-    noteTitle: 'Lưu ý về tiếp cận',
-    note1: 'Tất cả input đều có label.',
-    note2: 'Mật khẩu dùng autocomplete chuẩn.',
+    benefitsTitle: 'Tài khoản giúp bạn',
+    benefit1: 'Ứng tuyển nhiều vị trí mà không cần nhập lại thông tin.',
+    benefit2: 'Đăng tin và quản lý ứng viên nếu bạn tuyển dụng.',
     submit: 'Tạo tài khoản',
+    submitting: 'Đang tạo tài khoản…',
     loginNote: 'Đã có tài khoản?',
     login: 'Đăng nhập',
-    browse: 'Duyệt việc làm trước',
+    browse: 'Xem việc làm trước',
+    emailRequired: 'Vui lòng nhập email',
+    emailInvalid: 'Email không hợp lệ',
+    passwordRequired: 'Vui lòng nhập mật khẩu',
+    passwordWeak:
+      'Mật khẩu tối thiểu 8 ký tự, gồm chữ hoa, chữ thường, số và ký tự đặc biệt (@$!%*?&).',
+    confirmRequired: 'Vui lòng xác nhận mật khẩu',
+    confirmMismatch: 'Mật khẩu xác nhận không khớp',
+    nameRequired: 'Vui lòng nhập họ và tên hoặc tên công ty',
+    formAriaLabel: 'Form đăng ký AccessJobs VN',
+    required: '(bắt buộc)',
+    errorSummaryTitle: 'Không thể gửi form',
+    errorSummary: 'Vui lòng sửa các lỗi sau trước khi tạo tài khoản.',
+    showPassword: 'Hiện mật khẩu',
+    hidePassword: 'Ẩn mật khẩu',
+    fieldComplete: 'Đã hoàn thành',
   },
   en: {
     title: 'Create an account',
-    desc: 'Static form to lock the UI before validation and API work.',
+    desc: 'Join for free to find suitable roles or reach candidates on AccessJobs VN.',
     back: 'Back to home',
-    asideTitle: 'Sign up',
-    asideHeading: 'A static registration form to verify layout and input order',
-    asideDesc: 'Choose a role, enter basic details, and inspect how the content areas are arranged for accessibility.',
-    quote: 'Job seekers and employers both need a clear form with visible labels, not placeholder-only hints.',
-    role: 'Role',
+    asideTitle: 'AccessJobs VN',
+    asideHeading: 'Join AccessJobs VN',
+    asideDesc: 'Free for job seekers and businesses. It only takes a few minutes to get started.',
+    role: 'I am signing up as',
     roleNKT: 'Job seeker',
     roleNTD: 'Employer',
     name: 'Full name / Company name',
     email: 'Email',
     password: 'Password',
     confirm: 'Confirm password',
-    noteTitle: 'Accessibility notes',
-    note1: 'Every input has a visible label.',
-    note2: 'Password uses standard autocomplete.',
+    benefitsTitle: 'Your account lets you',
+    benefit1: 'Apply to multiple roles without re-entering your details.',
+    benefit2: 'Post jobs and manage applicants if you are hiring.',
     submit: 'Create account',
+    submitting: 'Creating account…',
     loginNote: 'Already have an account?',
     login: 'Log in',
     browse: 'Browse jobs first',
+    emailRequired: 'Please enter your email',
+    emailInvalid: 'Enter a valid email address',
+    passwordRequired: 'Please enter a password',
+    passwordWeak:
+      'Password must be at least 8 characters and include upper and lower case letters, a number, and a special character (@$!%*?&).',
+    confirmRequired: 'Please confirm your password',
+    confirmMismatch: 'Passwords do not match',
+    nameRequired: 'Please enter your full name or company name',
+    formAriaLabel: 'AccessJobs VN registration form',
+    required: '(required)',
+    errorSummaryTitle: 'Unable to submit the form',
+    errorSummary: 'Please fix the following errors before creating your account.',
+    showPassword: 'Show password',
+    hidePassword: 'Hide password',
+    fieldComplete: 'Completed',
   },
 } as const;
 
@@ -64,154 +95,44 @@ export default async function RegisterPage({ params }: { params: Promise<{ local
   const { locale: routeLocale } = await params;
   const locale = routeLocale === 'en' ? 'en' : 'vi';
   const t = copy[locale];
-  const crumbs = locale === 'en'
-    ? [
-        { label: 'Home', href: '/' },
-        { label: 'Account' },
-        { label: 'Register' },
-      ]
-    : [
-        { label: 'Trang chủ', href: '/' },
-        { label: 'Tài khoản' },
-        { label: 'Đăng ký' },
-      ];
 
   return (
-    <main id="main-content" className="grid min-h-screen lg:grid-cols-2">
-      <div className="lg:col-span-2 mx-auto w-full max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
-        <PageBreadcrumb items={crumbs} />
-      </div>
-      <div className="hidden bg-slate-950 p-10 text-white lg:flex lg:flex-col lg:justify-between">
+    <main id="main-content" tabIndex={-1} className="grid min-h-screen outline-none lg:grid-cols-2">
+      <div className="hidden bg-black p-10 text-white lg:flex lg:flex-col">
         <SiteBrand tone="inverse" className="border-white/20" />
-        <div className="max-w-md space-y-6">
-          <p className="text-sm font-medium uppercase tracking-[0.2em] text-white/70">
-            {t.asideTitle}
-          </p>
-          <h1 className="text-4xl font-bold tracking-tight">
-            {t.asideHeading}
-          </h1>
-          <p className="text-base leading-relaxed text-white/85">
-            {t.asideDesc}
-          </p>
-        </div>
-        <div className="rounded-3xl border border-white/20 bg-white/10 p-6 backdrop-blur">
-          <p className="text-sm leading-relaxed">
-            “{t.quote}”
-          </p>
+        <div className="mt-16 max-w-xl space-y-4">
+          <p className="text-sm font-medium text-white/70">{t.asideTitle}</p>
+          <h1 className="text-4xl font-bold tracking-tight">{t.asideHeading}</h1>
+          <p className="text-base leading-relaxed text-white/85">{t.asideDesc}</p>
+          <div className="pt-4">
+            <AuthAsideLottie />
+          </div>
         </div>
       </div>
 
       <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-10">
         <div className="w-full max-w-lg">
-          <Link href="/" className="gov-link mb-6 inline-flex items-center gap-2 text-sm font-medium">
+          <Link href="/" className="gov-link mb-6 inline-flex w-fit items-center gap-2 text-sm font-medium">
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             {t.back}
           </Link>
 
           <Card className="border-none shadow-xl sm:border">
             <CardHeader className="space-y-3 text-center">
-              <div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
-                <HeartHandshake className="h-7 w-7" aria-hidden="true" />
-              </div>
               <CardTitle className="text-2xl font-bold tracking-tight">{t.title}</CardTitle>
               <CardDescription>{t.desc}</CardDescription>
             </CardHeader>
             <CardContent>
-              <form className="space-y-4" noValidate>
-                <div className="space-y-2">
-                  <label htmlFor="role" className="text-sm font-medium">
-                    {t.role}
-                  </label>
-                  <select
-                    id="role"
-                    defaultValue="NKT"
-                    className="h-12 w-full rounded-lg border border-input bg-background px-4 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                  >
-                    <option value="NKT">{t.roleNKT}</option>
-                    <option value="NTD">{t.roleNTD}</option>
-                  </select>
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="name" className="text-sm font-medium">
-                    {t.name}
-                  </label>
-                  <input
-                    id="name"
-                    type="text"
-                    autoComplete="name"
-                    defaultValue="Nguyễn Văn A"
-                    className="h-12 w-full rounded-lg border border-input bg-background px-4 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label htmlFor="email" className="text-sm font-medium">
-                    {t.email}
-                  </label>
-                  <input
-                    id="email"
-                    type="email"
-                    autoComplete="email"
-                    defaultValue="user@example.com"
-                    className="h-12 w-full rounded-lg border border-input bg-background px-4 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                  />
-                </div>
-
-                <div className="grid gap-4 md:grid-cols-2">
-                  <div className="space-y-2">
-                    <label htmlFor="password" className="text-sm font-medium">
-                      {t.password}
-                    </label>
-                    <input
-                      id="password"
-                      type="password"
-                      autoComplete="new-password"
-                      defaultValue="••••••••"
-                      className="h-12 w-full rounded-lg border border-input bg-background px-4 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <label htmlFor="confirmPassword" className="text-sm font-medium">
-                      {t.confirm}
-                    </label>
-                    <input
-                      id="confirmPassword"
-                      type="password"
-                      autoComplete="new-password"
-                      defaultValue="••••••••"
-                      className="h-12 w-full rounded-lg border border-input bg-background px-4 text-base focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary focus-visible:ring-offset-2"
-                    />
-                  </div>
-                </div>
-
-                <div className="rounded-2xl border border-dashed bg-muted/40 p-4 text-sm text-muted-foreground">
-                  <p className="font-medium text-foreground">{t.noteTitle}</p>
-                  <ul className="mt-2 space-y-2">
-                    <li className="flex gap-2">
-                      <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                      {t.note1}
-                    </li>
-                    <li className="flex gap-2">
-                      <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
-                      {t.note2}
-                    </li>
-                  </ul>
-                </div>
-
-                <button type="button" className="h-11 w-full rounded-lg bg-primary text-sm font-medium text-primary-foreground">
-                  {t.submit}
-                </button>
-              </form>
+              <RegisterForm labels={t} />
             </CardContent>
-            <CardFooter className="flex flex-col gap-3 border-t p-6">
+            <CardFooter className="mx-6 mb-6 flex flex-col gap-3 rounded-xl border-t-0 bg-muted/50 p-6">
               <p className="text-center text-sm text-muted-foreground">
                 {t.loginNote}{' '}
                 <Link href="/login" className="gov-link font-semibold">
                   {t.login}
                 </Link>
               </p>
-              <Link href="/jobs" className={buttonVariants({ variant: 'outline', className: 'h-11 w-full rounded-lg' })}>
+              <Link href="/jobs" className={buttonVariants({ variant: 'outline', className: 'h-11 w-full' })}>
                 {t.browse}
               </Link>
             </CardFooter>

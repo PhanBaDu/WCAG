@@ -1,5 +1,16 @@
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { api } from '@/lib/axios';
+import {
+  clearDemoSession,
+  createDemoUser,
+  DEMO_ACCESS_TOKEN,
+  isDemoSession,
+  readDemoUser,
+  saveDemoSession,
+} from '@/lib/auth/demo-session';
+import { redirectToLogin } from '@/lib/auth/redirect-to-login';
+import { useRouter } from '@/i18n/routing';
+import type { AuthResponse, PublicUser } from '@/lib/types/auth';
 
 type LoginCredentials = {
   email: string;
@@ -19,75 +30,90 @@ type ResetPasswordPayload = {
   newPassword: string;
 };
 
-type AuthResponse = {
-  accessToken: string;
-};
-
 export const authKeys = {
   all: ['auth'] as const,
   user: () => [...authKeys.all, 'user'] as const,
 };
 
-// 1. Fetch current user
 export function useAuthQuery() {
   return useQuery({
     queryKey: authKeys.user(),
-    queryFn: async () => {
-      const { data } = await api.get('/auth/me');
+    queryFn: async (): Promise<PublicUser | null> => {
+      if (typeof window === 'undefined') {
+        return null;
+      }
+
+      const token = localStorage.getItem('accessToken');
+      if (!token) {
+        return null;
+      }
+
+      if (token === DEMO_ACCESS_TOKEN) {
+        return readDemoUser();
+      }
+
+      const { data } = await api.get<PublicUser>('/auth/me');
       return data;
     },
     retry: false,
-    staleTime: 1000 * 60 * 5, // 5 minutes
+    staleTime: 1000 * 60 * 5,
   });
 }
 
-// 2. Login
 export function useLoginMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
     mutationFn: async (credentials: LoginCredentials): Promise<AuthResponse> => {
-      const { data } = await api.post<AuthResponse>('/auth/login', credentials);
-      return data;
+      const user = createDemoUser({ email: credentials.email });
+      return { accessToken: DEMO_ACCESS_TOKEN, user };
     },
     onSuccess: (data: AuthResponse) => {
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('accessToken', data.accessToken);
-      }
-      queryClient.invalidateQueries({ queryKey: authKeys.user() });
+      saveDemoSession(data.user);
+      queryClient.setQueryData(authKeys.user(), data.user);
     },
   });
 }
 
-// 3. Register
 export function useRegisterMutation() {
-  return useMutation({
-    mutationFn: async (userData: RegisterPayload): Promise<unknown> => {
-      const { data } = await api.post('/auth/register', userData);
-      return data;
-    },
-  });
-}
-
-// 4. Logout
-export function useLogoutMutation() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: async () => {
-      await api.delete('/auth/logout');
+    mutationFn: async (userData: RegisterPayload): Promise<AuthResponse> => {
+      const user = createDemoUser({
+        email: userData.email,
+        role: userData.role,
+        fullName: userData.fullName,
+        companyName: userData.companyName,
+      });
+      return { accessToken: DEMO_ACCESS_TOKEN, user };
     },
-    onSuccess: () => {
-      if (typeof window !== 'undefined') {
-        localStorage.removeItem('accessToken');
-      }
-      queryClient.clear();
-      window.location.href = '/login';
+    onSuccess: (data: AuthResponse) => {
+      saveDemoSession(data.user);
+      queryClient.setQueryData(authKeys.user(), data.user);
     },
   });
 }
 
-// 5. Forgot Password
+export function useLogoutMutation() {
+  const queryClient = useQueryClient();
+  const router = useRouter();
+
+  return useMutation({
+    mutationFn: async () => {
+      if (!isDemoSession()) {
+        await api.delete('/auth/logout');
+      }
+    },
+    onSuccess: () => {
+      clearDemoSession();
+      queryClient.setQueryData(authKeys.user(), null);
+      queryClient.clear();
+      router.push('/login');
+    },
+  });
+}
+
 export function useForgotPasswordMutation() {
   return useMutation({
     mutationFn: async (email: string) => {
@@ -97,7 +123,6 @@ export function useForgotPasswordMutation() {
   });
 }
 
-// 6. Reset Password
 export function useResetPasswordMutation() {
   return useMutation({
     mutationFn: async (payload: ResetPasswordPayload): Promise<unknown> => {

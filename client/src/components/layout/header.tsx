@@ -3,9 +3,8 @@
 import { useLocale } from 'next-intl';
 import { usePathname } from '@/i18n/routing';
 import { useCompactHeader } from '@/hooks/use-compact-header';
-import { LangToggle } from '@/components/lang-toggle';
 import { HeaderNavMenu } from '@/components/layout/header-nav-menu';
-import { GovButtonLink } from '@/components/ui/gov-button';
+import { HeaderAuthActions } from '@/components/layout/header-auth-actions';
 import { TextNavigationLink } from '@/components/ui/text-navigation-link';
 import { SiteBrand } from '@/components/layout/site-brand';
 
@@ -21,6 +20,7 @@ export function Header() {
         profile: 'Profile',
         login: 'Log in',
         register: 'Register',
+        logout: 'Log out',
         menu: 'Open menu',
         menuTitle: 'Menu',
         closeMenu: 'Close menu',
@@ -33,6 +33,7 @@ export function Header() {
         profile: 'Hồ sơ',
         login: 'Đăng nhập',
         register: 'Đăng ký',
+        logout: 'Đăng xuất',
         menu: 'Mở danh mục',
         menuTitle: 'Danh mục',
         closeMenu: 'Đóng danh mục',
@@ -68,15 +69,12 @@ export function Header() {
   );
 
   const authActions = (
-    <>
-      <LangToggle />
-      <GovButtonLink href="/login" size="sm" className="shrink-0 px-4">
-        {nav.login}
-      </GovButtonLink>
-      <GovButtonLink href="/register" size="sm" variant="default" className="shrink-0 px-4">
-        {nav.register}
-      </GovButtonLink>
-    </>
+    <HeaderAuthActions
+      loginLabel={nav.login}
+      registerLabel={nav.register}
+      logoutLabel={nav.logout}
+      profileLabel={nav.profile}
+    />
   );
 
   return (

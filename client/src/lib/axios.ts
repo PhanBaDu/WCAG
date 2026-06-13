@@ -1,19 +1,16 @@
 import axios from 'axios';
+import { redirectToLogin } from '@/lib/auth/redirect-to-login';
 
 export const api = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1',
+  baseURL: process.env.NEXT_PUBLIC_API_URL || '/api/v1',
   headers: {
     'Content-Type': 'application/json',
   },
-  withCredentials: true, // For receiving refresh token in HttpOnly cookies
+  withCredentials: true,
 });
 
-// Interceptor for attaching Access Token
 api.interceptors.request.use(
   (config) => {
-    // In a real app, you might want to get the token from localStorage or a state manager
-    // if you don't store it in an HttpOnly cookie (which is preferred).
-    // If it's stored in localStorage:
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('accessToken');
       if (token) {
@@ -25,21 +22,25 @@ api.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Interceptor for handling 401 and Token Rotation
+function isAuthEndpoint(url?: string) {
+  return Boolean(url?.includes('/auth/'));
+}
+
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
 
-    // If error is 401 and we haven't retried yet
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    if (error.response?.status === 401 && originalRequest && !originalRequest._retry) {
+      if (isAuthEndpoint(originalRequest.url)) {
+        return Promise.reject(error);
+      }
+
       originalRequest._retry = true;
 
       try {
-        // Attempt to refresh the token using the refresh token
-        // This assumes the refresh token is sent automatically via HttpOnly cookie
         const { data } = await axios.post(
-          `${process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api/v1'}/auth/refresh`,
+          `${process.env.NEXT_PUBLIC_API_URL || '/api/v1'}/auth/refresh`,
           {},
           { withCredentials: true }
         );
@@ -51,14 +52,16 @@ api.interceptors.response.use(
           return api(originalRequest);
         }
       } catch (refreshError) {
-        // Refresh token expired or invalid -> log out
         if (typeof window !== 'undefined') {
           localStorage.removeItem('accessToken');
-          window.location.href = '/login';
+          if (!isAuthEndpoint(originalRequest.url)) {
+            redirectToLogin();
+          }
         }
         return Promise.reject(refreshError);
       }
     }
+
     return Promise.reject(error);
   }
 );

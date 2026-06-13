@@ -83,3 +83,5 @@ Thumbs.db
 /api/dist/
 /client/.next/
 /client/out/
+/client/data/users.json
+/client/data/sessions.json

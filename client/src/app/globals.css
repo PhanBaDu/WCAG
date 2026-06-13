@@ -151,8 +151,75 @@
   }
 
   :where(input, select, textarea):focus-visible {
-    outline: 3px solid color-mix(in oklch, var(--primary) 24%, black);
+    border-color: #0b0c0c;
+    outline: 3px solid #ffdd00;
     outline-offset: 3px;
+    box-shadow: none;
+  }
+
+  .gov-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .gov-input-wrap {
+    padding: 4px;
+    margin: -4px;
+  }
+
+  .gov-input {
+    border: 1px solid var(--input);
+    background-color: var(--background);
+    outline: none;
+    transition: border-color 150ms;
+  }
+
+  .gov-input:focus-visible {
+    border-color: #0b0c0c;
+    outline: 3px solid #ffdd00;
+    outline-offset: 3px;
+    box-shadow: none;
+  }
+
+  select.gov-input {
+    background-image: none;
+  }
+
+  [data-slot='select-trigger'].gov-input {
+    border: 1px solid var(--input);
+    background-color: var(--background);
+  }
+
+  [data-slot='select-trigger'].gov-input:focus,
+  [data-slot='select-trigger'].gov-input:focus-visible {
+    border-color: #0b0c0c;
+    outline: 3px solid #ffdd00 !important;
+    outline-offset: 3px;
+    box-shadow: none;
+  }
+
+  select.gov-input:focus,
+  select.gov-input:focus-visible {
+    border-color: #0b0c0c;
+    outline: 3px solid #ffdd00;
+    outline-offset: 3px;
+    box-shadow: none;
+  }
+
+  select.gov-input[aria-invalid='true']:focus,
+  select.gov-input[aria-invalid='true']:focus-visible {
+    border-color: #b10e1e;
+    outline-color: #ffdd00;
+  }
+
+  .gov-input[aria-invalid='true'] {
+    border-color: #b10e1e;
+  }
+
+  .gov-input[aria-invalid='true']:focus-visible {
+    border-color: #b10e1e;
+    outline-color: #ffdd00;
   }
 
   .keyboard-focus-target:focus-visible {
@@ -168,18 +235,46 @@
     text-decoration-color: #1d70b8;
     text-decoration-thickness: 1px;
     text-underline-offset: 0.18em;
+    transition: background-color 150ms, color 150ms, text-decoration-thickness 150ms,
+      text-decoration-color 150ms;
   }
 
-  .gov-link:hover,
-  .gov-link:focus-visible {
+  .gov-link:hover {
     color: #003078;
+    background-color: transparent;
     text-decoration-color: #003078;
     text-decoration-thickness: 2px;
+    outline: none;
+  }
+
+  .gov-link:focus-visible {
+    color: #1d70b8;
+    background-color: #ffdd00;
+    text-decoration-color: #1d70b8;
+    text-decoration-thickness: 2px;
+    outline: none;
   }
 
   .gov-section-divider {
     margin: 0;
     border: 0;
     border-top: 4px solid var(--primary);
+  }
+
+  .gov-primary-button {
+    border: none;
+    border-radius: 0;
+    background-color: var(--primary);
+    color: var(--primary-foreground);
+    cursor: pointer;
+    transition: background-color 150ms;
+    outline: none;
+  }
+
+  .gov-primary-button:hover,
+  .gov-primary-button:focus-visible {
+    background-color: color-mix(in oklch, var(--primary) 82%, black);
+    outline: 3px solid #ffdd00;
+    outline-offset: 3px;
   }
 }

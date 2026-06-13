@@ -5,8 +5,8 @@ import { routing } from '@/i18n/routing';
 import { Providers } from '@/components/providers';
 import { ThemeProvider } from '@/components/theme-provider';
 import { Toaster } from '@/components/ui/sonner';
-import { Header } from '@/components/layout/header';
-import { Footer } from '@/components/layout/footer';
+import { ChromeModeProvider } from '@/components/layout/chrome-mode';
+import { AppShell } from '@/components/layout/app-shell';
 import { SkipNav } from '@/components/layout/skip-nav';
 import { KeyboardShortcutsDialog } from '@/components/layout/keyboard-shortcuts-dialog';
 import { ScrollRestoration } from '@/components/layout/scroll-restoration';
@@ -72,13 +72,9 @@ export default async function LocaleLayout({
               disableTransitionOnChange
             >
               <SkipNav />
-              <div data-app-shell="true" className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20">
-                <Header />
-                <main id="main-content" tabIndex={-1} className="flex-1 w-full outline-none">
-                  {children}
-                </main>
-                <Footer />
-              </div>
+              <ChromeModeProvider>
+                <AppShell>{children}</AppShell>
+              </ChromeModeProvider>
               <ScrollRestoration />
               <KeyboardShortcutsDialog />
               <Toaster />
