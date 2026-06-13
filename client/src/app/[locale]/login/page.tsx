@@ -1,8 +1,10 @@
 import { Metadata } from 'next';
 import { ArrowLeft, BadgeCheck, Building2, EyeOff, ShieldCheck } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
+import { PageBreadcrumb } from '@/components/layout/page-breadcrumb';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
+import { SiteBrand } from '@/components/layout/site-brand';
 
 export const metadata: Metadata = {
   title: 'Đăng nhập | Cổng Việc Làm Người Khuyết Tật',
@@ -54,13 +56,24 @@ export default async function LoginPage({ params }: { params: Promise<{ locale: 
   const { locale: routeLocale } = await params;
   const locale = routeLocale === 'en' ? 'en' : 'vi';
   const t = copy[locale];
+  const crumbs = locale === 'en'
+    ? [
+        { label: 'Home', href: '/' },
+        { label: 'Account' },
+        { label: 'Log in' },
+      ]
+    : [
+        { label: 'Trang chủ', href: '/' },
+        { label: 'Tài khoản' },
+        { label: 'Đăng nhập' },
+      ];
   return (
     <main id="main-content" className="grid min-h-screen lg:grid-cols-2">
+      <div className="lg:col-span-2 mx-auto w-full max-w-7xl px-4 pt-8 sm:px-6 lg:px-8">
+        <PageBreadcrumb items={crumbs} />
+      </div>
       <div className="hidden bg-primary p-10 text-primary-foreground lg:flex lg:flex-col lg:justify-between">
-        <div className="flex items-center gap-2 text-lg font-semibold">
-          <Building2 className="h-6 w-6" aria-hidden="true" />
-          AccessJobs
-        </div>
+        <SiteBrand tone="inverse" className="border-white/20" />
         <div className="max-w-md space-y-6">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary-foreground/80">
             {t.asideTitle}
@@ -81,7 +94,7 @@ export default async function LoginPage({ params }: { params: Promise<{ locale: 
 
       <div className="flex items-center justify-center px-4 py-10 sm:px-6 lg:px-10">
         <div className="w-full max-w-md">
-          <Link href="/" className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary">
+          <Link href="/" className="gov-link mb-6 inline-flex items-center gap-2 text-sm font-medium">
             <ArrowLeft className="h-4 w-4" aria-hidden="true" />
             {t.back}
           </Link>
@@ -114,7 +127,7 @@ export default async function LoginPage({ params }: { params: Promise<{ locale: 
                     <label htmlFor="password" className="text-sm font-medium">
                       {t.password}
                     </label>
-                    <Link href="/forgot-password" className="text-sm font-medium text-primary hover:underline">
+                    <Link href="/forgot-password" className="gov-link text-sm font-medium">
                       {t.forgot}
                     </Link>
                   </div>
@@ -149,7 +162,7 @@ export default async function LoginPage({ params }: { params: Promise<{ locale: 
             <CardFooter className="flex flex-col gap-3 border-t p-6">
               <p className="text-center text-sm text-muted-foreground">
                 {t.registerNote}{' '}
-                <Link href="/register" className="font-semibold text-primary hover:underline">
+                <Link href="/register" className="gov-link font-semibold">
                   {t.register}
                 </Link>
               </p>

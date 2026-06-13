@@ -1,5 +1,6 @@
 import { Metadata } from 'next';
 import { BadgeCheck, Briefcase, CalendarDays, Eye, Layers3 } from 'lucide-react';
+import { PageBreadcrumb } from '@/components/layout/page-breadcrumb';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
@@ -84,8 +85,20 @@ export default async function CreateJobPage({ params }: { params: Promise<{ loca
   const { locale: routeLocale } = await params;
   const locale = routeLocale === 'en' ? 'en' : 'vi';
   const t = copy[locale];
+  const crumbs = locale === 'en'
+    ? [
+        { label: 'Home', href: '/' },
+        { label: 'Employers', href: '/employer/dashboard' },
+        { label: 'Post a job' },
+      ]
+    : [
+        { label: 'Trang chủ', href: '/' },
+        { label: 'Nhà tuyển dụng', href: '/employer/dashboard' },
+        { label: 'Đăng tin tuyển dụng' },
+      ];
   return (
     <main id="main-content" className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+      <PageBreadcrumb items={crumbs} />
       <div className="mb-8 max-w-3xl">
         <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">{t.eyebrow}</p>
         <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">{t.title}</h1>

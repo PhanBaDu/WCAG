@@ -22,7 +22,7 @@ export function JobCard({ job }: JobCardProps) {
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1">
             <CardTitle className="text-xl font-bold">
-              <Link href={`/jobs/${job.slug}`} className="text-primary hover:underline focus:outline-none">
+              <Link href={`/jobs/${job.slug}`} className="gov-link focus:outline-none">
                 {job.title}
               </Link>
             </CardTitle>

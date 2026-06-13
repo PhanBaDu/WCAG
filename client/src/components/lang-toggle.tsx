@@ -3,7 +3,7 @@
 import * as React from "react"
 import { useLocale } from "next-intl"
 import { useRouter, usePathname } from "@/i18n/routing"
-import { Button } from "@/components/ui/button"
+import { GovButton } from "@/components/ui/gov-button"
 import { Globe } from "lucide-react"
 
 export function LangToggle() {
@@ -17,14 +17,13 @@ export function LangToggle() {
   }
 
   return (
-    <Button
-      variant="ghost"
+    <GovButton
       size="sm"
       onClick={toggleLocale}
-      className="rounded-full gap-2 px-3 font-medium"
+      className="gap-2 px-3 font-medium"
     >
       <Globe className="h-4 w-4" />
       <span className="uppercase">{locale}</span>
-    </Button>
+    </GovButton>
   )
 }

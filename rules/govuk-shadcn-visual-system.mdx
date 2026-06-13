@@ -1,0 +1,50 @@
+---
+description: GOV.UK-inspired visual system for shadcn UI
+alwaysApply: true
+---
+
+# GOV.UK Visual System
+
+Use GOV.UK as the visual baseline for all user-facing UI in this project.
+
+## Color tokens
+
+- `#1D70B8` for primary links and key brand accents
+- `#0B0C0C` for text, borders, and strong contrast
+- `#FFFFFF` for page backgrounds and content surfaces
+- `#F3F2F1` for subtle panels, button fills, and quiet backgrounds
+- `#FFDD00` for skip links and focus highlights
+
+## Layout rules
+
+- Keep layouts simple, left-aligned, and spacious.
+- Prefer one clear headline, one short supporting paragraph, then action links.
+- Use mostly flat sections with light borders instead of heavy shadows or glossy effects.
+- Avoid decorative gradients, oversized radii, and complex card stacks.
+
+## Component rules
+
+- Buttons should feel like GOV.UK: flat, light background, 1px dark border, visible bottom edge, and restrained hover states.
+- Primary actions can be visually stronger, but must still stay simple and readable.
+- Links should be blue and underlined, especially in action lists and content blocks.
+- Use icon + text link rows for core actions when scanning speed matters.
+- Cards should be quiet containers, not dominant visual objects.
+
+## Accessibility rules
+
+- Focus must be obvious, high-contrast, and consistent.
+- Skip links must mount only on keyboard focus and disappear when focus leaves.
+- Keep semantic landmarks clear: `header`, `nav`, `main`, `footer`.
+- Do not expose WCAG theory, keyboard demos, or accessibility training content in the user-facing homepage.
+
+## shadcn guidance
+
+- Treat shadcn as the component engine, not the visual source of truth.
+- Override default shadcn styling so colors, borders, spacing, and focus behavior match GOV.UK first.
+- Prefer custom tokens in `globals.css` and shared variants over one-off inline styles.
+
+## Content guidance
+
+- Homepage content should describe the job portal, not explain accessibility standards.
+- Show practical actions such as finding jobs, creating profiles, and posting vacancies.
+- Keep the page calm, functional, and trustworthy.

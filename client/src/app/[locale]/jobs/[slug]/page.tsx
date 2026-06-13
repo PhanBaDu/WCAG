@@ -1,6 +1,8 @@
 import { Metadata } from 'next';
+import Script from 'next/script';
 import { ArrowLeft, BadgeCheck, Building2, CheckCircle2, Clock3, MapPin, Briefcase, ShieldCheck } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
+import { PageBreadcrumb } from '@/components/layout/page-breadcrumb';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
 
@@ -104,15 +106,29 @@ export default async function JobDetailPage({ params }: { params: Promise<{ loca
   const { locale: routeLocale, slug } = await params;
   const locale = routeLocale === 'en' ? 'en' : 'vi';
   const job = copy[locale];
+  const crumbs = locale === 'en'
+    ? [
+        { label: 'Home', href: '/' },
+        { label: 'Jobs', href: '/jobs' },
+        { label: job.title },
+      ]
+    : [
+        { label: 'Trang chủ', href: '/' },
+        { label: 'Việc làm', href: '/jobs' },
+        { label: job.title },
+      ];
   return (
     <main id="main-content" className="mx-auto w-full max-w-6xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-      <Link href="/jobs" className="inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary">
+      <PageBreadcrumb items={crumbs} />
+      <Link href="/jobs" className="gov-link inline-flex items-center gap-2 text-sm font-medium">
         <ArrowLeft className="h-4 w-4" aria-hidden="true" />
         {job.back}
       </Link>
 
-      <script
+      <Script
+        id={`jobposting-${slug}`}
         type="application/ld+json"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: JSON.stringify({
             '@context': 'https://schema.org',

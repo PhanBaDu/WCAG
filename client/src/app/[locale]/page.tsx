@@ -2,7 +2,6 @@ import { ArrowRight, Building2, HeartHandshake, Search, ShieldCheck } from 'luci
 import Image from 'next/image';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { KeyboardShortcutsDemo } from '@/components/layout/keyboard-shortcuts-demo';
 import { Link } from '@/i18n/routing';
 
 const copy = {
@@ -10,12 +9,12 @@ const copy = {
     eyebrow: 'Cổng việc làm cho người khuyết tật',
     title: 'Kết nối việc làm dễ tiếp cận cho người khuyết tật',
     description:
-      'Trang chủ static theo rules WCAG 2.2 AA, tập trung vào cấu trúc rõ ràng, điều hướng dễ dùng và nội dung minh họa cho các luồng chính của hệ thống.',
+      'Trang chủ tĩnh giới thiệu cổng việc làm, nơi người tìm việc và nhà tuyển dụng có thể bắt đầu các luồng chính một cách rõ ràng, gọn gàng và dễ dùng.',
     primaryCta: 'Tìm việc ngay',
     secondaryCta: 'Đăng tin tuyển dụng',
-    sectionTitle: 'Điểm nổi bật của giao diện',
+    sectionTitle: 'Dành cho từng nhóm người dùng',
     sectionDesc:
-      'Các khối nội dung dưới đây mô tả cách bố cục tĩnh sẽ trình bày thông tin quan trọng trước khi thêm dữ liệu thực.',
+      'Bố cục này giúp nhìn nhanh vai trò của từng khu vực trong hệ thống trước khi gắn dữ liệu thật.',
     quickTitle: 'Quy trình sử dụng nhanh',
     quickDesc: 'Luồng giao diện tĩnh được chia thành ba bước đơn giản.',
     quickSteps: [
@@ -24,41 +23,16 @@ const copy = {
       'Chuyển sang đăng ký, đăng nhập hoặc khu vực nhà tuyển dụng nếu cần.',
     ],
     actionsTitle: 'Hành động nhanh',
-    actionsDesc: 'Ba nút CTA tĩnh cho các luồng chính.',
+    actionsDesc: 'Ba liên kết tĩnh giúp người dùng vào đúng luồng ngay lập tức.',
+    actionLinks: [
+      { href: '/jobs', label: 'Tìm việc phù hợp', description: 'Duyệt danh sách việc làm và lọc theo nhu cầu.' },
+      { href: '/register', label: 'Tạo hồ sơ ứng viên', description: 'Bắt đầu hồ sơ để ứng tuyển nhanh hơn.' },
+      { href: '/register?role=NTD', label: 'Đăng tin tuyển dụng', description: 'Tạo tin tuyển dụng thân thiện với NKT.' },
+    ],
     footerTitle: 'Sẵn sàng xem giao diện tiếp theo?',
     footerDesc: 'Các trang còn lại trong app cũng được làm static để bạn có thể chốt bố cục trước khi gắn dữ liệu thật.',
     footerPrimary: 'Bắt đầu ngay',
     footerSecondary: 'Xem dashboard NTD',
-    keyboardTitle: 'Điều hướng bằng bàn phím',
-    keyboardDesc: 'Khối này mô phỏng cách GOV.UK trình bày hướng dẫn: rõ ràng, ngắn gọn và luôn ưu tiên người dùng bàn phím.',
-    shortcutsTitle: 'Phím tắt thường dùng',
-    landmarksTitle: 'Landmark chính',
-    focusTitle: 'Focus ring',
-    focusDesc: 'Tất cả control được giữ ring rõ ràng để khi tab, bạn luôn biết đang ở đâu.',
-    shortcuts: [
-      ['Tab', 'Next Focus', 'Tới phần tử tương tác tiếp theo'],
-      ['Shift + Tab', 'Previous Focus', 'Quay lại phần tử trước'],
-      ['Enter', 'Activate', 'Kích hoạt Link/Button'],
-      ['Space', 'Activate / Toggle', 'Nhấn Button, Checkbox'],
-      ['Esc', 'Close', 'Đóng Dialog / Menu'],
-      ['H', 'Next Heading', 'Heading tiếp theo'],
-      ['K', 'Next Link', 'Link tiếp theo'],
-      ['B', 'Next Button', 'Button tiếp theo'],
-      ['F', 'Next Form Field', 'Ô nhập tiếp theo'],
-      ['M', 'Main Content', 'Tới khu vực nội dung chính'],
-      ['N', 'Skip Navigation', 'Bỏ qua menu điều hướng'],
-      ['G', 'Next Graphic', 'Hình ảnh tiếp theo'],
-      ['T', 'Next Table', 'Bảng tiếp theo'],
-      ['D', 'Next Landmark', 'Landmark tiếp theo'],
-    ],
-    landmarks: [
-      ['Banner', '<header>'],
-      ['Navigation', '<nav>'],
-      ['Main', '<main>'],
-      ['Search', '<search> / role="search"'],
-      ['Complementary', '<aside>'],
-      ['Content info', '<footer>'],
-    ],
     stats: [
       { value: '1,200+', label: 'Việc làm thân thiện' },
       { value: '350+', label: 'Nhà tuyển dụng' },
@@ -86,12 +60,12 @@ const copy = {
     eyebrow: 'Job portal for persons with disabilities',
     title: 'Connecting accessible jobs for persons with disabilities',
     description:
-      'Static home page following WCAG 2.2 AA rules, focused on clear structure, easy navigation, and content mockups for the core flows.',
+      'A static home page introducing the job portal, where job seekers and employers can start the core flows quickly and clearly.',
     primaryCta: 'Find jobs now',
     secondaryCta: 'Post a job',
-    sectionTitle: 'Highlights of the interface',
+    sectionTitle: 'Built for each user group',
     sectionDesc:
-      'These sections show how the static layout presents key information before real data is connected.',
+      'This layout helps show what each area of the system is for before real data is connected.',
     quickTitle: 'Quick user flow',
     quickDesc: 'The static UI is split into three simple steps.',
     quickSteps: [
@@ -100,41 +74,16 @@ const copy = {
       'Move on to register, log in, or the employer area when needed.',
     ],
     actionsTitle: 'Quick actions',
-    actionsDesc: 'Three static CTA buttons for the core flows.',
+    actionsDesc: 'Three static links that take people straight into the core flows.',
+    actionLinks: [
+      { href: '/jobs', label: 'Find suitable jobs', description: 'Browse and filter the job list by need.' },
+      { href: '/register', label: 'Create a candidate profile', description: 'Start a profile to apply faster.' },
+      { href: '/register?role=NTD', label: 'Post a job', description: 'Create an inclusive job post for candidates.' },
+    ],
     footerTitle: 'Ready to see the next screen?',
     footerDesc: 'The remaining app screens are static too, so you can lock the layout before wiring real data.',
     footerPrimary: 'Get started',
     footerSecondary: 'View employer dashboard',
-    keyboardTitle: 'Keyboard navigation',
-    keyboardDesc: 'This block mirrors the GOV.UK style: clear, concise, and always designed for keyboard users first.',
-    shortcutsTitle: 'Common shortcuts',
-    landmarksTitle: 'Main landmarks',
-    focusTitle: 'Focus ring',
-    focusDesc: 'Interactive controls keep a clear focus ring so you always know where you are when tabbing around.',
-    shortcuts: [
-      ['Tab', 'Next Focus', 'Move to the next interactive element'],
-      ['Shift + Tab', 'Previous Focus', 'Move to the previous element'],
-      ['Enter', 'Activate', 'Activate a link or button'],
-      ['Space', 'Activate / Toggle', 'Press buttons and checkboxes'],
-      ['Esc', 'Close', 'Close dialogs and menus'],
-      ['H', 'Next Heading', 'Jump to the next heading'],
-      ['K', 'Next Link', 'Jump to the next link'],
-      ['B', 'Next Button', 'Jump to the next button'],
-      ['F', 'Next Form Field', 'Jump to the next field'],
-      ['M', 'Main Content', 'Jump to the main content area'],
-      ['N', 'Skip Navigation', 'Jump past navigation'],
-      ['G', 'Next Graphic', 'Jump to the next graphic'],
-      ['T', 'Next Table', 'Jump to the next table'],
-      ['D', 'Next Landmark', 'Jump to the next landmark'],
-    ],
-    landmarks: [
-      ['Banner', '<header>'],
-      ['Navigation', '<nav>'],
-      ['Main', '<main>'],
-      ['Search', '<search> / role="search"'],
-      ['Complementary', '<aside>'],
-      ['Content info', '<footer>'],
-    ],
     stats: [
       { value: '1,200+', label: 'Accessible jobs' },
       { value: '350+', label: 'Employers' },
@@ -165,7 +114,7 @@ export default async function LandingPage({ params }: { params: Promise<{ locale
   const locale = routeLocale === 'en' ? 'en' : 'vi';
   const t = copy[locale];
   return (
-    <main id="main-content">
+    <div>
       <section className="relative overflow-hidden pt-24 pb-20">
         <div className="absolute inset-x-0 top-24 -z-10 mx-auto h-[28rem] w-[28rem] rounded-full bg-primary/5 blur-3xl" />
         <div className="absolute right-0 top-0 -z-10 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl" />
@@ -183,13 +132,13 @@ export default async function LandingPage({ params }: { params: Promise<{ locale
             </p>
 
             <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-              <Link href="/jobs" className={buttonVariants({ size: 'lg', className: 'gov-focus h-12 rounded-full px-8' })}>
+              <Link href="/jobs" className={buttonVariants({ size: 'lg', className: 'h-12 rounded-full px-8' })}>
                 {t.primaryCta}
                 <Search className="ml-2 h-4 w-4" aria-hidden="true" />
               </Link>
               <Link
                 href="/register?role=NTD"
-                className={buttonVariants({ size: 'lg', variant: 'secondary', className: 'gov-focus h-12 rounded-full px-8' })}
+                className={buttonVariants({ size: 'lg', variant: 'secondary', className: 'h-12 rounded-full px-8' })}
               >
                 {t.secondaryCta}
                 <Building2 className="ml-2 h-4 w-4" aria-hidden="true" />
@@ -301,15 +250,25 @@ export default async function LandingPage({ params }: { params: Promise<{ locale
                 <CardDescription>{t.actionsDesc}</CardDescription>
               </CardHeader>
               <CardContent className="space-y-3">
-                <Link href="/login" className={buttonVariants({ variant: 'outline', className: 'gov-focus h-12 w-full justify-start rounded-xl' })}>
-                  {locale === 'en' ? 'Log in' : 'Đăng nhập tài khoản'}
-                </Link>
-                <Link href="/register" className={buttonVariants({ className: 'gov-focus h-12 w-full justify-start rounded-xl' })}>
-                  {locale === 'en' ? 'Create an account' : 'Tạo tài khoản mới'}
-                </Link>
-                <Link href="/jobs" className={buttonVariants({ variant: 'secondary', className: 'gov-focus h-12 w-full justify-start rounded-xl' })}>
-                  {locale === 'en' ? 'Browse all jobs' : 'Xem toàn bộ việc làm'}
-                </Link>
+                {t.actionLinks.map((item) => (
+                  <Link
+                    key={item.href}
+                    href={item.href}
+                    className="group flex items-start gap-4 rounded-2xl border border-transparent bg-background p-4 transition-colors hover:border-border hover:bg-muted/30"
+                  >
+                    <span className="flex h-11 w-11 shrink-0 items-center justify-center rounded-full bg-muted text-foreground transition-colors group-hover:bg-primary group-hover:text-primary-foreground">
+                      <ArrowRight className="h-5 w-5" aria-hidden="true" />
+                    </span>
+                    <span className="min-w-0">
+                      <span className="gov-link block text-base font-semibold">
+                        {item.label}
+                      </span>
+                      <span className="mt-1 block text-sm leading-relaxed text-muted-foreground">
+                        {item.description}
+                      </span>
+                    </span>
+                  </Link>
+                ))}
               </CardContent>
             </Card>
           </div>
@@ -324,96 +283,17 @@ export default async function LandingPage({ params }: { params: Promise<{ locale
               {t.footerDesc}
             </p>
             <div className="mt-8 flex flex-col justify-center gap-4 sm:flex-row">
-              <Link href="/register" className={buttonVariants({ size: 'lg', className: 'gov-focus h-12 rounded-full px-8' })}>
+              <Link href="/register" className={buttonVariants({ size: 'lg', className: 'h-12 rounded-full px-8' })}>
                 {t.footerPrimary}
                 <ArrowRight className="ml-2 h-4 w-4" aria-hidden="true" />
               </Link>
-              <Link href="/employer/dashboard" className={buttonVariants({ size: 'lg', variant: 'outline', className: 'gov-focus h-12 rounded-full px-8' })}>
+              <Link href="/employer/dashboard" className={buttonVariants({ size: 'lg', variant: 'outline', className: 'h-12 rounded-full px-8' })}>
                 {t.footerSecondary}
               </Link>
             </div>
           </div>
         </div>
       </section>
-
-      <section className="border-t bg-muted/20 py-20">
-        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
-          <div className="mx-auto mb-10 max-w-2xl text-center">
-            <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">{t.keyboardTitle}</p>
-            <h2 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">{t.shortcutsTitle}</h2>
-            <p className="mt-4 text-muted-foreground">{t.keyboardDesc}</p>
-          </div>
-
-          <div className="grid gap-8 lg:grid-cols-[1.2fr_0.8fr]">
-            <Card className="border-none shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-2xl">{t.shortcutsTitle}</CardTitle>
-                <CardDescription>{locale === 'en' ? 'Use these patterns to move through the page quickly.' : 'Dùng các phím này để di chuyển nhanh trên trang.'}</CardDescription>
-              </CardHeader>
-              <CardContent className="overflow-x-auto">
-                <table className="w-full min-w-[640px] text-left text-sm">
-                  <caption className="sr-only">{t.shortcutsTitle}</caption>
-                  <thead className="border-b text-muted-foreground">
-                    <tr>
-                      <th scope="col" className="px-3 py-3 font-medium">{locale === 'en' ? 'Key' : 'Phím'}</th>
-                      <th scope="col" className="px-3 py-3 font-medium">{locale === 'en' ? 'Action' : 'Action'}</th>
-                      <th scope="col" className="px-3 py-3 font-medium">{locale === 'en' ? 'Meaning' : 'Ý nghĩa'}</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {t.shortcuts.map(([key, action, meaning]) => (
-                      <tr key={key} className="border-b last:border-0">
-                        <td className="px-3 py-3 align-top">
-                          <kbd className="inline-flex min-w-16 items-center justify-center rounded-md border bg-background px-2 py-1 font-mono text-xs font-semibold shadow-sm">
-                            {key}
-                          </kbd>
-                        </td>
-                        <td className="px-3 py-3 align-top font-medium">{action}</td>
-                        <td className="px-3 py-3 align-top text-muted-foreground">{meaning}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </CardContent>
-            </Card>
-
-            <div className="space-y-6">
-              <Card className="border-none shadow-lg">
-                <CardHeader>
-                  <CardTitle className="text-2xl">{t.landmarksTitle}</CardTitle>
-                  <CardDescription>{locale === 'en' ? 'These landmarks help screen readers jump around the page.' : 'Các landmark này giúp màn hình đọc dễ nhảy tới đúng vùng.'}</CardDescription>
-                </CardHeader>
-                <CardContent className="space-y-3">
-                  {t.landmarks.map(([label, element]) => (
-                    <div key={label} className="flex items-start justify-between gap-4 rounded-2xl border bg-background p-4">
-                      <div>
-                        <p className="font-medium">{label}</p>
-                        <p className="text-sm text-muted-foreground">{element}</p>
-                      </div>
-                    </div>
-                  ))}
-                </CardContent>
-              </Card>
-
-              <Card className="border-none bg-primary/5 shadow-none">
-                <CardContent className="space-y-3 p-6">
-                  <p className="text-sm font-medium uppercase tracking-[0.16em] text-primary">{t.focusTitle}</p>
-                  <p className="text-sm leading-relaxed text-muted-foreground">{t.focusDesc}</p>
-                  <p className="text-sm leading-relaxed text-muted-foreground">
-                    {locale === 'en'
-                      ? 'This matches the GOV.UK pattern: a visible skip link, strong focus state, and semantic landmarks.'
-                      : 'Điều này giống pattern GOV.UK: có skip link rõ ràng, focus state mạnh và landmark semantic.'}
-                  </p>
-                </CardContent>
-              </Card>
-            </div>
-          </div>
-
-          <div className="mt-8">
-            <KeyboardShortcutsDemo locale={locale} />
-          </div>
-        </div>
-      </section>
-    </main>
+    </div>
   );
 }

@@ -1,6 +1,7 @@
 import { Metadata } from 'next';
 import { ArrowLeft, MailCheck, ShieldCheck } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
+import { PageBreadcrumb } from '@/components/layout/page-breadcrumb';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
 
@@ -40,11 +41,23 @@ export default async function ForgotPasswordPage({ params }: { params: Promise<{
   const { locale: routeLocale } = await params;
   const locale = routeLocale === 'en' ? 'en' : 'vi';
   const t = copy[locale];
+  const crumbs = locale === 'en'
+    ? [
+        { label: 'Home', href: '/' },
+        { label: 'Account', href: '/login' },
+        { label: 'Forgot password' },
+      ]
+    : [
+        { label: 'Trang chủ', href: '/' },
+        { label: 'Tài khoản', href: '/login' },
+        { label: 'Quên mật khẩu' },
+      ];
 
   return (
     <main id="main-content" className="mx-auto flex min-h-screen w-full max-w-5xl items-center px-4 py-10 sm:px-6 lg:px-8">
       <div className="w-full">
-        <Link href="/login" className="mb-6 inline-flex items-center gap-2 text-sm font-medium text-muted-foreground hover:text-primary">
+        <PageBreadcrumb items={crumbs} />
+        <Link href="/login" className="gov-link mb-6 inline-flex items-center gap-2 text-sm font-medium">
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           {t.back}
         </Link>

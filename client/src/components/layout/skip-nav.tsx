@@ -1,16 +1,67 @@
- "use client";
+"use client";
 
+import { useEffect, useRef, useState } from 'react';
 import { useLocale } from 'next-intl';
 
 export function SkipNav() {
   const locale = useLocale();
+  const [isVisible, setIsVisible] = useState(false);
+  const linkRef = useRef<HTMLAnchorElement>(null);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const hasShownRef = useRef(false);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key !== 'Tab' || isVisible || hasShownRef.current) {
+        return;
+      }
+
+      const activeElement = document.activeElement;
+      if (activeElement && activeElement !== document.body && activeElement !== document.documentElement) {
+        return;
+      }
+
+      event.preventDefault();
+      hasShownRef.current = true;
+      setIsVisible(true);
+    };
+
+    window.addEventListener('keydown', handleKeyDown, true);
+    return () => window.removeEventListener('keydown', handleKeyDown, true);
+  }, [isVisible]);
+
+  useEffect(() => {
+    if (!isVisible) {
+      return;
+    }
+
+    const frame = window.requestAnimationFrame(() => {
+      linkRef.current?.focus();
+    });
+
+    return () => window.cancelAnimationFrame(frame);
+  }, [isVisible]);
+
+  const label = locale === 'en' ? 'Skip to main content' : 'Bỏ qua đến nội dung chính';
 
   return (
-    <a
-      href="#main-content"
-      className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[9999] focus:rounded-md focus:bg-primary focus:px-4 focus:py-2 focus:text-sm focus:font-medium focus:text-primary-foreground focus:shadow-lg focus:outline focus:outline-2 focus:outline-white focus:outline-offset-2"
-    >
-      {locale === 'en' ? 'Skip to main content' : 'Bỏ qua đến nội dung chính'}
-    </a>
+    <div ref={rootRef} className="w-full bg-[#ffdd00]" onBlurCapture={(event) => {
+      const nextTarget = event.relatedTarget as Node | null;
+      if (!nextTarget || !rootRef.current?.contains(nextTarget)) {
+        setIsVisible(false);
+      }
+    }}>
+      {isVisible ? (
+        <div className="mx-auto w-full max-w-7xl px-4 sm:px-6 lg:px-8">
+          <a
+            ref={linkRef}
+            href="#main-content"
+            className="inline-flex items-center py-3 text-sm font-bold text-[#0b0c0c] underline decoration-2 underline-offset-4 outline-none hover:decoration-[3px] focus-visible:outline-none focus-visible:ring-0"
+          >
+            {label}
+          </a>
+        </div>
+      ) : null}
+    </div>
   );
 }

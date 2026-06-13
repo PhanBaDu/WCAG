@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 import { Building2, Filter, MapPin, Search } from 'lucide-react';
 import Image from 'next/image';
 import { buttonVariants } from '@/components/ui/button';
+import { PageBreadcrumb } from '@/components/layout/page-breadcrumb';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
 
@@ -158,9 +159,19 @@ export default async function JobsPage({ params }: { params: Promise<{ locale: s
   const { locale: routeLocale } = await params;
   const locale = routeLocale === 'en' ? 'en' : 'vi';
   const t = copy[locale];
+  const crumbs = locale === 'en'
+    ? [
+        { label: 'Home', href: '/' },
+        { label: 'Jobs' },
+      ]
+    : [
+        { label: 'Trang chủ', href: '/' },
+        { label: 'Việc làm' },
+      ];
 
   return (
     <main id="main-content" className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+      <PageBreadcrumb items={crumbs} />
       <div className="mb-10 grid gap-8 lg:grid-cols-[1.05fr_0.95fr] lg:items-center">
         <div className="max-w-3xl">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">{t.eyebrow}</p>
@@ -332,7 +343,7 @@ export default async function JobsPage({ params }: { params: Promise<{ locale: s
                       </div>
                       <div className="space-y-2">
                       <CardTitle className="text-xl leading-tight">
-                        <Link href={`/jobs/${job.slug}`} className="transition-colors hover:text-primary">
+                        <Link href={`/jobs/${job.slug}`} className="gov-link">
                           {job.title}
                         </Link>
                       </CardTitle>

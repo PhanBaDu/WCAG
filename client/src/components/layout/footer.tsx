@@ -6,8 +6,8 @@ export function Footer() {
   const locale = useLocale();
   const copy =
     locale === 'en'
-      ? '© 2024 AccessJobs. Accessible job portal for persons with disabilities.'
-      : '© 2024 AccessJobs. Cổng việc làm tiếp cận cho người khuyết tật.';
+      ? '© 2024 AccessJobs • VN. Accessible job portal for persons with disabilities.'
+      : '© 2024 AccessJobs • VN. Cổng việc làm tiếp cận cho người khuyết tật.';
 
   return (
     <footer className="border-t py-12 bg-muted/30 mt-auto">

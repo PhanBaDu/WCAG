@@ -60,14 +60,17 @@ export default async function LocaleLayout({
           <Providers>
             <ThemeProvider
               attribute="class"
-              defaultTheme="system"
-              enableSystem
+              defaultTheme="light"
+              forcedTheme="light"
+              enableSystem={false}
               disableTransitionOnChange
             >
               <SkipNav />
               <div data-app-shell="true" className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20">
                 <Header />
-                <main className="flex-1 w-full">{children}</main>
+                <main id="main-content" tabIndex={-1} className="flex-1 w-full outline-none">
+                  {children}
+                </main>
                 <Footer />
               </div>
               <FocusLoop />

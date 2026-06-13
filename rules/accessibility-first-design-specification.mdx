@@ -1,0 +1,622 @@
+---
+description: Accessibility-first design specification inspired by GOV.UK and WCAG 2.2 AA
+alwaysApply: true
+---
+
+# Accessibility-First Design Specification
+
+This rule defines the product-wide UI and interaction specification for the job portal. It is written as a formal design-system standard inspired by GOV.UK and WCAG 2.2 AA principles.
+
+## Global Design Principles
+
+- The interface must prioritize task completion, clarity, and accessibility before visual decoration.
+- Every interactive element must have a clear purpose, a visible label, and a predictable response.
+- Content must be understandable without relying on color, motion, or visual position alone.
+- Keyboard access, logical reading order, and semantic structure are mandatory in every screen.
+- User-facing UI must never surface accessibility theory, WCAG explanations, or implementation demos as page content.
+- The visual system must prefer background separation over card borders for layered content.
+- Card-like content should use surface contrast and muted background hierarchy instead of bordered white boxes when the parent surface is already white.
+
+## 1. Page Layout
+
+### SPEC-ID: LAYOUT-001 Header
+- **Purpose:** Provide consistent global identity and access to primary controls.
+- **Structure Rules:** Header must contain branding, primary navigation, utility controls, and account actions in a stable order.
+- **Interaction Rules:** Header controls must not shift position unexpectedly between pages.
+- **Keyboard Navigation Rules:** All header controls must be reachable by keyboard in a logical left-to-right order.
+- **Focus Rules:** Each interactive item in the header must receive a clearly visible focus state.
+- **Accessibility Rules:** Header must be wrapped in a landmark that can be identified by assistive technologies.
+- **Screen Reader Expectations:** Branding must be announced as a link, not as plain text.
+- **Content Writing Rules:** Labels must be concise, task-oriented, and consistent across pages.
+- **Anti-Patterns:** Do not hide critical actions behind icons only, and do not use changing control order.
+
+### SPEC-ID: LAYOUT-002 Navigation
+- **Purpose:** Provide access to primary sections of the product.
+- **Structure Rules:** Navigation must be a distinct landmark with a small, stable set of high-value destinations.
+- **Interaction Rules:** Current-page state must be obvious and persistent while on that section.
+- **Keyboard Navigation Rules:** Links must be reachable in source order; arrow-key navigation must not be required.
+- **Focus Rules:** Focus must never be trapped inside navigation.
+- **Accessibility Rules:** Navigation labels must be meaningful and not duplicate unrelated sections.
+- **Screen Reader Expectations:** The navigation region must be announced clearly and not repeated unnecessarily.
+- **Content Writing Rules:** Navigation labels must describe destinations, not actions or marketing copy.
+- **Anti-Patterns:** Do not place non-navigation widgets inside the primary navigation region.
+
+### SPEC-ID: LAYOUT-003 Main Content
+- **Purpose:** Contain the page’s unique task content.
+- **Structure Rules:** There must be exactly one primary main region per page.
+- **Interaction Rules:** Skip links and internal page anchors must target the main region reliably.
+- **Keyboard Navigation Rules:** The main region must be reachable after skip link activation.
+- **Focus Rules:** Main content must be able to receive programmatic focus when navigated to.
+- **Accessibility Rules:** The main region must be semantically identifiable and not nested incorrectly.
+- **Screen Reader Expectations:** Screen readers must detect the main region as the page’s primary content.
+- **Content Writing Rules:** Start with the page’s core action or information; avoid filler before the main heading.
+- **Anti-Patterns:** Do not nest multiple main regions, and do not hide primary content behind non-semantic wrappers.
+
+### SPEC-ID: LAYOUT-004 Footer
+- **Purpose:** Provide secondary navigation, policy content, and closing context.
+- **Structure Rules:** Footer must appear after the main content and must remain consistent across pages.
+- **Interaction Rules:** Footer actions must not compete with primary tasks.
+- **Keyboard Navigation Rules:** Footer must be reachable after the main content.
+- **Focus Rules:** Footer links must have the same visible focus quality as header links.
+- **Accessibility Rules:** Footer must be a landmark and must not contain inaccessible-only content.
+- **Screen Reader Expectations:** Assistive technologies must recognize the footer as a separate region.
+- **Content Writing Rules:** Use short labels for legal, help, or support destinations.
+- **Anti-Patterns:** Do not use the footer as a place to hide primary product actions.
+
+### SPEC-ID: LAYOUT-005 Landmark Structure
+- **Purpose:** Make the page easy to scan by keyboard and assistive technology.
+- **Structure Rules:** Use semantic landmarks consistently: header, navigation, main, complementary, and footer when needed.
+- **Interaction Rules:** Landmark order must mirror the visual and logical order of the page.
+- **Keyboard Navigation Rules:** Landmark-based skipping must be predictable and not require custom shortcuts.
+- **Focus Rules:** Landmark containers must not steal focus unless explicitly required.
+- **Accessibility Rules:** Every page must be understandable by landmark navigation alone.
+- **Screen Reader Expectations:** Region names must be meaningful, unique when needed, and not overly verbose.
+- **Content Writing Rules:** Do not label landmarks with implementation details.
+- **Anti-Patterns:** Do not replace landmarks with generic divs where semantic elements are available.
+
+## 1A. Surfaces and Cards
+
+### SPEC-ID: SURF-001 Surface Hierarchy
+- **Purpose:** Define layered content using background treatment rather than border-heavy card framing.
+- **Structure Rules:** The page canvas must remain visually clean; nested sections should use muted surfaces, subtle tonal shifts, or spacing to show hierarchy.
+- **Interaction Rules:** Surface changes must not imply interactivity unless the element is actually actionable.
+- **Keyboard Navigation Rules:** Surface treatment must not affect tab order or focus reachability.
+- **Focus Rules:** Focus indicators must remain visible on top of muted surfaces without relying on card borders.
+- **Accessibility Rules:** Surface hierarchy must remain understandable at low vision and high zoom without depending on border outlines.
+- **Screen Reader Expectations:** Surface treatment must not alter semantics; only content structure should be exposed.
+- **Content Writing Rules:** Use muted background sections for supporting content, summaries, and grouped controls when the parent page is light.
+- **Anti-Patterns:** Do not use bordered white cards as the default container when the surrounding page is already white; do not use borders as the primary separator for most content groups.
+
+### SPEC-ID: SURF-002 Card-Like Content
+- **Purpose:** Present grouped information in a calm, readable container.
+- **Structure Rules:** Card-like containers should use background variation and internal spacing first; borders are optional and should be avoided by default.
+- **Interaction Rules:** The container must not compete visually with the page title or primary actions.
+- **Keyboard Navigation Rules:** Buttons and links inside the container must retain normal keyboard flow.
+- **Focus Rules:** Focus state of child controls must remain prominent even when the container has no border.
+- **Accessibility Rules:** The container’s purpose must be clear through heading structure and content, not through border styling.
+- **Screen Reader Expectations:** The container should be announced only through semantic grouping, not by visual “card” cues.
+- **Content Writing Rules:** Keep card content focused on one purpose; do not overload a muted surface with unrelated tasks.
+- **Anti-Patterns:** Do not stack many bordered cards on a white page; do not use shadow or border depth to substitute for hierarchy.
+
+## 2. Typography
+
+### SPEC-ID: TYPE-001 H1
+- **Purpose:** Identify the page’s primary topic or task.
+- **Structure Rules:** A page should have one dominant H1 that appears once per view.
+- **Interaction Rules:** The H1 must not be interactive unless it is intentionally a link, in which case its purpose must remain clear.
+- **Keyboard Navigation Rules:** H1 must not interrupt tab order.
+- **Focus Rules:** H1 normally does not receive focus unless used as an anchor target.
+- **Accessibility Rules:** H1 must be the first clear heading in the page’s content hierarchy.
+- **Screen Reader Expectations:** Screen readers must encounter H1 early and use it to orient the user.
+- **Content Writing Rules:** H1 must be concise and task-focused.
+- **Anti-Patterns:** Do not use H1 as a decorative hero slogan.
+
+### SPEC-ID: TYPE-002 H2
+- **Purpose:** Divide the page into major sections.
+- **Structure Rules:** H2 must follow H1 logically and support section scanning.
+- **Interaction Rules:** Do not use H2 as a control or button substitute.
+- **Keyboard Navigation Rules:** H2 should not be focusable unless used as a linked heading pattern.
+- **Focus Rules:** Focus should not land on H2 by accident.
+- **Accessibility Rules:** H2 must help users understand grouping and hierarchy.
+- **Screen Reader Expectations:** H2 should create a clear navigation path through the page.
+- **Content Writing Rules:** Use H2 for section-level concepts, not repeated slogans.
+- **Anti-Patterns:** Do not skip from H1 directly to low-level headings without reason.
+
+### SPEC-ID: TYPE-003 H3
+- **Purpose:** Subdivide H2 sections into smaller, coherent groups.
+- **Structure Rules:** H3 must only appear inside a valid heading hierarchy.
+- **Interaction Rules:** H3 must not be used as a button-style label.
+- **Keyboard Navigation Rules:** H3 should remain non-interactive unless explicitly linked.
+- **Focus Rules:** H3 must not become a focus target unless it is a linked title.
+- **Accessibility Rules:** H3 must support navigation, not visual decoration.
+- **Screen Reader Expectations:** H3 should provide a nested outline that is easy to understand.
+- **Content Writing Rules:** Keep H3 labels short and descriptive.
+- **Anti-Patterns:** Do not overuse headings for styling.
+
+### SPEC-ID: TYPE-004 Body Text
+- **Purpose:** Communicate the primary content and instructions.
+- **Structure Rules:** Body text must be readable in short paragraphs and list-based chunks where appropriate.
+- **Interaction Rules:** Body text must not hide key actions or replace controls.
+- **Keyboard Navigation Rules:** Text blocks must not be focusable.
+- **Focus Rules:** Body text should never create accidental focus states.
+- **Accessibility Rules:** Body text must remain legible at zoom and reflow.
+- **Screen Reader Expectations:** Copy should be announced in a natural reading order.
+- **Content Writing Rules:** Use plain, direct language and short sentences.
+- **Anti-Patterns:** Do not overload paragraphs with multiple unrelated instructions.
+
+### SPEC-ID: TYPE-005 Caption
+- **Purpose:** Provide secondary context for media, fields, or supporting data.
+- **Structure Rules:** Captions must be visually associated with the item they describe.
+- **Interaction Rules:** Captions must not be mistaken for actions.
+- **Keyboard Navigation Rules:** Captions should not be keyboard targets.
+- **Focus Rules:** Captions must not appear focusable.
+- **Accessibility Rules:** Captions must supplement, not replace, the main content.
+- **Screen Reader Expectations:** Captions should be announced in proximity to the item they support.
+- **Content Writing Rules:** Use short, factual language.
+- **Anti-Patterns:** Do not use captions for primary task instructions.
+
+### SPEC-ID: TYPE-006 Helper Text
+- **Purpose:** Explain how to complete an action or field correctly.
+- **Structure Rules:** Helper text must be placed directly adjacent to the control it supports.
+- **Interaction Rules:** Helper text must remain visible when needed and not disappear before input.
+- **Keyboard Navigation Rules:** Helper text should not interrupt the control order.
+- **Focus Rules:** Focus should remain on the field while helper text is read.
+- **Accessibility Rules:** Helper text must be programmatically associated with its control when relevant.
+- **Screen Reader Expectations:** Helper text must be discoverable without extra navigation.
+- **Content Writing Rules:** Keep helper text concise, actionable, and specific.
+- **Anti-Patterns:** Do not bury critical rules only in helper text.
+
+## 3. Links
+
+### SPEC-ID: LINK-001 Inline Links
+- **Purpose:** Provide contextual navigation inside body content.
+- **Structure Rules:** Inline links must be embedded naturally in sentences or list items.
+- **Interaction Rules:** The destination must be obvious from the link text alone.
+- **Keyboard Navigation Rules:** Inline links must be reachable in source order.
+- **Focus Rules:** Inline links must show a visible focus indicator distinct from surrounding text.
+- **Accessibility Rules:** Link text must remain understandable out of context when possible.
+- **Screen Reader Expectations:** The spoken label must clearly identify the destination.
+- **Content Writing Rules:** Use descriptive text; avoid generic phrases like “click here”.
+- **Anti-Patterns:** Do not rely on color alone to distinguish links.
+
+### SPEC-ID: LINK-002 Navigation Links
+- **Purpose:** Move users between primary sections and pages.
+- **Structure Rules:** Navigation links must have stable placement and consistent labels.
+- **Interaction Rules:** Current page, selected section, and parent-child relationships must be obvious.
+- **Keyboard Navigation Rules:** Navigation links must behave like standard links.
+- **Focus Rules:** The active link and focus state must be distinct.
+- **Accessibility Rules:** Labels must communicate destination, not just visual position.
+- **Screen Reader Expectations:** Navigation links must be announced as links with meaningful targets.
+- **Content Writing Rules:** Use simple destination-based language.
+- **Anti-Patterns:** Do not make navigation depend on hover menus only.
+
+### SPEC-ID: LINK-003 External Links
+- **Purpose:** Take users to a different site or context.
+- **Structure Rules:** External links must be clearly identifiable in text or by accessible naming.
+- **Interaction Rules:** Users should not be surprised by a destination change.
+- **Keyboard Navigation Rules:** External links must remain standard links.
+- **Focus Rules:** External links must use the same focus quality as internal links.
+- **Accessibility Rules:** Assistive technology must be able to understand that the destination is external when needed.
+- **Screen Reader Expectations:** The spoken label should indicate a new site if that matters to the task.
+- **Content Writing Rules:** Tell users what they will find externally.
+- **Anti-Patterns:** Do not open new windows without clear notice and justification.
+
+### SPEC-ID: LINK-004 Link Focus Behavior
+- **Purpose:** Support keyboard-only users and reduce ambiguity during navigation.
+- **Structure Rules:** Focus must be visible, consistent, and not clipped by surrounding containers.
+- **Interaction Rules:** Focus styling must appear on keyboard focus without requiring mouse hover.
+- **Keyboard Navigation Rules:** Focus must move in logical DOM order.
+- **Focus Rules:** Do not hide focus inside text links or buttons.
+- **Accessibility Rules:** Focus indicator must be obvious against all supported backgrounds.
+- **Screen Reader Expectations:** Focus movement must correlate with the visible control.
+- **Content Writing Rules:** Focus behavior must never be implied in copy.
+- **Anti-Patterns:** Do not remove focus outlines or replace them with hover-only styling.
+
+### SPEC-ID: LINK-005 Underline Rules
+- **Purpose:** Make textual links distinguishable from plain text.
+- **Structure Rules:** Underline behavior must be consistent across the product.
+- **Interaction Rules:** Hover and focus states may strengthen underline emphasis, but the link must remain readable at all times.
+- **Keyboard Navigation Rules:** Underlined links must still be usable through standard tabbing.
+- **Focus Rules:** Focus state must remain distinct from hover state.
+- **Accessibility Rules:** Link identification must not rely on color alone.
+- **Screen Reader Expectations:** Underline styling does not affect screen reader behavior and must not replace accessible naming.
+- **Content Writing Rules:** Titles that act as links should read like destinations.
+- **Anti-Patterns:** Do not underline non-links unless there is a deliberate and consistent system rule.
+
+### SPEC-ID: LINK-INTERACTION-001 Text Navigation Link
+- **Purpose:** Provide a reusable specification for navigation text links that must remain discoverable without hover and become more prominent on hover and focus.
+- **Structure Rules:** Text navigation links must display an underline in the default state and the underline must span the full clickable text.
+- **Interaction Rules:** Hover must strengthen both text emphasis and underline emphasis without changing layout; focus must be more prominent than hover and must apply to the full interactive region.
+- **Keyboard Navigation Rules:** `Tab` must move to the next link, `Shift + Tab` must move to the previous link, and `Enter` must activate the focused link.
+- **Focus Rules:** Focus treatment must be visible immediately, must not depend on hover, and must remain readable.
+- **Accessibility Rules:** Links must remain recognizable without relying on color alone and must not depend on hover for discoverability.
+- **Screen Reader Expectations:** The link must be announced as a link with a meaningful destination; focus state does not change the accessible name.
+- **Content Writing Rules:** The text must clearly describe the destination or section.
+- **Anti-Patterns:** Do not hide the underline by default, do not use hover-only cues, and do not let focus be weaker than hover.
+
+## 4. Buttons
+
+### SPEC-ID: BTN-001 Primary Button
+- **Purpose:** Trigger the main task on a page.
+- **Structure Rules:** A page should have one clearly dominant primary button when appropriate.
+- **Interaction Rules:** The primary button must execute the most important next action.
+- **Keyboard Navigation Rules:** It must be reachable in source order like any other control.
+- **Focus Rules:** It must display a strong and obvious focus indicator.
+- **Accessibility Rules:** It must have a descriptive accessible name and not depend on icon meaning alone.
+- **Screen Reader Expectations:** The announced label must describe the action, not just “button”.
+- **Content Writing Rules:** Use action verbs and avoid vague labels.
+- **Anti-Patterns:** Do not use primary buttons for secondary or destructive actions.
+
+### SPEC-ID: BTN-002 Secondary Button
+- **Purpose:** Offer a lower-priority action related to the primary task.
+- **Structure Rules:** Secondary buttons must appear visually less dominant than the primary action.
+- **Interaction Rules:** Secondary actions must not compete with the primary CTA.
+- **Keyboard Navigation Rules:** The order must make the primary action discoverable first when appropriate.
+- **Focus Rules:** Focus state must still be obvious and accessible.
+- **Accessibility Rules:** Secondary labels must still be action-oriented.
+- **Screen Reader Expectations:** The role and label must be clear.
+- **Content Writing Rules:** Keep the label concrete and task-based.
+- **Anti-Patterns:** Do not make secondary buttons look identical to primary buttons.
+
+### SPEC-ID: BTN-003 Destructive Button
+- **Purpose:** Perform irreversible or high-impact actions.
+- **Structure Rules:** Destructive buttons must be visually and semantically separated from routine actions.
+- **Interaction Rules:** A confirmation step is required whenever the outcome cannot be safely undone.
+- **Keyboard Navigation Rules:** Must be reachable without forcing mouse interaction.
+- **Focus Rules:** Must retain visible focus and should not be hidden among safe actions.
+- **Accessibility Rules:** The danger of the action must be communicated without relying on color alone.
+- **Screen Reader Expectations:** The accessible name must make the destructive nature explicit.
+- **Content Writing Rules:** Use direct, unambiguous verbs.
+- **Anti-Patterns:** Do not place destructive actions next to safe actions without separation or confirmation.
+
+### SPEC-ID: BTN-004 Icon Button
+- **Purpose:** Provide compact action affordances where space is limited.
+- **Structure Rules:** Every icon button must have a text alternative or accessible name.
+- **Interaction Rules:** Icon meaning must be obvious from label and context.
+- **Keyboard Navigation Rules:** Icon buttons must be focusable and operable by keyboard.
+- **Focus Rules:** The focus state must be large enough to identify the control clearly.
+- **Accessibility Rules:** Icon-only controls must not depend on tooltips for core understanding.
+- **Screen Reader Expectations:** The accessible name must describe the action, not the icon.
+- **Content Writing Rules:** Use concise action labels.
+- **Anti-Patterns:** Do not use icon-only buttons for complex or destructive tasks without a robust label.
+
+### SPEC-ID: BTN-005 Button States
+- **Purpose:** Provide clear feedback across all interaction states.
+- **Structure Rules:** Default, hover, active, focus, and disabled states must be distinct.
+- **Interaction Rules:** Hover must not be the only indicator of interactivity.
+- **Keyboard Navigation Rules:** Focus state must be visible without mouse interaction.
+- **Focus Rules:** Focus must never be reduced below hover visibility.
+- **Accessibility Rules:** Disabled state must be perceivable and must not appear actionable.
+- **Screen Reader Expectations:** Disabled state must be announced when relevant.
+- **Content Writing Rules:** State cues must be supported by text when the action is important.
+- **Anti-Patterns:** Do not use disabled buttons to communicate errors or missing data without explanation.
+
+## 5. Text Inputs
+
+### SPEC-ID: INPUT-001 Labels
+- **Purpose:** Identify what data the field expects.
+- **Structure Rules:** Every input must have a visible label.
+- **Interaction Rules:** Labels must remain visible when the user types.
+- **Keyboard Navigation Rules:** Labels must not interfere with tab order.
+- **Focus Rules:** The field must show focus clearly when entered.
+- **Accessibility Rules:** Labels must be programmatically associated with controls.
+- **Screen Reader Expectations:** Screen readers must announce the label before or with the field.
+- **Content Writing Rules:** Labels should be short and specific.
+- **Anti-Patterns:** Do not rely on placeholder text as the only label.
+
+### SPEC-ID: INPUT-002 Placeholder Usage
+- **Purpose:** Provide example input format only when necessary.
+- **Structure Rules:** Placeholder text must never replace labels or instructions.
+- **Interaction Rules:** Placeholder should disappear without affecting comprehension.
+- **Keyboard Navigation Rules:** Placeholder has no keyboard behavior.
+- **Focus Rules:** Focus must not be confused with placeholder styling.
+- **Accessibility Rules:** Placeholder must not be the sole source of essential information.
+- **Screen Reader Expectations:** Placeholder must not be required for understanding.
+- **Content Writing Rules:** Keep placeholder examples short and realistic.
+- **Anti-Patterns:** Do not use placeholder as the main instructional channel.
+
+### SPEC-ID: INPUT-003 Helper Text
+- **Purpose:** Clarify the expected format or consequences of entry.
+- **Structure Rules:** Helper text must be attached to the relevant field group.
+- **Interaction Rules:** Helper text must remain available while editing.
+- **Keyboard Navigation Rules:** Helper text must not break input flow.
+- **Focus Rules:** The field focus state must remain dominant over helper text.
+- **Accessibility Rules:** Helper text must be programmatically related to the field when needed.
+- **Screen Reader Expectations:** Helper text should be discoverable as supporting information.
+- **Content Writing Rules:** State only what the user needs to proceed.
+- **Anti-Patterns:** Do not scatter important instructions away from the field.
+
+### SPEC-ID: INPUT-004 Validation Messages
+- **Purpose:** Explain input errors or corrections clearly.
+- **Structure Rules:** Error messages must be placed near the offending field and summarized when multiple errors exist.
+- **Interaction Rules:** Errors must appear after user interaction or submission, not only while typing unless necessary.
+- **Keyboard Navigation Rules:** Keyboard users must be able to discover the error without hunting.
+- **Focus Rules:** The first error should receive focus or be immediately reachable after submission failure.
+- **Accessibility Rules:** Errors must be programmatically associated with the field.
+- **Screen Reader Expectations:** Screen readers must announce the error and its relationship to the field.
+- **Content Writing Rules:** Error text must explain what went wrong and how to fix it.
+- **Anti-Patterns:** Do not use vague messages like “invalid input”.
+
+### SPEC-ID: INPUT-005 Required Fields
+- **Purpose:** Indicate which fields must be completed.
+- **Structure Rules:** Required status must be visible in labels or helper copy.
+- **Interaction Rules:** Required indication must be consistent across all forms.
+- **Keyboard Navigation Rules:** Required indicators must not interfere with navigation.
+- **Focus Rules:** Required status must remain readable when focused.
+- **Accessibility Rules:** Required state must be communicated without color alone.
+- **Screen Reader Expectations:** Required fields should be announced as required.
+- **Content Writing Rules:** Use plain language to explain any required formatting.
+- **Anti-Patterns:** Do not mark required fields only with an asterisk unless explained.
+
+### SPEC-ID: INPUT-006 Error States
+- **Purpose:** Make the cause and location of failure obvious.
+- **Structure Rules:** Error styling must affect the field, its label, and its message where necessary.
+- **Interaction Rules:** Errors must persist long enough to be read and corrected.
+- **Keyboard Navigation Rules:** Error review must be possible without mouse use.
+- **Focus Rules:** Error states must not remove focus visibility.
+- **Accessibility Rules:** Error states must be available to assistive technology.
+- **Screen Reader Expectations:** The error must be announced in context.
+- **Content Writing Rules:** Tell users how to resolve the error, not only that one exists.
+- **Anti-Patterns:** Do not rely on red styling alone to indicate failure.
+
+### SPEC-ID: INPUT-007 Success States
+- **Purpose:** Confirm successful completion when confirmation is needed.
+- **Structure Rules:** Success states must be clearly separated from errors and warnings.
+- **Interaction Rules:** Do not overuse success messages for routine operations.
+- **Keyboard Navigation Rules:** Success feedback must be reachable if it contains important next steps.
+- **Focus Rules:** Success messaging must not obscure the next action.
+- **Accessibility Rules:** Success state must not be color-only.
+- **Screen Reader Expectations:** Important success messages must be announced.
+- **Content Writing Rules:** Keep confirmation copy short and task-related.
+- **Anti-Patterns:** Do not use success states as a substitute for real validation.
+
+## 6. Select Dropdowns
+
+### SPEC-ID: SEL-001 Select Dropdowns
+- **Purpose:** Allow one choice from a defined list.
+- **Structure Rules:** Selects must have visible labels and a predictable option order.
+- **Interaction Rules:** Default selections must not mislead users.
+- **Keyboard Navigation Rules:** Users must be able to open, navigate, and select entirely by keyboard.
+- **Focus Rules:** Focus indicator must remain visible when the select is active.
+- **Accessibility Rules:** The control must expose its current value and label.
+- **Screen Reader Expectations:** Options and selection changes must be announced.
+- **Content Writing Rules:** Option names must be concise and mutually distinct.
+- **Anti-Patterns:** Do not use selects when the list is too complex to scan comfortably.
+
+## 7. Radio Groups
+
+### SPEC-ID: RAD-001 Radio Groups
+- **Purpose:** Allow one choice from a small set of closely related options.
+- **Structure Rules:** Radios must be grouped with a visible legend or equivalent label.
+- **Interaction Rules:** Only one radio in the group may be selected at a time.
+- **Keyboard Navigation Rules:** Arrow keys must move between options within the group.
+- **Focus Rules:** The selected and focused option must both be perceivable.
+- **Accessibility Rules:** The group must communicate its shared purpose programmatically.
+- **Screen Reader Expectations:** The group label and individual option labels must be announced.
+- **Content Writing Rules:** Keep option labels short and parallel.
+- **Anti-Patterns:** Do not use radios for large or non-exclusive datasets.
+
+## 8. Checkboxes
+
+### SPEC-ID: CHK-001 Checkboxes
+- **Purpose:** Allow multiple independent selections.
+- **Structure Rules:** Checkboxes must be grouped when they belong to the same question.
+- **Interaction Rules:** Each checkbox must be independently toggleable.
+- **Keyboard Navigation Rules:** Each checkbox must be reachable by tab and toggled with keyboard.
+- **Focus Rules:** The active checkbox must show an obvious focus state.
+- **Accessibility Rules:** Checkbox labels must be associated correctly and not rely on layout proximity.
+- **Screen Reader Expectations:** The label and checked state must be announced.
+- **Content Writing Rules:** Use clear, specific option names.
+- **Anti-Patterns:** Do not use a checkbox group when a radio group is the correct control.
+
+## 9. Search Components
+
+### SPEC-ID: SRCH-001 Search Components
+- **Purpose:** Support task-focused lookup and filtering.
+- **Structure Rules:** Search must have a labeled input and a clearly named submit action when applicable.
+- **Interaction Rules:** Search must not require hidden keyboard shortcuts.
+- **Keyboard Navigation Rules:** Search field, filters, and submit action must follow natural order.
+- **Focus Rules:** The search input must have a strong visible focus state.
+- **Accessibility Rules:** Search must be identifiable as search, not just as a text box.
+- **Screen Reader Expectations:** The search purpose must be announced clearly.
+- **Content Writing Rules:** Search placeholder text must not replace the label.
+- **Anti-Patterns:** Do not present search as the only path to core content.
+
+## 10. Tables
+
+### SPEC-ID: TAB-001 Tables
+- **Purpose:** Present structured, comparable data.
+- **Structure Rules:** Tables must have headers, clear rows, and predictable column order.
+- **Interaction Rules:** Table controls, if any, must not break row and column associations.
+- **Keyboard Navigation Rules:** Interactive table elements must remain keyboard accessible.
+- **Focus Rules:** Focus inside tables must be visible and not hidden by scroll containers.
+- **Accessibility Rules:** Headers must be associated with cells correctly.
+- **Screen Reader Expectations:** Row and column context must be available.
+- **Content Writing Rules:** Column titles must be concise and unambiguous.
+- **Anti-Patterns:** Do not use tables for layout.
+
+## 11. Breadcrumbs
+
+### SPEC-ID: BCR-001 Breadcrumbs
+- **Purpose:** Show the user’s location and support backtracking.
+- **Structure Rules:** Breadcrumbs must appear above the page title on non-landing pages where navigation depth exists.
+- **Interaction Rules:** Each breadcrumb except the current page must be a link.
+- **Keyboard Navigation Rules:** Breadcrumb links must be tabbable in order.
+- **Focus Rules:** The active breadcrumb trail must show visible focus and hover distinctions.
+- **Accessibility Rules:** Breadcrumbs must be enclosed in a breadcrumb landmark or equivalent semantic navigation.
+- **Screen Reader Expectations:** The trail must be announced as breadcrumb navigation.
+- **Content Writing Rules:** Labels must reflect the user’s mental model, not system internals.
+- **Anti-Patterns:** Do not expose the current page as a link to itself.
+
+## 12. Pagination
+
+### SPEC-ID: PAG-001 Pagination
+- **Purpose:** Move through sets of related pages or results.
+- **Structure Rules:** Pagination must show previous, next, and page positions clearly.
+- **Interaction Rules:** Current page must be obvious and not clickable.
+- **Keyboard Navigation Rules:** Pagination controls must be fully operable by keyboard.
+- **Focus Rules:** Focus must clearly follow the chosen page.
+- **Accessibility Rules:** Pagination must indicate the current page programmatically.
+- **Screen Reader Expectations:** The current position in the sequence must be announced.
+- **Content Writing Rules:** Labels must make sense without visual numbering alone.
+- **Anti-Patterns:** Do not hide all non-current pages behind unlabeled icons.
+
+## 13. Accordion
+
+### SPEC-ID: ACC-001 Accordion
+- **Purpose:** Hide and reveal related content in a controlled way.
+- **Structure Rules:** Each accordion header must clearly map to one panel.
+- **Interaction Rules:** Expanding and collapsing must preserve content order.
+- **Keyboard Navigation Rules:** Accordion headers must be focusable and activatable by keyboard.
+- **Focus Rules:** Focus must remain visible on the active header.
+- **Accessibility Rules:** Expanded and collapsed states must be exposed to assistive technology.
+- **Screen Reader Expectations:** The state change must be announced.
+- **Content Writing Rules:** Titles must describe the concealed content accurately.
+- **Anti-Patterns:** Do not use accordion for essential content that must always be seen.
+
+## 14. Tabs
+
+### SPEC-ID: TAB-001 Tabs
+- **Purpose:** Switch between peer views within the same context.
+- **Structure Rules:** Tabs must be arranged as a coherent set with a single active tab and associated panel.
+- **Interaction Rules:** Switching tabs must update content without losing context.
+- **Keyboard Navigation Rules:** Tabs must support arrow key movement and activation per standard tab behavior.
+- **Focus Rules:** Active and focused tab states must be distinguishable.
+- **Accessibility Rules:** The selected tab and its panel must be programmatically related.
+- **Screen Reader Expectations:** Tab counts, labels, and selected state must be announced correctly.
+- **Content Writing Rules:** Tab labels must be short and parallel.
+- **Anti-Patterns:** Do not use tabs for unrelated navigation destinations.
+
+## 15. Modal/Dialog
+
+### SPEC-ID: MOD-001 Modal/Dialog
+- **Purpose:** Interrupt the current workflow for a focused task or confirmation.
+- **Structure Rules:** Dialog content must have a clear title, body, and action area.
+- **Interaction Rules:** The dialog must capture focus while open and return it to the trigger on close.
+- **Keyboard Navigation Rules:** Tab and Shift+Tab must cycle within the dialog only.
+- **Focus Rules:** Initial focus must be placed thoughtfully based on the task.
+- **Accessibility Rules:** Background content must be inert or unreachable while the dialog is open.
+- **Screen Reader Expectations:** The dialog role, title, and purpose must be announced on open.
+- **Content Writing Rules:** Use concise titles and action labels.
+- **Anti-Patterns:** Do not open a dialog without a clear, user-initiated reason.
+
+## 16. Toast / Notification
+
+### SPEC-ID: NOTIF-001 Toast/Notification
+- **Purpose:** Report status changes or non-blocking feedback.
+- **Structure Rules:** Notifications must be short, timely, and not visually dominant.
+- **Interaction Rules:** Important notifications must not vanish before they can be read or acted upon.
+- **Keyboard Navigation Rules:** Interactive notifications must be reachable by keyboard.
+- **Focus Rules:** Toasts should not steal focus unless they require immediate action.
+- **Accessibility Rules:** Notifications must not rely on animation alone.
+- **Screen Reader Expectations:** Important messages should be announced through an appropriate live region.
+- **Content Writing Rules:** Keep copy direct and actionable.
+- **Anti-Patterns:** Do not use toasts for critical errors that require form-level correction.
+
+## 17. Empty States
+
+### SPEC-ID: EMPTY-001 Empty States
+- **Purpose:** Explain the absence of content and show the next useful action.
+- **Structure Rules:** Empty states must include a clear explanation and a relevant next step if possible.
+- **Interaction Rules:** The empty state should help users move forward, not stop them.
+- **Keyboard Navigation Rules:** Any call to action in the empty state must be keyboard reachable.
+- **Focus Rules:** Empty states should not create artificial focus traps.
+- **Accessibility Rules:** The absence of data must be explained in plain language.
+- **Screen Reader Expectations:** Screen readers must hear the purpose of the empty region and the suggested next action.
+- **Content Writing Rules:** Be honest about why the state is empty.
+- **Anti-Patterns:** Do not show only decorative illustrations without explanatory text.
+
+## 18. Error Pages
+
+### SPEC-ID: ERRP-001 Error Pages
+- **Purpose:** Help users recover from broken navigation, missing pages, or system failures.
+- **Structure Rules:** Error pages must explain the problem, provide a next step, and preserve the overall site identity.
+- **Interaction Rules:** Recovery actions must be obvious and minimal.
+- **Keyboard Navigation Rules:** Recovery links must be reachable immediately.
+- **Focus Rules:** The error message should be the first meaningful focus target where appropriate.
+- **Accessibility Rules:** Error pages must not be treated as dead ends.
+- **Screen Reader Expectations:** The error condition and recovery path must be announced clearly.
+- **Content Writing Rules:** Use calm, direct language and avoid blame.
+- **Anti-Patterns:** Do not leave users with a numeric code and no explanation.
+
+## 19. Loading States
+
+### SPEC-ID: LOAD-001 Loading States
+- **Purpose:** Show that content is being fetched or prepared.
+- **Structure Rules:** Loading states must preserve page structure where possible.
+- **Interaction Rules:** Users must understand whether loading is in progress and whether they can continue.
+- **Keyboard Navigation Rules:** Loading indicators must not block unrelated parts of the interface unnecessarily.
+- **Focus Rules:** Loading should not move focus unless a task transition requires it.
+- **Accessibility Rules:** Loading status must be exposed to assistive technologies when relevant.
+- **Screen Reader Expectations:** Users should know that the interface is busy without being overwhelmed by repetitive announcements.
+- **Content Writing Rules:** Keep loading text brief and informative.
+- **Anti-Patterns:** Do not show only an animation with no text alternative.
+
+## 20. Forms
+
+### SPEC-ID: FORM-001 Forms
+- **Purpose:** Collect data with a clear, error-tolerant flow.
+- **Structure Rules:** Forms must be grouped into coherent sections with a logical sequence.
+- **Interaction Rules:** Submit actions, validation, and confirmation states must be predictable.
+- **Keyboard Navigation Rules:** Users must be able to complete the entire form with keyboard only.
+- **Focus Rules:** The first invalid field or an error summary must receive attention after submission failure.
+- **Accessibility Rules:** Form validation must be visible, announced, and associated with the relevant control.
+- **Screen Reader Expectations:** Field labels, required status, helper text, and errors must be announced in context.
+- **Content Writing Rules:** Keep instructions short, field-specific, and plain-language.
+- **Anti-Patterns:** Do not depend on placeholder text, color alone, or hidden shortcuts.
+
+## Additional WCAG Requirements
+
+### Keyboard-Only Navigation
+- Every actionable control must be operable using standard keyboard interactions.
+- Focus order must follow the visual and semantic order of the page.
+- No essential task may require a mouse, gesture, or drag-only input.
+
+### Visible Focus Indicators
+- Keyboard focus must be clearly visible at all times.
+- Focus states must not be clipped, hidden, or replaced by hover-only styling.
+
+### Logical Heading Hierarchy
+- Headings must form a consistent outline from page title to section subdivisions.
+- Heading levels must not be skipped for visual convenience.
+
+### Landmark Navigation
+- Every page must provide navigable landmarks for primary content regions.
+- Landmarks must be stable and predictable across pages.
+
+### Screen Reader Compatibility
+- All meaningful controls, regions, and state changes must be accessible by assistive technology.
+- Decorative elements must be hidden from accessibility APIs.
+
+### Non-Color-Dependent Communication
+- Color may support meaning, but it must never be the only cue.
+- Labels, icons, text, and structure must reinforce the same message.
+
+### Accessible Form Validation
+- Validation must identify what is wrong, where it is wrong, and how to fix it.
+- Errors must remain associated with fields until corrected.
+
+### Accessible Error Handling
+- Errors must be announced clearly and presented in a recovery-friendly way.
+- User input should be preserved whenever possible after validation failure.
+
+### Zoom and Reflow Support
+- Content must remain readable and operable at browser zoom and narrow viewport conditions.
+- No essential content may require horizontal scrolling when reflow is available.
+
+### Touch Target Requirements
+- Interactive targets must be large enough to be tapped comfortably.
+- Target spacing must reduce accidental activation.
+
+### Accessible Naming Requirements
+- Every interactive element must have a meaningful accessible name.
+- Icon-only controls, custom widgets, and composite controls must expose clear labels and states.
+
+## Product-Level Anti-Patterns
+
+- Do not use accessibility explanations as user-facing content.
+- Do not introduce custom keyboard shortcuts that compete with standard browser behavior unless there is a strong, documented need.
+- Do not make visual design depend on shadow, motion, or color contrast alone.
+- Do not duplicate the same action in multiple competing locations without clear hierarchy.
+- Do not hide important actions behind hover, tooltip, or icon-only presentation.
+
