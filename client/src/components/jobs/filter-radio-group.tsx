@@ -13,7 +13,10 @@ type FilterRadioGroupProps = {
   name: string;
   options: FilterRadioOption[];
   defaultValue?: string;
+  value?: string;
+  onValueChange?: (value: string) => void;
   className?: string;
+  legendClassName?: string;
 };
 
 export function FilterRadioGroup({
@@ -21,9 +24,20 @@ export function FilterRadioGroup({
   name,
   options,
   defaultValue,
+  value: controlledValue,
+  onValueChange,
   className,
+  legendClassName,
 }: FilterRadioGroupProps) {
-  const [value, setValue] = useState(defaultValue ?? options[0]?.value ?? '');
+  const [uncontrolledValue, setUncontrolledValue] = useState(defaultValue ?? options[0]?.value ?? '');
+  const value = controlledValue ?? uncontrolledValue;
+
+  const setValue = (nextValue: string) => {
+    if (controlledValue === undefined) {
+      setUncontrolledValue(nextValue);
+    }
+    onValueChange?.(nextValue);
+  };
   const buttonRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   const selectAndFocus = (index: number) => {
@@ -57,7 +71,7 @@ export function FilterRadioGroup({
 
   return (
     <fieldset className={cn('space-y-3', className)}>
-      <legend className="text-sm font-semibold">{legend}</legend>
+      <legend className={cn('text-sm font-semibold', legendClassName)}>{legend}</legend>
       {options.map((option, index) => {
         const checked = value === option.value;
 

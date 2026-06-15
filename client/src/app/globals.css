@@ -297,6 +297,51 @@
     border-top: 4px solid var(--primary);
   }
 
+  .jobs-page-skip-nav {
+    height: 0;
+    overflow: hidden;
+  }
+
+  .jobs-page-skip-nav:focus-within {
+    height: auto;
+    overflow: visible;
+    margin-bottom: 0.5rem;
+  }
+
+  .jobs-page-skip-link {
+    clip: rect(0 0 0 0);
+    clip-path: inset(50%);
+    position: absolute;
+    height: 1px;
+    width: 1px;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .jobs-page-skip-link:focus-visible {
+    clip: auto;
+    clip-path: none;
+    position: static;
+    height: auto;
+    width: auto;
+    overflow: visible;
+    white-space: normal;
+    display: inline-flex;
+    padding: 0.5rem 0;
+    font-size: 0.875rem;
+    font-weight: 700;
+    color: #0b0c0c;
+    text-decoration-line: underline;
+    text-decoration-thickness: 2px;
+    text-underline-offset: 0.25rem;
+    background-color: #ffdd00;
+    outline: none;
+  }
+
+  .jobs-page-skip-link:hover {
+    text-decoration-thickness: 3px;
+  }
+
   .gov-primary-button {
     border: none;
     border-radius: 0;
