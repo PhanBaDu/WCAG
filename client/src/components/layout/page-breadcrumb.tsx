@@ -16,7 +16,7 @@ export function PageBreadcrumb({ items }: PageBreadcrumbProps) {
 
   return (
     <nav aria-label="Breadcrumb" className="mb-6">
-      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-muted-foreground">
+      <ol className="flex flex-wrap items-center gap-x-2 gap-y-1 text-sm text-foreground">
         {items.map((item, index) => {
           const isLast = index === items.length - 1;
 
@@ -24,11 +24,11 @@ export function PageBreadcrumb({ items }: PageBreadcrumbProps) {
             <li key={`${item.label}-${index}`} className="flex items-center gap-2">
               {index > 0 ? <span aria-hidden="true" className="text-muted-foreground/80">{'>'}</span> : null}
               {item.href && !isLast ? (
-                <TextNavigationLink href={item.href}>
+                <TextNavigationLink href={item.href} className="text-sm font-medium">
                   {item.label}
                 </TextNavigationLink>
               ) : (
-                <span aria-current={isLast ? 'page' : undefined} className={isLast ? 'font-medium text-foreground' : undefined}>
+                <span aria-current={isLast ? 'page' : undefined} className="font-medium">
                   {item.label}
                 </span>
               )}
