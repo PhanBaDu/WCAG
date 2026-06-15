@@ -17,7 +17,6 @@ import {
 import { TextNavigationLink } from '@/components/ui/text-navigation-link';
 
 type NavLabels = {
-  home: string;
   jobs: string;
   employers: string;
   profile: string;
@@ -85,14 +84,6 @@ export function HeaderNavMenu({ labels, isCurrent }: HeaderNavMenuProps) {
           className="flex flex-1 flex-col gap-1 overflow-y-auto px-4 py-4"
           aria-label={labels.primaryNav}
         >
-          <TextNavigationLink
-            href="/"
-            current={isCurrent('/')}
-            className="px-2 py-3 text-base"
-            onClick={() => setOpen(false)}
-          >
-            {labels.home}
-          </TextNavigationLink>
           <TextNavigationLink
             href="/jobs"
             current={isCurrent('/jobs')}

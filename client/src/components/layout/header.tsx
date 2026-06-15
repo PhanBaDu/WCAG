@@ -14,7 +14,6 @@ export function Header() {
   const isEn = locale === 'en';
   const nav = isEn
     ? {
-        home: 'Home',
         jobs: 'Jobs',
         employers: 'Employers',
         profile: 'Profile',
@@ -27,7 +26,6 @@ export function Header() {
         primaryNav: 'Primary navigation',
       }
     : {
-        home: 'Trang chủ',
         jobs: 'Việc làm',
         employers: 'Nhà tuyển dụng',
         profile: 'Hồ sơ',
@@ -49,9 +47,6 @@ export function Header() {
 
   const navLinks = (
     <>
-      <TextNavigationLink href="/" current={isCurrent('/')} className="shrink-0 whitespace-nowrap">
-        {nav.home}
-      </TextNavigationLink>
       <TextNavigationLink href="/jobs" current={isCurrent('/jobs')} className="shrink-0 whitespace-nowrap">
         {nav.jobs}
       </TextNavigationLink>
