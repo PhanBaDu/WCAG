@@ -40,9 +40,21 @@ export function JobResultCard({ job, locale }: JobResultCardProps) {
       ? `${summaryTags.join(' | ')} | +${extraTagCount}`
       : summaryTags.join(' | ');
 
+  const detailLabel =
+    locale === 'en'
+      ? `View details for ${job.title} at ${job.company}`
+      : `Xem chi tiết ${job.title} tại ${job.company}`;
+
   return (
-    <article className="w-full min-w-0 rounded-xl border border-[#0b0c0c] bg-card p-4 transition-shadow hover:shadow-md has-[:focus-visible]:outline has-[:focus-visible]:outline-[3px] has-[:focus-visible]:outline-[#ffdd00] has-[:focus-visible]:outline-offset-[3px]">
-      <div className="flex gap-4">
+    <article className="relative w-full min-w-0 rounded-xl border border-[#0b0c0c] bg-card p-4 transition-[border-color,box-shadow] hover:border-[#ffdd00] hover:shadow-md has-[:focus-visible]:border-[#ffdd00]">
+      <Link
+        href={`/jobs/${job.slug}`}
+        className="absolute inset-0 z-10 rounded-xl focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#ffdd00] focus-visible:outline-offset-[3px]"
+      >
+        <span className="sr-only">{detailLabel}</span>
+      </Link>
+
+      <div className="relative z-0 flex gap-4">
         <div
           className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-sm font-bold text-[#0b0c0c]"
           aria-hidden="true"
@@ -52,14 +64,7 @@ export function JobResultCard({ job, locale }: JobResultCardProps) {
 
         <div className="w-full min-w-0 flex-1">
           <div className="flex items-start justify-between gap-3">
-            <h3 className="text-base font-bold leading-snug">
-              <Link
-                href={`/jobs/${job.slug}`}
-                className="line-clamp-2 text-[#0b0c0c] no-underline hover:text-[#0b0c0c] focus-visible:outline-none"
-              >
-                {job.title}
-              </Link>
-            </h3>
+            <h3 className="text-base font-bold leading-snug text-[#0b0c0c]">{job.title}</h3>
             <span className="shrink-0 text-sm font-bold text-[#0b0c0c]">{job.salary}</span>
           </div>
 

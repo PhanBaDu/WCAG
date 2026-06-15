@@ -203,16 +203,10 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
                 onValueChange={(value) => setSearchScope(value as SearchScope)}
               />
 
-              <FilterCollapsibleSection
-                label={
-                  <>
-                    <Filter className="h-4 w-4 text-primary" aria-hidden="true" />
-                    {t.advancedFiltersLegend}
-                  </>
-                }
-              >
-                {hasSearched && searchMatches.length > 0 ? (
-                  <>
+              {hasSearched && searchMatches.length > 0 ? (
+                <>
+                  <div>
+                    <FilterSectionDivider />
                     <fieldset className="space-y-3">
                       <legend className="flex items-center gap-2 text-sm font-semibold">
                         <GraduationCap className="h-4 w-4 text-primary" aria-hidden="true" />
@@ -239,9 +233,10 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
                         </label>
                       ))}
                     </fieldset>
+                  </div>
 
+                  <div>
                     <FilterSectionDivider />
-
                     <fieldset className="space-y-3">
                       <legend className="flex items-center gap-2 text-sm font-semibold">
                         <Layers className="h-4 w-4 text-primary" aria-hidden="true" />
@@ -268,11 +263,18 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
                         </label>
                       ))}
                     </fieldset>
+                  </div>
+                </>
+              ) : null}
 
-                    <FilterSectionDivider />
+              <FilterCollapsibleSection
+                label={
+                  <>
+                    <Filter className="h-4 w-4 text-primary" aria-hidden="true" />
+                    {t.advancedFiltersLegend}
                   </>
-                ) : null}
-
+                }
+              >
                 <fieldset className="space-y-3">
                   <legend className="flex items-center gap-2 text-sm font-semibold">
                     <Accessibility className="h-4 w-4 text-primary" aria-hidden="true" />
