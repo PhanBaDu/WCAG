@@ -1,6 +1,6 @@
 'use client';
 
-import type { FocusEvent, FormEvent, KeyboardEvent } from 'react';
+import type { FocusEvent, FormEvent, KeyboardEvent, RefObject } from 'react';
 import { useEffect, useId, useMemo, useRef, useState } from 'react';
 import { Check, ChevronDown, MapPin, Search } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
@@ -24,6 +24,7 @@ type JobSearchBarProps = {
   locations: string[];
   locationOptions: JobLocationOption[];
   labels: JobSearchBarLabels;
+  queryInputRef?: RefObject<HTMLInputElement>;
   onQueryChange: (value: string) => void;
   onLocationsChange: (values: string[]) => void;
   onSubmit: () => void;
@@ -76,29 +77,17 @@ function JobLocationSelect({
     return locationOptions.filter((option) => normalize(option.label).includes(normalizedFilter));
   }, [filter, locationOptions]);
 
+  const safeActiveIndex =
+    activeIndex >= filteredLocations.length ? (filteredLocations.length > 0 ? filteredLocations.length - 1 : -1) : activeIndex;
+
   const activeOptionId =
-    open && listFocused && activeIndex >= 0 && filteredLocations[activeIndex]
-      ? `${listboxId}-option-${filteredLocations[activeIndex].value}`
+    open && listFocused && safeActiveIndex >= 0 && filteredLocations[safeActiveIndex]
+      ? `${listboxId}-option-${filteredLocations[safeActiveIndex].value}`
       : undefined;
 
   const focusFilterInput = () => {
     window.requestAnimationFrame(() => filterRef.current?.focus());
   };
-
-  useEffect(() => {
-    if (open) {
-      setDraft(value);
-      setFilter('');
-      setActiveIndex(-1);
-      setListFocused(false);
-    }
-  }, [open, value]);
-
-  useEffect(() => {
-    if (activeIndex >= 0 && activeIndex >= filteredLocations.length) {
-      setActiveIndex(filteredLocations.length > 0 ? filteredLocations.length - 1 : -1);
-    }
-  }, [activeIndex, filteredLocations.length]);
 
   useEffect(() => {
     if (!open || !listFocused || !activeOptionId) {
@@ -133,8 +122,8 @@ function JobLocationSelect({
   };
 
   const toggleActiveLocation = () => {
-    const activeOption = filteredLocations[activeIndex];
-    if (!activeOption || activeIndex < 0) {
+    const activeOption = filteredLocations[safeActiveIndex];
+    if (!activeOption || safeActiveIndex < 0) {
       return;
     }
     toggleDraftLocation(activeOption.value);
@@ -157,6 +146,15 @@ function JobLocationSelect({
       }
       return next;
     });
+  };
+
+  const openDropdown = () => {
+    setDraft(value);
+    setFilter('');
+    setActiveIndex(-1);
+    setListFocused(false);
+    setOpen(true);
+    focusFilterInput();
   };
 
   const handleListKeyDown = (event: KeyboardEvent<HTMLUListElement>) => {
@@ -204,15 +202,8 @@ function JobLocationSelect({
   const handleTriggerKeyDown = (event: KeyboardEvent<HTMLButtonElement>) => {
     if (event.key === 'Enter' || event.key === ' ' || event.key === 'Spacebar') {
       event.preventDefault();
-      setOpen(true);
-      focusFilterInput();
+      openDropdown();
       return;
-    }
-
-    if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-      event.preventDefault();
-      setOpen(true);
-      focusFilterInput();
     }
 
     if (event.key === 'Escape') {
@@ -250,10 +241,6 @@ function JobLocationSelect({
     focusFilterInput();
   };
 
-  const handleTriggerFocus = () => {
-    setOpen(true);
-  };
-
   const handleRootBlur = (event: FocusEvent<HTMLDivElement>) => {
     const nextTarget = event.relatedTarget as Node | null;
     if (!nextTarget || !rootRef.current?.contains(nextTarget)) {
@@ -272,11 +259,7 @@ function JobLocationSelect({
         aria-expanded={open}
         aria-controls={open ? listboxId : undefined}
         aria-label={labels.locationLabel}
-        onClick={() => {
-          setOpen(true);
-          focusFilterInput();
-        }}
-        onFocus={handleTriggerFocus}
+        onClick={openDropdown}
         onKeyDown={handleTriggerKeyDown}
         className="flex h-12 w-full items-center gap-2 px-4 text-left text-base text-[#0b0c0c] outline-none focus-visible:bg-[#ffdd00] focus-visible:outline-none"
       >
@@ -403,6 +386,7 @@ export function JobSearchBar({
   locations,
   locationOptions,
   labels,
+  queryInputRef,
   onQueryChange,
   onLocationsChange,
   onSubmit,
@@ -424,6 +408,7 @@ export function JobSearchBar({
             {labels.keywordLabel}
           </label>
           <input
+            ref={queryInputRef}
             id="job-search"
             type="search"
             value={query}

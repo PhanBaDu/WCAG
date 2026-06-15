@@ -1,6 +1,7 @@
 'use client';
 
-import { useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import {
   Accessibility,
   Briefcase,
@@ -23,12 +24,12 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   applyFacetFilters,
   buildFacets,
-  getHotJobs,
   getMockJobs,
   getSearchResults,
   type SearchScope,
 } from '@/lib/jobs/mock-jobs';
 import { getJobSearchLocations } from '@/lib/jobs/job-locations';
+import { usePathname, useRouter } from '@/i18n/routing';
 
 const copy = {
   vi: {
@@ -121,13 +122,35 @@ function toggleValue(values: string[], value: string) {
   return values.includes(value) ? values.filter((item) => item !== value) : [...values, value];
 }
 
+function getPageWindow(currentPage: number, totalPages: number) {
+  const windowSize = 5;
+  if (totalPages <= windowSize) {
+    return Array.from({ length: totalPages }, (_, index) => index + 1);
+  }
+
+  const start = Math.max(1, Math.min(currentPage - 2, totalPages - (windowSize - 1)));
+  return Array.from({ length: windowSize }, (_, index) => start + index);
+}
+
+function parsePage(value: string | null) {
+  const parsed = Number.parseInt(value ?? '', 10);
+  return Number.isFinite(parsed) && parsed > 0 ? parsed : 1;
+}
+
 export function JobsSearchPage({ locale }: JobsSearchPageProps) {
   const t = copy[locale];
   const allJobs = useMemo(() => getMockJobs(locale), [locale]);
-  const hotJobs = useMemo(() => getHotJobs(allJobs, 12), [allJobs]);
+  const router = useRouter();
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+  const orderedJobs = useMemo(
+    () => [...allJobs.filter((job) => job.isHot), ...allJobs.filter((job) => !job.isHot)],
+    [allJobs],
+  );
   const resultsRef = useRef<HTMLElement>(null);
 
   const searchLocations = useMemo(() => getJobSearchLocations(locale), [locale]);
+  const queryInputRef = useRef<HTMLInputElement>(null);
 
   const [query, setQuery] = useState('');
   const [submittedQuery, setSubmittedQuery] = useState('');
@@ -137,6 +160,7 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedExperience, setSelectedExperience] = useState<string[]>([]);
   const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const pageSize = 12;
 
   const searchMatches = useMemo(() => {
     if (!hasSearched) {
@@ -153,8 +177,37 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
     [searchMatches, selectedExperience, selectedCategories],
   );
 
-  const jobsToShow = hasSearched ? displayedJobs : hotJobs;
-  const resultsLabel = t.resultsTitle(jobsToShow.length);
+  const jobsToBrowse = hasSearched ? displayedJobs : orderedJobs;
+  const totalPages = Math.max(1, Math.ceil(jobsToBrowse.length / pageSize));
+  const currentPage = parsePage(searchParams.get('page'));
+  const activePage = Math.min(currentPage, totalPages);
+  const jobsToShow = jobsToBrowse.slice((activePage - 1) * pageSize, activePage * pageSize);
+  const resultsLabel = t.resultsTitle(jobsToBrowse.length);
+  const paginationWindow = getPageWindow(activePage, totalPages);
+
+  const setPageInUrl = useCallback(
+    (page: number) => {
+      const params = new URLSearchParams(searchParams.toString());
+      params.set('page', String(page));
+      router.replace(`${pathname}?${params.toString()}`);
+    },
+    [pathname, router, searchParams],
+  );
+
+  const goToPage = useCallback(
+    (page: number) => {
+      const nextPage = Math.max(1, Math.min(totalPages, page));
+      setPageInUrl(nextPage);
+      window.requestAnimationFrame(() => queryInputRef.current?.focus());
+    },
+    [setPageInUrl, totalPages],
+  );
+
+  useEffect(() => {
+    if (searchParams.get('page') !== String(activePage)) {
+      setPageInUrl(activePage);
+    }
+  }, [activePage, searchParams, setPageInUrl]);
 
   const handleSearch = () => {
     const trimmedQuery = query.trim();
@@ -167,12 +220,14 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
     setHasSearched(true);
     setSelectedExperience([]);
     setSelectedCategories([]);
+    goToPage(1);
     requestAnimationFrame(() => resultsRef.current?.focus());
   };
 
   const handleClearFilters = () => {
     setSelectedExperience([]);
     setSelectedCategories([]);
+    goToPage(1);
   };
 
   return (
@@ -202,6 +257,7 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
             applyLocation: t.applyLocation,
             searchButton: t.searchButton,
           }}
+          queryInputRef={queryInputRef}
           onQueryChange={setQuery}
           onLocationsChange={setLocations}
           onSubmit={handleSearch}
@@ -226,7 +282,10 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
                 name="search-scope"
                 options={[...t.searchScope]}
                 value={searchScope}
-                onValueChange={(value) => setSearchScope(value as SearchScope)}
+                onValueChange={(value) => {
+                  setSearchScope(value as SearchScope);
+                  goToPage(1);
+                }}
               />
 
               {hasSearched && searchMatches.length > 0 ? (
@@ -249,7 +308,10 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
                             name="experience"
                             value={facet.value}
                             checked={selectedExperience.includes(facet.value)}
-                            onChange={() => setSelectedExperience((current) => toggleValue(current, facet.value))}
+                            onChange={() => {
+                              setSelectedExperience((current) => toggleValue(current, facet.value));
+                              goToPage(1);
+                            }}
                             className="filter-control rounded text-primary"
                           />
                           <span className="filter-option-text">
@@ -279,7 +341,10 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
                             name="job-category"
                             value={facet.value}
                             checked={selectedCategories.includes(facet.value)}
-                            onChange={() => setSelectedCategories((current) => toggleValue(current, facet.value))}
+                            onChange={() => {
+                              setSelectedCategories((current) => toggleValue(current, facet.value));
+                              goToPage(1);
+                            }}
                             className="filter-control rounded text-primary"
                           />
                           <span className="filter-option-text">
@@ -400,11 +465,117 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
           {hasSearched && jobsToShow.length === 0 ? (
             <p className="text-base text-muted-foreground">{t.emptyNoResults}</p>
           ) : (
-            <div className="grid grid-cols-1 gap-4">
-              {jobsToShow.map((job) => (
-                <JobResultCard key={job.slug} job={job} locale={locale} />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 gap-4">
+                {jobsToShow.map((job) => (
+                  <JobResultCard key={job.slug} job={job} locale={locale} />
+                ))}
+              </div>
+
+              {jobsToBrowse.length > pageSize ? (
+                <nav
+                  aria-label={locale === 'en' ? 'Pagination' : 'Phân trang'}
+                  className="flex flex-col items-center gap-4 border-t pt-4 text-center"
+                >
+                  <p className="text-sm text-muted-foreground">
+                    {locale === 'en' ? `Page ${activePage} of ${totalPages}` : `Trang ${activePage}/${totalPages}`}
+                  </p>
+
+                  <div className="flex flex-wrap items-center justify-center gap-2">
+                    <button
+                      type="button"
+                      className={buttonVariants({
+                        variant: 'outline',
+                        className: 'h-10 rounded-none px-4',
+                      })}
+                      onClick={() => goToPage(activePage - 1)}
+                      disabled={activePage === 1}
+                    >
+                      {locale === 'en' ? 'Previous' : 'Trước'}
+                    </button>
+
+                    {paginationWindow[0] > 1 ? (
+                      <button
+                        type="button"
+                        aria-current={activePage === 1 ? 'page' : undefined}
+                        className={buttonVariants({
+                          variant: 'outline',
+                          className: [
+                            'h-10 min-w-10 rounded-none px-3 text-[#0b0c0c] transition-[background-color,border-color,outline-color] duration-150',
+                            activePage === 1
+                              ? 'bg-white !border-[3px] !border-[#ffdd00]'
+                              : 'hover:border-[#0b0c0c] hover:outline hover:outline-[2px] hover:outline-offset-[2px] hover:outline-[#ffdd00]',
+                            'focus-visible:bg-[#ffdd00] focus-visible:border-[#0b0c0c] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-[#ffdd00] focus-visible:ring-0',
+                          ].join(' '),
+                        })}
+                      onClick={() => goToPage(1)}
+                      >
+                        1
+                      </button>
+                    ) : null}
+
+                    {paginationWindow[0] > 2 ? <span className="px-1 text-muted-foreground">…</span> : null}
+
+                    {paginationWindow.map((page) => (
+                      <button
+                        key={page}
+                        type="button"
+                        aria-current={page === activePage ? 'page' : undefined}
+                        className={buttonVariants({
+                          variant: 'outline',
+                          className: [
+                            'h-10 min-w-10 rounded-none px-3 text-[#0b0c0c] transition-[background-color,border-color,outline-color] duration-150',
+                            page === activePage
+                              ? 'bg-white !border-[3px] !border-[#ffdd00]'
+                              : 'hover:border-[#0b0c0c] hover:outline hover:outline-[2px] hover:outline-offset-[2px] hover:outline-[#ffdd00]',
+                            'focus-visible:bg-[#ffdd00] focus-visible:border-[#0b0c0c] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-[#ffdd00] focus-visible:ring-0',
+                          ].join(' '),
+                        })}
+                        onClick={() => goToPage(page)}
+                      >
+                        {page}
+                      </button>
+                    ))}
+
+                    {paginationWindow[paginationWindow.length - 1] < totalPages - 1 ? (
+                      <span className="px-1 text-muted-foreground">…</span>
+                    ) : null}
+
+                    {paginationWindow[paginationWindow.length - 1] < totalPages ? (
+                      <button
+                        type="button"
+                        aria-current={activePage === totalPages ? 'page' : undefined}
+                        className={buttonVariants({
+                          variant: 'outline',
+                          className: [
+                            'h-10 min-w-10 rounded-none px-3 text-[#0b0c0c] transition-[background-color,border-color,outline-color] duration-150',
+                            activePage === totalPages
+                              ? 'bg-white !border-[3px] !border-[#ffdd00]'
+                              : 'hover:border-[#0b0c0c] hover:outline hover:outline-[2px] hover:outline-offset-[2px] hover:outline-[#ffdd00]',
+                            'focus-visible:bg-[#ffdd00] focus-visible:border-[#0b0c0c] focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-offset-[3px] focus-visible:outline-[#ffdd00] focus-visible:ring-0',
+                          ].join(' '),
+                        })}
+                        onClick={() => goToPage(totalPages)}
+                      >
+                        {totalPages}
+                      </button>
+                    ) : null}
+
+                    <button
+                      type="button"
+                      className={buttonVariants({
+                        variant: 'outline',
+                        className: 'h-10 rounded-none px-4',
+                      })}
+                      onClick={() => goToPage(activePage + 1)}
+                      disabled={activePage === totalPages}
+                    >
+                      {locale === 'en' ? 'Next' : 'Sau'}
+                    </button>
+                  </div>
+                </nav>
+              ) : null}
+            </>
           )}
         </section>
       </div>

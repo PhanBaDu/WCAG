@@ -1,23 +1,14 @@
 'use client';
 
+import Image from 'next/image';
 import { Link } from '@/i18n/routing';
 import type { MockJobListing } from '@/lib/jobs/types';
+import { getCompanyLogoAlt, getCompanyLogoSrc } from '@/lib/jobs/company-logo';
 
 const postedLabels = {
   vi: ['Đăng 2 ngày trước', 'Đăng 3 ngày trước', 'Đăng 1 tuần trước', 'Đăng 2 tuần trước'],
   en: ['Posted 2 days ago', 'Posted 3 days ago', 'Posted 1 week ago', 'Posted 2 weeks ago'],
 } as const;
-
-function companyInitials(company: string) {
-  return company
-    .split(' ')
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
-}
 
 function postedLabel(slug: string, locale: 'vi' | 'en') {
   let hash = 0;
@@ -55,11 +46,14 @@ export function JobResultCard({ job, locale }: JobResultCardProps) {
       </Link>
 
       <div className="relative z-0 flex gap-4">
-        <div
-          className="flex h-16 w-16 shrink-0 items-center justify-center rounded-none border border-border bg-background text-sm font-bold text-[#0b0c0c]"
-          aria-hidden="true"
-        >
-          {companyInitials(job.company)}
+        <div className="flex h-16 w-16 shrink-0 items-center justify-center border border-border bg-background p-1.5">
+          <Image
+            src={getCompanyLogoSrc(job.company)}
+            alt={getCompanyLogoAlt(job.company)}
+            width={64}
+            height={64}
+            className="h-full w-full object-contain"
+          />
         </div>
 
         <div className="w-full min-w-0 flex-1">

@@ -1,4 +1,5 @@
 import { Metadata } from 'next';
+import Image from 'next/image';
 import Script from 'next/script';
 import {
   ArrowLeft,
@@ -17,6 +18,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
 import { JobResultCard } from '@/components/jobs/job-result-card';
 import { getHotJobs, getMockJobs } from '@/lib/jobs/mock-jobs';
+import { getCompanyLogoAlt, getCompanyLogoSrc } from '@/lib/jobs/company-logo';
 
 const copy = {
   vi: {
@@ -110,17 +112,6 @@ const copy = {
     viewMore: 'View more jobs',
   },
 } as const;
-
-function companyInitials(company: string) {
-  return company
-    .split(' ')
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((part) => part[0])
-    .join('')
-    .slice(0, 2)
-    .toUpperCase();
-}
 
 function getJobDetailData(locale: 'vi' | 'en', slug: string) {
   const jobs = getMockJobs(locale);
@@ -309,8 +300,14 @@ export default async function JobDetailPage({
           <Card className="border-none shadow-lg">
             <CardContent className="p-6">
               <div className="flex items-start gap-4">
-                <div className="flex h-16 w-16 shrink-0 items-center justify-center rounded-none border border-border bg-background text-base font-bold text-[#0b0c0c]">
-                  {companyInitials(company)}
+                <div className="flex h-16 w-16 shrink-0 items-center justify-center border border-border bg-background p-1.5">
+                  <Image
+                    src={getCompanyLogoSrc(company)}
+                    alt={getCompanyLogoAlt(company)}
+                    width={64}
+                    height={64}
+                    className="h-full w-full object-contain"
+                  />
                 </div>
                 <div className="min-w-0 flex-1 space-y-1">
                   <h2 className="text-xl font-semibold leading-snug text-[#0b0c0c]">{company}</h2>
