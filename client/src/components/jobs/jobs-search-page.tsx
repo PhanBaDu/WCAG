@@ -155,7 +155,6 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
   return (
     <div className="mx-auto w-full max-w-7xl overflow-x-clip px-4 pb-8 pt-2 sm:px-6 lg:px-8 lg:pb-12 lg:pt-3">
       <PageBreadcrumb items={[...t.crumbs]} />
-      <JobsPageSkipLinks locale={locale} />
       <h1 className="mb-6 text-2xl font-bold tracking-tight">{t.pageTitle}</h1>
 
       <form
@@ -184,7 +183,9 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
         </button>
       </form>
 
-      <div className="grid gap-8 lg:grid-cols-[minmax(0,30%)_minmax(0,1fr)]">
+      <JobsPageSkipLinks locale={locale} />
+
+      <div className="mb-8 grid gap-8 lg:grid-cols-[minmax(0,30%)_minmax(0,1fr)]">
         <div className="min-w-0">
           <JobsFilterAside label={t.filtersTitle}>
           <Card className="overflow-visible border-none shadow-lg">

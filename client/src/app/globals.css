@@ -302,10 +302,26 @@
     overflow: hidden;
   }
 
-  .jobs-page-skip-nav:focus-within {
+  .jobs-page-skip-nav--below-search:focus-within {
     height: auto;
     overflow: visible;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .jobs-page-skip-list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem 1rem;
+  }
+
+  .jobs-page-skip-separator {
+    display: none;
+  }
+
+  .jobs-page-skip-nav:focus-within .jobs-page-skip-separator {
+    display: inline;
   }
 
   .jobs-page-skip-link {
@@ -318,28 +334,42 @@
     white-space: nowrap;
   }
 
-  .jobs-page-skip-link:focus-visible {
+  .jobs-page-skip-nav:focus-within .jobs-page-skip-link {
     clip: auto;
     clip-path: none;
     position: static;
     height: auto;
     width: auto;
     overflow: visible;
-    white-space: normal;
+    white-space: nowrap;
     display: inline-flex;
-    padding: 0.5rem 0;
+    align-items: center;
+    padding: 0.375rem 0.75rem;
     font-size: 0.875rem;
     font-weight: 700;
     color: #0b0c0c;
     text-decoration-line: underline;
+    text-decoration-color: #0b0c0c;
     text-decoration-thickness: 2px;
     text-underline-offset: 0.25rem;
-    background-color: #ffdd00;
+    background-color: transparent;
     outline: none;
+    box-shadow: none;
   }
 
-  .jobs-page-skip-link:hover {
-    text-decoration-thickness: 3px;
+  .jobs-page-skip-nav:focus-within .jobs-page-skip-link--active {
+    background-color: #ffdd00;
+    color: #0b0c0c;
+    text-decoration-color: #0b0c0c;
+    text-decoration-thickness: 4px;
+    outline: none;
+    box-shadow: none;
+  }
+
+  .jobs-page-skip-nav .jobs-page-skip-link:focus,
+  .jobs-page-skip-nav .jobs-page-skip-link:focus-visible {
+    outline: none;
+    box-shadow: none;
   }
 
   .gov-primary-button {
