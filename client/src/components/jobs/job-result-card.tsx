@@ -46,17 +46,17 @@ export function JobResultCard({ job, locale }: JobResultCardProps) {
       : `Xem chi tiết ${job.title} tại ${job.company}`;
 
   return (
-    <article className="relative w-full min-w-0 rounded-xl border border-[#0b0c0c] bg-card p-4 transition-[border-color,box-shadow] hover:border-[#ffdd00] hover:shadow-md has-[:focus-visible]:border-[#ffdd00]">
+    <article className="relative w-full min-w-0 rounded-none border border-[#0b0c0c] bg-card p-4 transition-[border-color,box-shadow] hover:border-[#ffdd00] hover:shadow-md has-[:focus-visible]:border-[#ffdd00]">
       <Link
         href={`/jobs/${job.slug}`}
-        className="absolute inset-0 z-10 rounded-xl focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#ffdd00] focus-visible:outline-offset-[3px]"
+        className="absolute inset-0 z-10 rounded-none focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#ffdd00] focus-visible:outline-offset-[3px]"
       >
         <span className="sr-only">{detailLabel}</span>
       </Link>
 
       <div className="relative z-0 flex gap-4">
         <div
-          className="flex h-16 w-16 shrink-0 items-center justify-center rounded-lg border border-border bg-background text-sm font-bold text-[#0b0c0c]"
+          className="flex h-16 w-16 shrink-0 items-center justify-center rounded-none border border-border bg-background text-sm font-bold text-[#0b0c0c]"
           aria-hidden="true"
         >
           {companyInitials(job.company)}
@@ -73,8 +73,8 @@ export function JobResultCard({ job, locale }: JobResultCardProps) {
           </p>
 
           <div className="mt-2 flex flex-wrap gap-2">
-            <span className="rounded-md bg-muted px-2.5 py-1 text-xs text-foreground">{job.location}</span>
-            <span className="rounded-md bg-muted px-2.5 py-1 text-xs text-foreground">{job.experience}</span>
+            <span className="rounded-none bg-muted px-2.5 py-1 text-xs text-foreground">{job.location}</span>
+            <span className="rounded-none bg-muted px-2.5 py-1 text-xs text-foreground">{job.experience}</span>
           </div>
 
           <div className="mt-3 flex items-center justify-between gap-3">

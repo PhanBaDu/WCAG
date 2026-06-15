@@ -15,6 +15,7 @@ import { buttonVariants } from '@/components/ui/button';
 import { PageBreadcrumb } from '@/components/layout/page-breadcrumb';
 import { JobsFilterAside } from '@/components/jobs/jobs-filter-aside';
 import { JobResultCard } from '@/components/jobs/job-result-card';
+import { JobSearchBar } from '@/components/jobs/job-search-bar';
 import { JobsPageSkipLinks } from '@/components/jobs/jobs-page-skip-links';
 import { FilterCollapsibleSection, FilterSectionDivider } from '@/components/jobs/filter-collapsible-section';
 import { FilterRadioGroup } from '@/components/jobs/filter-radio-group';
@@ -24,15 +25,22 @@ import {
   buildFacets,
   getHotJobs,
   getMockJobs,
-  searchJobs,
+  getSearchResults,
   type SearchScope,
 } from '@/lib/jobs/mock-jobs';
+import { getJobSearchLocations } from '@/lib/jobs/job-locations';
 
 const copy = {
   vi: {
     pageTitle: 'Tìm kiếm việc làm',
-    searchLabel: 'Từ khoá tìm kiếm',
-    searchPlaceholder: 'Nhập tên việc làm, kỹ năng hoặc địa điểm',
+    searchLabel: 'Vị trí tuyển dụng',
+    searchPlaceholder: 'Vị trí tuyển dụng',
+    locationLabel: 'Địa điểm',
+    locationPlaceholder: 'Địa điểm',
+    locationSearchPlaceholder: 'Nhập Tỉnh/Thành phố',
+    locationSelectedCount: (count: number) => `${count} địa điểm đã chọn`,
+    clearLocation: 'Bỏ chọn tất cả',
+    applyLocation: 'Áp dụng',
     searchButton: 'Tìm kiếm',
     filtersTitle: 'Bộ lọc',
     searchScopeLegend: 'Tìm theo',
@@ -65,8 +73,14 @@ const copy = {
   },
   en: {
     pageTitle: 'Job search',
-    searchLabel: 'Search keywords',
-    searchPlaceholder: 'Enter job title, skill, or location',
+    searchLabel: 'Job title or keyword',
+    searchPlaceholder: 'Job title or keyword',
+    locationLabel: 'Location',
+    locationPlaceholder: 'Location',
+    locationSearchPlaceholder: 'Enter province or city',
+    locationSelectedCount: (count: number) => `${count} locations selected`,
+    clearLocation: 'Clear selection',
+    applyLocation: 'Apply',
     searchButton: 'Search',
     filtersTitle: 'Filters',
     searchScopeLegend: 'Search in',
@@ -113,8 +127,12 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
   const hotJobs = useMemo(() => getHotJobs(allJobs, 12), [allJobs]);
   const resultsRef = useRef<HTMLElement>(null);
 
+  const searchLocations = useMemo(() => getJobSearchLocations(locale), [locale]);
+
   const [query, setQuery] = useState('');
   const [submittedQuery, setSubmittedQuery] = useState('');
+  const [locations, setLocations] = useState<string[]>([]);
+  const [submittedLocations, setSubmittedLocations] = useState<string[]>([]);
   const [searchScope, setSearchScope] = useState<SearchScope>('both');
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedExperience, setSelectedExperience] = useState<string[]>([]);
@@ -124,8 +142,8 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
     if (!hasSearched) {
       return [];
     }
-    return searchJobs(allJobs, submittedQuery, searchScope);
-  }, [allJobs, hasSearched, submittedQuery, searchScope]);
+    return getSearchResults(allJobs, submittedQuery, searchScope, submittedLocations);
+  }, [allJobs, hasSearched, submittedQuery, submittedLocations, searchScope]);
 
   const experienceFacets = useMemo(() => buildFacets(searchMatches, 'experience'), [searchMatches]);
   const categoryFacets = useMemo(() => buildFacets(searchMatches, 'category'), [searchMatches]);
@@ -138,9 +156,14 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
   const jobsToShow = hasSearched ? displayedJobs : hotJobs;
   const resultsLabel = t.resultsTitle(jobsToShow.length);
 
-  const handleSearch = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    setSubmittedQuery(query.trim());
+  const handleSearch = () => {
+    const trimmedQuery = query.trim();
+    if (!trimmedQuery && locations.length === 0) {
+      return;
+    }
+
+    setSubmittedQuery(trimmedQuery);
+    setSubmittedLocations(locations);
     setHasSearched(true);
     setSelectedExperience([]);
     setSelectedCategories([]);
@@ -157,31 +180,33 @@ export function JobsSearchPage({ locale }: JobsSearchPageProps) {
       <PageBreadcrumb items={[...t.crumbs]} />
       <h1 className="mb-6 text-2xl font-bold tracking-tight">{t.pageTitle}</h1>
 
-      <form
+      <div
         id="jobs-search-form"
         tabIndex={-1}
         role="search"
         aria-label={t.pageTitle}
-        onSubmit={handleSearch}
-        className="mb-8 flex flex-col items-center gap-3 sm:flex-row sm:justify-center sm:gap-4"
+        className="mb-8 flex justify-center"
       >
-        <div className="w-full min-w-[16rem] max-w-2xl">
-          <label htmlFor="job-search" className="sr-only">
-            {t.searchLabel}
-          </label>
-          <input
-            id="job-search"
-            type="search"
-            value={query}
-            onChange={(event) => setQuery(event.target.value)}
-            className="gov-input h-12 w-full px-4 text-base"
-            placeholder={t.searchPlaceholder}
-          />
-        </div>
-        <button type="submit" className={buttonVariants({ className: 'h-12 w-full shrink-0 sm:w-auto sm:self-center' })}>
-          {t.searchButton}
-        </button>
-      </form>
+        <JobSearchBar
+          query={query}
+          locations={locations}
+          locationOptions={searchLocations}
+          labels={{
+            keywordLabel: t.searchLabel,
+            keywordPlaceholder: t.searchPlaceholder,
+            locationLabel: t.locationLabel,
+            locationPlaceholder: t.locationPlaceholder,
+            locationSearchPlaceholder: t.locationSearchPlaceholder,
+            locationSelectedCount: t.locationSelectedCount,
+            clearLocation: t.clearLocation,
+            applyLocation: t.applyLocation,
+            searchButton: t.searchButton,
+          }}
+          onQueryChange={setQuery}
+          onLocationsChange={setLocations}
+          onSubmit={handleSearch}
+        />
+      </div>
 
       <JobsPageSkipLinks locale={locale} />
 

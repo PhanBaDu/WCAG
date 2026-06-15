@@ -81,6 +81,26 @@ export function applyFacetFilters(
   });
 }
 
+export function filterJobsByLocation(jobs: MockJobListing[], locations: string[]): MockJobListing[] {
+  if (locations.length === 0) {
+    return jobs;
+  }
+
+  const normalizedLocations = new Set(locations.map(normalize));
+  return jobs.filter((job) => normalizedLocations.has(normalize(job.location)));
+}
+
+export function getSearchResults(
+  jobs: MockJobListing[],
+  query: string,
+  scope: SearchScope,
+  locations: string[],
+): MockJobListing[] {
+  const trimmedQuery = query.trim();
+  const baseResults = trimmedQuery ? searchJobs(jobs, trimmedQuery, scope) : jobs;
+  return filterJobsByLocation(baseResults, locations);
+}
+
 const THUMBNAIL_POOL = [
   { src: '/job-support.svg', alt: 'Illustration for customer support role' },
   { src: '/job-content.svg', alt: 'Illustration for content specialist role' },
