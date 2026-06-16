@@ -24,7 +24,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
     return (
       <div
         data-app-shell="true"
-        className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20"
+        className="flex min-h-screen flex-col overflow-x-hidden bg-background text-foreground selection:bg-primary/20"
       >
         <FocusLoop />
         <main id="main-content" tabIndex={-1} className="w-full flex-1 outline-none">
@@ -37,7 +37,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   return (
     <div
       data-app-shell="true"
-      className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20"
+      className="flex min-h-screen flex-col overflow-x-hidden bg-background text-foreground selection:bg-primary/20"
     >
       <FocusLoop />
       {!hideHeaderOnLanding ? <Header /> : null}

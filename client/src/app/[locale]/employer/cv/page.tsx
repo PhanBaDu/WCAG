@@ -124,7 +124,7 @@ const applications = [
     role: 'Chuyên viên nội dung số',
     location: 'Hà Nội',
     match: '92%',
-    status: 'Mới',
+    status: 'Tiếp nhận',
     updated: '10:48',
     file: '/cv-demo.pdf',
     signal: 'Nổi bật',
@@ -144,7 +144,7 @@ const applications = [
     role: 'Trợ lý dữ liệu',
     location: 'Đà Nẵng',
     match: '85%',
-    status: 'Mời phỏng vấn',
+    status: 'Duyệt hồ sơ',
     updated: '08:40',
     file: '/cv-demo.pdf',
     signal: 'Chủ động',
@@ -154,7 +154,7 @@ const applications = [
     role: 'Chuyên viên vận hành',
     location: 'Toàn quốc',
     match: '79%',
-    status: 'Mới',
+    status: 'Cân nhắc',
     updated: 'Hôm qua',
     file: '/cv-demo.pdf',
     signal: 'Chờ xem',
@@ -179,12 +179,15 @@ export default async function EmployerCvPage({ params }: { params: Promise<{ loc
 
   return (
     <EmployerRouteGate>
-      <main id="main-content" className="mx-auto w-full max-w-7xl px-4 pt-4 pb-8 sm:px-6 lg:px-8 lg:pt-4 lg:pb-12">
+      <main
+        id="main-content"
+        className="mx-auto w-full max-w-7xl overflow-x-hidden px-4 pt-4 pb-8 sm:px-6 lg:px-8 lg:pt-4 lg:pb-12"
+      >
         <PageBreadcrumb items={crumbs} className="mb-2" />
 
         <section className="space-y-6">
-          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-            <div className="max-w-3xl space-y-3">
+          <div className="flex min-w-0 flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <div className="min-w-0 max-w-3xl space-y-3">
               <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">{t.eyebrow}</p>
               <div className="space-y-2">
                 <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{t.title}</h1>
@@ -192,7 +195,7 @@ export default async function EmployerCvPage({ params }: { params: Promise<{ loc
               </div>
             </div>
 
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link
                 href="/employer/dashboard"
                 className={buttonVariants({
@@ -235,7 +238,7 @@ export default async function EmployerCvPage({ params }: { params: Promise<{ loc
             ))}
           </div>
 
-          <Card className="rounded-none border border-border shadow-lg">
+          <Card className="min-w-0 rounded-none border border-border shadow-lg">
             <CardHeader className="border-b">
               <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
                 <div className="space-y-1">
@@ -249,7 +252,7 @@ export default async function EmployerCvPage({ params }: { params: Promise<{ loc
               </div>
             </CardHeader>
             <CardContent className="space-y-4 p-5">
-              <div className="grid gap-4 lg:grid-cols-[1.2fr_0.6fr_0.6fr_0.6fr]">
+              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-[1.2fr_0.6fr_0.6fr_0.6fr]">
                 <div className="space-y-2">
                   <label className="text-sm font-medium">{locale === 'en' ? 'Search' : 'Tìm kiếm'}</label>
                   <div className="flex h-12 items-center gap-2 rounded-none border-2 border-[#0b0c0c] bg-background px-4">
@@ -344,9 +347,17 @@ export default async function EmployerCvPage({ params }: { params: Promise<{ loc
                           </span>
                         </td>
                         <td className="px-4 py-4">
-                          <span className="inline-flex rounded-none bg-muted/40 px-3 py-1 text-xs font-semibold text-foreground">
-                            {item.status}
-                          </span>
+                          <CandidateStatusActions
+                            initialStatus={
+                              item.status as
+                                | 'Tiếp nhận'
+                                | 'Đã xem'
+                                | 'Duyệt hồ sơ'
+                                | 'Cân nhắc'
+                                | 'Phù hợp'
+                                | 'Chưa phù hợp'
+                            }
+                          />
                         </td>
                         <td className="px-4 py-4">
                           <span className="inline-flex items-center gap-1.5 text-muted-foreground">
@@ -392,7 +403,7 @@ export default async function EmployerCvPage({ params }: { params: Promise<{ loc
           </Card>
 
           <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-            <Card className="rounded-none border border-border shadow-lg">
+            <Card className="min-w-0 rounded-none border border-border shadow-lg">
               <CardHeader>
                 <CardTitle className="text-2xl">{t.previewTitle}</CardTitle>
                 <p className="text-sm text-muted-foreground">
@@ -400,8 +411,8 @@ export default async function EmployerCvPage({ params }: { params: Promise<{ loc
                 </p>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-start justify-between gap-4 rounded-none border bg-background p-4">
-                  <div className="space-y-2">
+                <div className="flex flex-col gap-4 rounded-none border bg-background p-4 sm:flex-row sm:items-start sm:justify-between">
+                  <div className="min-w-0 space-y-2">
                     <div className="flex flex-wrap items-center gap-2">
                       <h2 className="text-xl font-semibold">{t.previewSubtitle}</h2>
                       <span className="rounded-none bg-muted/40 px-2 py-1 text-xs font-semibold text-foreground">
@@ -436,31 +447,6 @@ export default async function EmployerCvPage({ params }: { params: Promise<{ loc
                     ))}
                   </div>
                 </div>
-
-                <div className="rounded-none border bg-background p-4">
-                  <p className="font-medium text-foreground">{locale === 'en' ? 'Applicant workflow' : 'Quy trình ứng viên'}</p>
-                  <div className="mt-3 grid gap-2 sm:grid-cols-3">
-                    {[
-                      locale === 'en' ? 'New' : 'Mới',
-                      locale === 'en' ? 'Under review' : 'Đang duyệt',
-                      locale === 'en' ? 'Interview' : 'Phỏng vấn',
-                    ].map((item, index) => (
-                      <div
-                        key={item}
-                        className={[
-                          'rounded-none border px-3 py-2 text-sm font-medium',
-                          index === 0
-                            ? 'border-[#0b0c0c] bg-white text-[#0b0c0c]'
-                            : 'border-slate-200 bg-white text-slate-500',
-                        ].join(' ')}
-                      >
-                        {item}
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                <CandidateStatusActions locale={locale} />
 
                 <div className="grid gap-3 sm:grid-cols-2">
                   <a

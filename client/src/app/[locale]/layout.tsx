@@ -12,6 +12,7 @@ import { KeyboardShortcutsDialog } from '@/components/layout/keyboard-shortcuts-
 import { ScrollRestoration } from '@/components/layout/scroll-restoration';
 import '../globals.css';
 import { Inter, Lexend } from 'next/font/google';
+import type { Viewport } from 'next';
 
 const inter = Inter({
   subsets: ['latin', 'vietnamese'],
@@ -38,6 +39,13 @@ export function generateStaticParams() {
 export const metadata = {
   title: 'Cổng Việc Làm Người Khuyết Tật',
   description: 'Giao diện tĩnh cho cổng việc làm người khuyết tật theo chuẩn WCAG 2.2 AA.',
+};
+
+export const viewport: Viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 1,
+  userScalable: false,
 };
 
 export default async function LocaleLayout({
