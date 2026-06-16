@@ -3,6 +3,7 @@ import { PageBreadcrumb } from '@/components/layout/page-breadcrumb';
 import { Card, CardContent } from '@/components/ui/card';
 import { AppliedJobsTabs } from '@/components/profile/applied-jobs-tabs';
 import { AppliedJobsPreview } from '@/components/profile/applied-jobs-preview';
+import { AppliedJobsStatusGuide } from '@/components/profile/applied-jobs-status-guide';
 
 export const metadata: Metadata = {
   title: 'Việc làm đã ứng tuyển | Cổng Việc Làm Người Khuyết Tật',
@@ -32,9 +33,12 @@ export default async function AppliedJobsPage({ params }: { params: Promise<{ lo
       <Card className="border border-slate-100 bg-white shadow-[0_6px_24px_rgba(15,23,42,0.06)]">
         <CardContent className="space-y-8 p-5 sm:p-6 lg:p-7">
           <div className="space-y-5">
-            <h1 className="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
-              {locale === 'en' ? 'Applied jobs' : 'Việc làm đã ứng tuyển'}
-            </h1>
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <h1 className="text-2xl font-bold tracking-tight text-slate-950 sm:text-3xl">
+                {locale === 'en' ? 'Applied jobs' : 'Việc làm đã ứng tuyển'}
+              </h1>
+              <AppliedJobsStatusGuide locale={locale} />
+            </div>
 
             <AppliedJobsTabs locale={locale} />
           </div>
