@@ -21,6 +21,7 @@ export function Header() {
         jobs: 'Jobs',
         appliedJobs: 'Applied jobs',
         employers: 'Employers',
+        candidateCvs: 'Candidate CVs',
         profile: 'Profile',
         login: 'Log in',
         register: 'Register',
@@ -34,6 +35,7 @@ export function Header() {
         jobs: 'Việc làm',
         appliedJobs: 'Việc làm đã ứng tuyển',
         employers: 'Nhà tuyển dụng',
+        candidateCvs: 'CV ứng viên',
         profile: 'Hồ sơ',
         login: 'Đăng nhập',
         register: 'Đăng ký',
@@ -68,13 +70,24 @@ export function Header() {
         </>
       )}
       {(!user || isEmployer) && (
-        <TextNavigationLink
-          href="/employer/jobs/create"
-          current={isCurrent('/employer/jobs/create')}
-          className="shrink-0 whitespace-nowrap"
-        >
-          {nav.employers}
-        </TextNavigationLink>
+        <>
+          <TextNavigationLink
+            href="/employer/jobs/create"
+            current={isCurrent('/employer/jobs/create')}
+            className="shrink-0 whitespace-nowrap"
+          >
+            {nav.employers}
+          </TextNavigationLink>
+          {isEmployer ? (
+            <TextNavigationLink
+              href="/employer/cv"
+              current={isCurrent('/employer/cv')}
+              className="shrink-0 whitespace-nowrap"
+            >
+              {nav.candidateCvs}
+            </TextNavigationLink>
+          ) : null}
+        </>
       )}
       <TextNavigationLink href="/profile" current={isCurrent('/profile')} className="shrink-0 whitespace-nowrap">
         {nav.profile}

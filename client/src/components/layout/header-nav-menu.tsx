@@ -19,6 +19,7 @@ type NavLabels = {
   jobs: string;
   appliedJobs: string;
   employers: string;
+  candidateCvs: string;
   profile: string;
   login: string;
   register: string;
@@ -103,14 +104,26 @@ export function HeaderNavMenu({ labels, isCurrent, userRole }: HeaderNavMenuProp
             </>
           ) : null}
           {showEmployers ? (
-            <TextNavigationLink
-              href="/employer/jobs/create"
-              current={isCurrent('/employer/jobs/create')}
-              className="px-2 py-3 text-base"
-              onClick={() => setOpen(false)}
-            >
-              {labels.employers}
-            </TextNavigationLink>
+            <>
+              <TextNavigationLink
+                href="/employer/jobs/create"
+                current={isCurrent('/employer/jobs/create')}
+                className="px-2 py-3 text-base"
+                onClick={() => setOpen(false)}
+              >
+                {labels.employers}
+              </TextNavigationLink>
+              {userRole === 'NTD' ? (
+                <TextNavigationLink
+                  href="/employer/cv"
+                  current={isCurrent('/employer/cv')}
+                  className="px-2 py-3 text-base"
+                  onClick={() => setOpen(false)}
+                >
+                  {labels.candidateCvs}
+                </TextNavigationLink>
+              ) : null}
+            </>
           ) : null}
           <TextNavigationLink
             href="/profile"

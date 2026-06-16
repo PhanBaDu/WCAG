@@ -89,19 +89,17 @@ export default async function CreateJobPage({ params }: { params: Promise<{ loca
   const t = copy[locale];
   const crumbs = locale === 'en'
     ? [
-        { label: 'Home', href: '/' },
         { label: 'Employers', href: '/employer/dashboard' },
         { label: 'Post a job' },
       ]
     : [
-        { label: 'Trang chủ', href: '/' },
         { label: 'Nhà tuyển dụng', href: '/employer/dashboard' },
         { label: 'Đăng tin tuyển dụng' },
       ];
   return (
     <EmployerRouteGate>
-      <main id="main-content" className="mx-auto w-full max-w-7xl px-4 pt-2 pb-8 sm:px-6 lg:px-8 lg:pb-12 lg:pt-3">
-      <PageBreadcrumb items={crumbs} />
+      <main id="main-content" className="mx-auto w-full max-w-7xl px-4 pt-4 pb-8 sm:px-6 lg:px-8 lg:pb-12 lg:pt-4">
+      <PageBreadcrumb items={crumbs} className="mb-2" />
       <div className="grid gap-8 lg:grid-cols-[1.45fr_0.75fr]">
         <Card className="rounded-none border border-border shadow-lg">
           <CardHeader>

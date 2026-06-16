@@ -76,19 +76,17 @@ export default async function EmployerDashboardPage({ params }: { params: Promis
   const t = copy[locale];
   const crumbs = locale === 'en'
     ? [
-        { label: 'Home', href: '/' },
         { label: 'Employers', href: '/employer/dashboard' },
         { label: 'Dashboard' },
       ]
     : [
-        { label: 'Trang chủ', href: '/' },
         { label: 'Nhà tuyển dụng', href: '/employer/dashboard' },
         { label: 'Bảng điều khiển' },
       ];
   return (
     <EmployerRouteGate>
-      <main id="main-content" className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-      <PageBreadcrumb items={crumbs} />
+      <main id="main-content" className="mx-auto w-full max-w-7xl px-4 pt-4 pb-8 sm:px-6 lg:px-8 lg:pt-4 lg:pb-12">
+      <PageBreadcrumb items={crumbs} className="mb-2" />
       <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-3xl">
           <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">{t.eyebrow}</p>

@@ -3,7 +3,7 @@
 import Image from 'next/image';
 import { useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { ArrowRight, MapPin } from 'lucide-react';
+import { ArrowRight, CheckCircle2, CircleDot, Clock3, MapPin, SearchCheck } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
@@ -29,6 +29,59 @@ type MockApplication = {
   slug: string;
   tags: string[];
 };
+
+type StatusStage = {
+  key: Exclude<StatusKey, 'all'>;
+  labelVi: string;
+  labelEn: string;
+  detailVi: string;
+  detailEn: string;
+};
+
+const STATUS_STAGES: StatusStage[] = [
+  {
+    key: 'received',
+    labelVi: 'Đã tiếp nhận',
+    labelEn: 'Received',
+    detailVi: 'Hồ sơ đã vào hệ thống',
+    detailEn: 'Profile entered the system',
+  },
+  {
+    key: 'reviewed',
+    labelVi: 'Đã xem',
+    labelEn: 'Viewed',
+    detailVi: 'Nhà tuyển dụng đã mở CV',
+    detailEn: 'Employer opened the CV',
+  },
+  {
+    key: 'screening',
+    labelVi: 'Duyệt hồ sơ',
+    labelEn: 'Screening',
+    detailVi: 'Đang so khớp yêu cầu',
+    detailEn: 'Matching requirements',
+  },
+  {
+    key: 'considering',
+    labelVi: 'Cân nhắc',
+    labelEn: 'Considering',
+    detailVi: 'Chuẩn bị lịch phỏng vấn',
+    detailEn: 'Preparing interview schedule',
+  },
+  {
+    key: 'matched',
+    labelVi: 'Phù hợp',
+    labelEn: 'Matched',
+    detailVi: 'Ứng viên được shortlist',
+    detailEn: 'Candidate shortlisted',
+  },
+  {
+    key: 'rejected',
+    labelVi: 'Chưa phù hợp',
+    labelEn: 'Not suitable',
+    detailVi: 'Hồ sơ kết thúc vòng xét',
+    detailEn: 'Profile closed out',
+  },
+];
 
 const APPLICATIONS: MockApplication[] = [
   {
@@ -136,9 +189,18 @@ function getStatusFromQuery(value: string | null): StatusKey {
   return value && valid.has(value as StatusKey) ? (value as StatusKey) : 'all';
 }
 
+function getCurrentStage(status: StatusKey) {
+  if (status === 'all') {
+    return 'received';
+  }
+
+  return status;
+}
+
 export function AppliedJobsPreview({ locale }: AppliedJobsPreviewProps) {
   const searchParams = useSearchParams();
   const activeStatus = getStatusFromQuery(searchParams.get('status'));
+  const currentStage = getCurrentStage(activeStatus);
 
   const currentItem = useMemo(() => {
     const matched = APPLICATIONS.find((application) => application.key === activeStatus);
@@ -147,6 +209,11 @@ export function AppliedJobsPreview({ locale }: AppliedJobsPreviewProps) {
 
   const statusLabel = locale === 'vi' ? currentItem.statusVi : currentItem.statusEn;
   const note = locale === 'vi' ? currentItem.noteVi : currentItem.noteEn;
+  const stageIndex = STATUS_STAGES.findIndex((stage) => stage.key === currentStage);
+  const stageLabels = STATUS_STAGES.map((stage) => ({
+    label: locale === 'vi' ? stage.labelVi : stage.labelEn,
+    detail: locale === 'vi' ? stage.detailVi : stage.detailEn,
+  }));
   const logoSrc = getCompanyLogoSrc(currentItem.company);
   const logoAlt = getCompanyLogoAlt(currentItem.company);
 
@@ -192,6 +259,55 @@ export function AppliedJobsPreview({ locale }: AppliedJobsPreviewProps) {
                 <MapPin className="h-4 w-4" aria-hidden="true" />
                 {currentItem.appliedAt}
               </p>
+            </div>
+          </div>
+
+          <div className="mt-6 rounded-none border border-slate-200 bg-slate-50 p-4">
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <div className="space-y-1">
+                <p className="text-sm font-semibold text-slate-950">
+                  {locale === 'vi' ? 'Trạng thái hồ sơ' : 'Application status'}
+                </p>
+                <p className="text-sm text-slate-600">
+                  {locale === 'vi'
+                    ? 'Theo dõi tiến trình xử lý của nhà tuyển dụng'
+                    : 'Track how the employer is handling your profile'}
+                </p>
+              </div>
+              <span className="inline-flex items-center gap-1.5 rounded-none border border-[#0b0c0c] bg-white px-3 py-1 text-xs font-semibold text-[#0b0c0c]">
+                <SearchCheck className="h-3.5 w-3.5" aria-hidden="true" />
+                {statusLabel}
+              </span>
+            </div>
+
+            <div className="mt-4 grid gap-3 md:grid-cols-3 xl:grid-cols-6">
+              {STATUS_STAGES.map((stage, index) => {
+                const isActive = stage.key === currentStage;
+                const isDone = index < stageIndex;
+                const Icon = isDone ? CheckCircle2 : isActive ? CircleDot : Clock3;
+                return (
+                  <div
+                    key={stage.key}
+                    className={[
+                      'rounded-none border p-3 transition-colors',
+                      isActive ? 'border-[#0b0c0c] bg-white' : 'border-slate-200 bg-white/80',
+                    ].join(' ')}
+                  >
+                    <div className="flex items-center justify-between gap-2">
+                      <p className="text-xs font-semibold uppercase tracking-[0.12em] text-slate-500">
+                        {locale === 'vi' ? 'Bước' : 'Step'} {index + 1}
+                      </p>
+                      <Icon className={isDone ? 'h-4 w-4 text-emerald-600' : isActive ? 'h-4 w-4 text-primary' : 'h-4 w-4 text-slate-400'} aria-hidden="true" />
+                    </div>
+                    <p className="mt-2 text-sm font-semibold text-slate-950">
+                      {locale === 'vi' ? stage.labelVi : stage.labelEn}
+                    </p>
+                    <p className="mt-1 text-xs leading-5 text-slate-600">
+                      {stageLabels[index].detail}
+                    </p>
+                  </div>
+                );
+              })}
             </div>
           </div>
 
