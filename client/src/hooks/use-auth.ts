@@ -8,7 +8,7 @@ import {
   readDemoUser,
   saveDemoSession,
 } from '@/lib/auth/demo-session';
-import { redirectToLogin } from '@/lib/auth/redirect-to-login';
+import { getDemoAccountByEmail } from '@/lib/auth/demo-credentials';
 import { useRouter } from '@/i18n/routing';
 import type { AuthResponse, PublicUser } from '@/lib/types/auth';
 
@@ -65,7 +65,13 @@ export function useLoginMutation() {
 
   return useMutation({
     mutationFn: async (credentials: LoginCredentials): Promise<AuthResponse> => {
-      const user = createDemoUser({ email: credentials.email });
+      const account = getDemoAccountByEmail(credentials.email);
+      const user = createDemoUser({
+        email: account.email,
+        role: account.role,
+        fullName: account.fullName,
+        companyName: account.companyName,
+      });
       return { accessToken: DEMO_ACCESS_TOKEN, user };
     },
     onSuccess: (data: AuthResponse) => {

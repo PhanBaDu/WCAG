@@ -5,6 +5,7 @@ import { usePathname } from '@/i18n/routing';
 import { useChromeMode } from '@/components/layout/chrome-mode';
 import { Footer } from '@/components/layout/footer';
 import { Header } from '@/components/layout/header';
+import { FocusLoop } from '@/components/layout/focus-loop';
 
 const AUTH_PATHS = new Set(['/login', '/register']);
 
@@ -25,6 +26,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         data-app-shell="true"
         className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20"
       >
+        <FocusLoop />
         <main id="main-content" tabIndex={-1} className="w-full flex-1 outline-none">
           {children}
         </main>
@@ -37,6 +39,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
       data-app-shell="true"
       className="flex min-h-screen flex-col bg-background text-foreground selection:bg-primary/20"
     >
+      <FocusLoop />
       {!hideHeaderOnLanding ? <Header /> : null}
       <main id="main-content" tabIndex={-1} className="w-full flex-1 outline-none">
         {children}

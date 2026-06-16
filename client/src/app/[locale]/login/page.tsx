@@ -29,6 +29,10 @@ const copy = {
     benefitsTitle: 'Sau khi đăng nhập, bạn có thể',
     benefit1: 'Cập nhật hồ sơ và ứng tuyển nhanh hơn.',
     benefit2: 'Theo dõi tin đã nộp hoặc tin tuyển dụng đã đăng.',
+    demoAccountsTitle: 'Chọn tài khoản demo',
+    demoAccountsHint: 'Bấm vào một thẻ để tự điền email và mật khẩu tương ứng.',
+    demoUseAccount: 'Dùng tài khoản này',
+    demoRoleRule: 'Luồng sau đăng nhập',
     asideTitle: 'AccessJobs VN',
     asideHeading: 'Chào mừng trở lại',
     asideDesc:
@@ -60,6 +64,10 @@ const copy = {
     benefitsTitle: 'Once you are signed in, you can',
     benefit1: 'Update your profile and apply faster.',
     benefit2: 'Track submitted applications or published job posts.',
+    demoAccountsTitle: 'Choose a demo account',
+    demoAccountsHint: 'Click a card to auto-fill the matching email and password.',
+    demoUseAccount: 'Use this account',
+    demoRoleRule: 'Post-login path',
     asideTitle: 'AccessJobs VN',
     asideHeading: 'Welcome back',
     asideDesc:

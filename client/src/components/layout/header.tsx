@@ -3,6 +3,7 @@
 import { useLocale } from 'next-intl';
 import { usePathname } from '@/i18n/routing';
 import { useCompactHeader } from '@/hooks/use-compact-header';
+import { useAuthQuery } from '@/hooks/use-auth';
 import { HeaderNavMenu } from '@/components/layout/header-nav-menu';
 import { HeaderAuthActions } from '@/components/layout/header-auth-actions';
 import { TextNavigationLink } from '@/components/ui/text-navigation-link';
@@ -11,7 +12,10 @@ import { SiteBrand } from '@/components/layout/site-brand';
 export function Header() {
   const locale = useLocale();
   const pathname = usePathname();
+  const { data: user } = useAuthQuery();
   const isEn = locale === 'en';
+  const isEmployer = user?.role === 'NTD';
+  const isJobSeeker = user?.role === 'NKT';
   const nav = isEn
     ? {
         jobs: 'Jobs',
@@ -47,16 +51,20 @@ export function Header() {
 
   const navLinks = (
     <>
-      <TextNavigationLink href="/jobs" current={isCurrent('/jobs')} className="shrink-0 whitespace-nowrap">
-        {nav.jobs}
-      </TextNavigationLink>
-      <TextNavigationLink
-        href="/employer/jobs/create"
-        current={isCurrent('/employer/jobs/create')}
-        className="shrink-0 whitespace-nowrap"
-      >
-        {nav.employers}
-      </TextNavigationLink>
+      {(!user || isJobSeeker) && (
+        <TextNavigationLink href="/jobs" current={isCurrent('/jobs')} className="shrink-0 whitespace-nowrap">
+          {nav.jobs}
+        </TextNavigationLink>
+      )}
+      {(!user || isEmployer) && (
+        <TextNavigationLink
+          href="/employer/jobs/create"
+          current={isCurrent('/employer/jobs/create')}
+          className="shrink-0 whitespace-nowrap"
+        >
+          {nav.employers}
+        </TextNavigationLink>
+      )}
       <TextNavigationLink href="/profile" current={isCurrent('/profile')} className="shrink-0 whitespace-nowrap">
         {nav.profile}
       </TextNavigationLink>
@@ -84,7 +92,7 @@ export function Header() {
           className="pointer-events-none invisible absolute top-0 left-0 flex h-16 w-max max-w-none items-center gap-3 whitespace-nowrap"
         >
           <SiteBrand className="shrink-0" />
-          <nav className="flex shrink-0 items-center gap-4">{navLinks}</nav>
+          <nav className="flex shrink-0 items-center gap-3">{navLinks}</nav>
           <div className="flex shrink-0 items-center gap-2">{authActions}</div>
         </div>
 
@@ -92,7 +100,7 @@ export function Header() {
 
         {!compact && (
           <nav
-            className="flex shrink-0 items-center justify-center gap-4 text-sm font-medium xl:gap-6"
+            className="flex shrink-0 items-center justify-center gap-3 text-sm font-medium xl:gap-4"
             aria-label={nav.primaryNav}
           >
             {navLinks}
@@ -102,7 +110,7 @@ export function Header() {
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           {!compact && authActions}
           {compact && (
-            <HeaderNavMenu labels={nav} isCurrent={isCurrent} />
+            <HeaderNavMenu labels={nav} isCurrent={isCurrent} userRole={user?.role} />
           )}
         </div>
       </div>

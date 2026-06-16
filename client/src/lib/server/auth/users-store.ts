@@ -2,7 +2,7 @@ import { mkdir, readFile, writeFile } from 'fs/promises';
 import path from 'path';
 import { randomUUID } from 'crypto';
 import type { PublicUser, StoredUser, UserRole } from './types';
-import { DEMO_LOGIN_EMAIL, DEMO_LOGIN_PASSWORD } from '@/lib/auth/demo-credentials';
+import { DEMO_ACCOUNTS } from '@/lib/auth/demo-credentials';
 import { hashPassword } from './password';
 
 const DATA_DIR = path.join(process.cwd(), 'data');
@@ -18,23 +18,32 @@ async function ensureUsersFile() {
   }
 }
 
-async function ensureDemoUser(users: StoredUser[]) {
-  if (users.some((user) => user.email === DEMO_LOGIN_EMAIL)) {
-    return users;
+async function ensureDemoUsers(users: StoredUser[]) {
+  let changed = false;
+
+  for (const account of DEMO_ACCOUNTS) {
+    if (users.some((user) => user.email === account.email.toLowerCase())) {
+      continue;
+    }
+
+    users.push({
+      id: randomUUID(),
+      email: account.email.toLowerCase(),
+      passwordHash: await hashPassword(account.password),
+      role: account.role,
+      fullName: account.fullName,
+      companyName: account.companyName,
+      isVerified: true,
+      isActive: true,
+      createdAt: new Date().toISOString(),
+    });
+    changed = true;
   }
 
-  users.push({
-    id: randomUUID(),
-    email: DEMO_LOGIN_EMAIL,
-    passwordHash: await hashPassword(DEMO_LOGIN_PASSWORD),
-    role: 'NKT',
-    fullName: 'Nguyễn Văn A',
-    isVerified: true,
-    isActive: true,
-    createdAt: new Date().toISOString(),
-  });
+  if (changed) {
+    await writeUsers(users);
+  }
 
-  await writeUsers(users);
   return users;
 }
 
@@ -42,7 +51,7 @@ async function readUsers(): Promise<StoredUser[]> {
   await ensureUsersFile();
   const raw = await readFile(USERS_FILE, 'utf8');
   const users = JSON.parse(raw) as StoredUser[];
-  return ensureDemoUser(users);
+  return ensureDemoUsers(users);
 }
 
 async function writeUsers(users: StoredUser[]) {

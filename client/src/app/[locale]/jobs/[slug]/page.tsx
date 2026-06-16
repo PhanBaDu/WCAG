@@ -501,8 +501,8 @@ export default async function JobDetailPage({
                 <div>
                   <p className="mb-2 text-sm font-semibold text-[#0b0c0c]">{locale === 'en' ? 'Job category' : 'Danh mục nghề'}</p>
                   <div className="flex flex-wrap gap-2">
-                    {[category, industry, experience].map((item) => (
-                      <span key={item} className="rounded-none bg-muted px-3 py-1 text-xs text-foreground">
+                    {[category, industry, experience].map((item, index) => (
+                      <span key={`${item}-${index}`} className="rounded-none bg-muted px-3 py-1 text-xs text-foreground">
                         {item}
                       </span>
                     ))}

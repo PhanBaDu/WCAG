@@ -1,8 +1,7 @@
 "use client";
 
 import { MenuIcon, XIcon } from 'lucide-react';
-import { useEffect, useState } from 'react';
-import { usePathname } from '@/i18n/routing';
+import { useState } from 'react';
 import { LangToggle } from '@/components/lang-toggle';
 import { Button } from '@/components/ui/button';
 import { GovButtonLink } from '@/components/ui/gov-button';
@@ -31,18 +30,16 @@ type NavLabels = {
 type HeaderNavMenuProps = {
   labels: NavLabels;
   isCurrent: (href: string) => boolean;
+  userRole?: 'NKT' | 'NTD' | 'ADM';
 };
 
-export function HeaderNavMenu({ labels, isCurrent }: HeaderNavMenuProps) {
+export function HeaderNavMenu({ labels, isCurrent, userRole }: HeaderNavMenuProps) {
   const [open, setOpen] = useState(false);
-  const pathname = usePathname();
-
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
+  const showJobs = !userRole || userRole === 'NKT';
+  const showEmployers = !userRole || userRole === 'NTD';
 
   return (
-    <Sheet open={open} onOpenChange={setOpen}>
+    <Sheet key={labels.menuTitle} open={open} onOpenChange={setOpen}>
       <SheetTrigger
         render={
           <Button
@@ -84,22 +81,26 @@ export function HeaderNavMenu({ labels, isCurrent }: HeaderNavMenuProps) {
           className="flex flex-1 flex-col gap-1 overflow-y-auto px-4 py-4"
           aria-label={labels.primaryNav}
         >
-          <TextNavigationLink
-            href="/jobs"
-            current={isCurrent('/jobs')}
-            className="px-2 py-3 text-base"
-            onClick={() => setOpen(false)}
-          >
-            {labels.jobs}
-          </TextNavigationLink>
-          <TextNavigationLink
-            href="/employer/jobs/create"
-            current={isCurrent('/employer/jobs/create')}
-            className="px-2 py-3 text-base"
-            onClick={() => setOpen(false)}
-          >
-            {labels.employers}
-          </TextNavigationLink>
+          {showJobs ? (
+            <TextNavigationLink
+              href="/jobs"
+              current={isCurrent('/jobs')}
+              className="px-2 py-3 text-base"
+              onClick={() => setOpen(false)}
+            >
+              {labels.jobs}
+            </TextNavigationLink>
+          ) : null}
+          {showEmployers ? (
+            <TextNavigationLink
+              href="/employer/jobs/create"
+              current={isCurrent('/employer/jobs/create')}
+              className="px-2 py-3 text-base"
+              onClick={() => setOpen(false)}
+            >
+              {labels.employers}
+            </TextNavigationLink>
+          ) : null}
           <TextNavigationLink
             href="/profile"
             current={isCurrent('/profile')}
