@@ -17,6 +17,7 @@ import { TextNavigationLink } from '@/components/ui/text-navigation-link';
 
 type NavLabels = {
   jobs: string;
+  appliedJobs: string;
   employers: string;
   profile: string;
   login: string;
@@ -82,14 +83,24 @@ export function HeaderNavMenu({ labels, isCurrent, userRole }: HeaderNavMenuProp
           aria-label={labels.primaryNav}
         >
           {showJobs ? (
-            <TextNavigationLink
-              href="/jobs"
-              current={isCurrent('/jobs')}
-              className="px-2 py-3 text-base"
-              onClick={() => setOpen(false)}
-            >
-              {labels.jobs}
-            </TextNavigationLink>
+            <>
+              <TextNavigationLink
+                href="/jobs"
+                current={isCurrent('/jobs')}
+                className="px-2 py-3 text-base"
+                onClick={() => setOpen(false)}
+              >
+                {labels.jobs}
+              </TextNavigationLink>
+              <TextNavigationLink
+                href="/profile/applied-jobs"
+                current={isCurrent('/profile/applied-jobs')}
+                className="px-2 py-3 text-base"
+                onClick={() => setOpen(false)}
+              >
+                {labels.appliedJobs}
+              </TextNavigationLink>
+            </>
           ) : null}
           {showEmployers ? (
             <TextNavigationLink

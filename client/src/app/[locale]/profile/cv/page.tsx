@@ -2,7 +2,6 @@ import type { Metadata } from 'next';
 import { PageBreadcrumb } from '@/components/layout/page-breadcrumb';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Link } from '@/i18n/routing';
 
 export const metadata: Metadata = {
   title: 'Xem chi tiết CV | Cổng Việc Làm Người Khuyết Tật',
@@ -51,21 +50,17 @@ export default async function ProfileCvPage({ params }: { params: Promise<{ loca
               {locale === 'en' ? 'CV document' : 'Tài liệu CV'}
             </CardTitle>
             <div className="flex flex-wrap gap-3">
-              <Link
+              <a
                 href="/cv-demo.pdf"
                 target="_blank"
                 rel="noreferrer"
                 className={buttonVariants({ variant: 'outline', className: 'h-11 rounded-none' })}
               >
                 {locale === 'en' ? 'Open in new tab' : 'Mở tab mới'}
-              </Link>
-              <Link
-                href="/cv-demo.pdf"
-                download
-                className={buttonVariants({ className: 'h-11 rounded-none' })}
-              >
+              </a>
+              <a href="/cv-demo.pdf" download className={buttonVariants({ className: 'h-11 rounded-none' })}>
                 {locale === 'en' ? 'Download PDF' : 'Tải PDF'}
-              </Link>
+              </a>
             </div>
           </CardHeader>
           <CardContent className="p-0">
@@ -76,9 +71,9 @@ export default async function ProfileCvPage({ params }: { params: Promise<{ loca
                     ? 'Your browser cannot display the PDF inline.'
                     : 'Trình duyệt của bạn không hỗ trợ hiển thị PDF trực tiếp.'}
                 </p>
-                <Link href="/cv-demo.pdf" target="_blank" rel="noreferrer" className={buttonVariants()}>
+                <a href="/cv-demo.pdf" target="_blank" rel="noreferrer" className={buttonVariants()}>
                   {locale === 'en' ? 'Open PDF' : 'Mở PDF'}
-                </Link>
+                </a>
               </div>
             </object>
           </CardContent>

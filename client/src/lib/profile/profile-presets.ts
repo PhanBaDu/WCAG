@@ -8,6 +8,7 @@ export type ProfileField = {
   label: string;
   value: string;
   href?: string;
+  previewHref?: string;
 };
 
 export type ProfileSectionPreset = {
@@ -85,11 +86,8 @@ export const profilePresets: Record<'vi' | 'en', Record<Exclude<UserRole, 'ADM'>
             {
               label: 'CV chính',
               value: 'so-yeu-ly-lich-phong-cach-hien-dai-tre-trung-xanh-la-hong.pdf',
-              href: '/so-yeu-ly-lich-phong-cach-hien-dai-tre-trung-xanh-la-hong.pdf',
+              previewHref: '/so-yeu-ly-lich-phong-cach-hien-dai-tre-trung-xanh-la-hong.pdf',
             },
-            { label: 'Cover letter', value: 'cover-letter-01.docx' },
-            { label: 'Tài liệu đính kèm', value: '2 file' },
-            { label: 'Hiển thị cho nhà tuyển dụng', value: 'Đang bật' },
           ],
         },
       ],
@@ -98,7 +96,6 @@ export const profilePresets: Record<'vi' | 'en', Record<Exclude<UserRole, 'ADM'>
       uploadLabel: 'Tải CV',
       sidebarLabel: 'Quản lý tìm việc',
       sidebarItems: [
-        { label: 'Việc làm đã lưu', href: '/jobs', active: true },
         { label: 'Việc làm đã ứng tuyển', href: '/profile/applied-jobs' },
         { label: 'Việc làm phù hợp với bạn', href: '/jobs' },
         { label: 'Cài đặt gợi ý việc làm', href: '/jobs' },
@@ -207,11 +204,8 @@ export const profilePresets: Record<'vi' | 'en', Record<Exclude<UserRole, 'ADM'>
             {
               label: 'Primary CV',
               value: 'so-yeu-ly-lich-phong-cach-hien-dai-tre-trung-xanh-la-hong.pdf',
-              href: '/so-yeu-ly-lich-phong-cach-hien-dai-tre-trung-xanh-la-hong.pdf',
+              previewHref: '/so-yeu-ly-lich-phong-cach-hien-dai-tre-trung-xanh-la-hong.pdf',
             },
-            { label: 'Cover letter', value: 'cover-letter-01.docx' },
-            { label: 'Attachments', value: '2 files' },
-            { label: 'Visible to employers', value: 'On' },
           ],
         },
       ],
@@ -220,7 +214,6 @@ export const profilePresets: Record<'vi' | 'en', Record<Exclude<UserRole, 'ADM'>
       uploadLabel: 'Upload CV',
       sidebarLabel: 'Job management',
       sidebarItems: [
-        { label: 'Saved jobs', href: '/jobs', active: true },
         { label: 'Applied jobs', href: '/profile/applied-jobs' },
         { label: 'Jobs matched for you', href: '/jobs' },
         { label: 'Job suggestion settings', href: '/jobs' },

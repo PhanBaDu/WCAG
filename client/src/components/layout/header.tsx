@@ -19,6 +19,7 @@ export function Header() {
   const nav = isEn
     ? {
         jobs: 'Jobs',
+        appliedJobs: 'Applied jobs',
         employers: 'Employers',
         profile: 'Profile',
         login: 'Log in',
@@ -31,6 +32,7 @@ export function Header() {
       }
     : {
         jobs: 'Việc làm',
+        appliedJobs: 'Việc làm đã ứng tuyển',
         employers: 'Nhà tuyển dụng',
         profile: 'Hồ sơ',
         login: 'Đăng nhập',
@@ -52,9 +54,18 @@ export function Header() {
   const navLinks = (
     <>
       {(!user || isJobSeeker) && (
-        <TextNavigationLink href="/jobs" current={isCurrent('/jobs')} className="shrink-0 whitespace-nowrap">
-          {nav.jobs}
-        </TextNavigationLink>
+        <>
+          <TextNavigationLink href="/jobs" current={isCurrent('/jobs')} className="shrink-0 whitespace-nowrap">
+            {nav.jobs}
+          </TextNavigationLink>
+          <TextNavigationLink
+            href="/profile/applied-jobs"
+            current={isCurrent('/profile/applied-jobs')}
+            className="shrink-0 whitespace-nowrap"
+          >
+            {nav.appliedJobs}
+          </TextNavigationLink>
+        </>
       )}
       {(!user || isEmployer) && (
         <TextNavigationLink
@@ -89,10 +100,10 @@ export function Header() {
         <div
           ref={measureRef}
           aria-hidden="true"
-          className="pointer-events-none invisible absolute top-0 left-0 flex h-16 w-max max-w-none items-center gap-3 whitespace-nowrap"
+          className="pointer-events-none invisible absolute top-0 left-0 flex h-16 w-max max-w-none items-center gap-6 whitespace-nowrap"
         >
           <SiteBrand className="shrink-0" />
-          <nav className="flex shrink-0 items-center gap-3">{navLinks}</nav>
+          <nav className="flex shrink-0 items-center gap-6">{navLinks}</nav>
           <div className="flex shrink-0 items-center gap-2">{authActions}</div>
         </div>
 
@@ -100,7 +111,7 @@ export function Header() {
 
         {!compact && (
           <nav
-            className="flex shrink-0 items-center justify-center gap-3 text-sm font-medium xl:gap-4"
+            className="flex shrink-0 items-center justify-center gap-6 text-sm font-medium xl:gap-8"
             aria-label={nav.primaryNav}
           >
             {navLinks}
