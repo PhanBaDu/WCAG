@@ -1,9 +1,10 @@
 import { Metadata } from 'next';
-import Image from 'next/image';
-import { BadgeCheck, Briefcase, CalendarDays, Eye, Layers3, Sparkles, Users, ShieldCheck } from 'lucide-react';
+import { BadgeCheck, Briefcase, CalendarDays, Eye, Layers3 } from 'lucide-react';
+import { EmployerRouteGate } from '@/components/auth/employer-route-gate';
 import { PageBreadcrumb } from '@/components/layout/page-breadcrumb';
 import { buttonVariants } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Link } from '@/i18n/routing';
 
 export const metadata: Metadata = {
@@ -98,74 +99,11 @@ export default async function CreateJobPage({ params }: { params: Promise<{ loca
         { label: 'Đăng tin tuyển dụng' },
       ];
   return (
-    <main id="main-content" className="mx-auto w-full max-w-7xl px-4 pt-2 pb-8 sm:px-6 lg:px-8 lg:pb-12 lg:pt-3">
+    <EmployerRouteGate>
+      <main id="main-content" className="mx-auto w-full max-w-7xl px-4 pt-2 pb-8 sm:px-6 lg:px-8 lg:pb-12 lg:pt-3">
       <PageBreadcrumb items={crumbs} />
-      <section className="mb-8 grid gap-8 lg:grid-cols-[1.15fr_0.85fr]">
-        <div className="space-y-6">
-          <div className="max-w-3xl">
-            <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">{t.eyebrow}</p>
-            <h1 className="mt-3 text-3xl font-bold tracking-tight sm:text-4xl">{t.title}</h1>
-            <p className="mt-4 text-muted-foreground">{t.desc}</p>
-          </div>
-
-          <div className="grid gap-4 sm:grid-cols-3">
-            <div className="border border-border bg-background p-4 shadow-sm">
-              <p className="text-sm font-medium text-muted-foreground">{locale === 'en' ? 'Layout' : 'Bố cục'}</p>
-              <p className="mt-2 text-lg font-semibold">{locale === 'en' ? 'Two-column' : '2 cột'}</p>
-            </div>
-            <div className="border border-border bg-background p-4 shadow-sm">
-              <p className="text-sm font-medium text-muted-foreground">{locale === 'en' ? 'Focus style' : 'Kiểu focus'}</p>
-              <p className="mt-2 text-lg font-semibold">{locale === 'en' ? 'Yellow outline' : 'Viền vàng'}</p>
-            </div>
-            <div className="border border-border bg-background p-4 shadow-sm">
-              <p className="text-sm font-medium text-muted-foreground">{locale === 'en' ? 'Ready for' : 'Sẵn sàng'}</p>
-              <p className="mt-2 text-lg font-semibold">{locale === 'en' ? 'WCAG review' : 'duyệt WCAG'}</p>
-            </div>
-          </div>
-        </div>
-
-        <Card className="overflow-hidden border-none shadow-lg">
-          <CardContent className="grid gap-0 p-0 md:grid-cols-[0.9fr_1.1fr]">
-            <div className="flex flex-col justify-between bg-primary/5 p-6">
-              <div className="space-y-3">
-                <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">
-                  {locale === 'en' ? 'Employer workflow' : 'Luồng nhà tuyển dụng'}
-                </p>
-                <h2 className="text-2xl font-bold tracking-tight">
-                  {locale === 'en' ? 'Write once, preview clearly, publish with confidence' : 'Viết tin rõ ràng, xem trước đẹp, đăng tin tự tin'}
-                </h2>
-                <p className="text-sm leading-relaxed text-muted-foreground">{t.note}</p>
-              </div>
-              <div className="mt-6 space-y-3 text-sm text-muted-foreground">
-                <div className="flex items-center gap-2">
-                  <Sparkles className="h-4 w-4 text-primary" aria-hidden="true" />
-                  {locale === 'en' ? 'Landing-page style visual rhythm' : 'Nhịp thị giác giống landing page'}
-                </div>
-                <div className="flex items-center gap-2">
-                  <Users className="h-4 w-4 text-primary" aria-hidden="true" />
-                  {locale === 'en' ? 'Employer and candidate views stay aligned' : 'Khung nhà tuyển dụng và ứng viên đồng bộ'}
-                </div>
-                <div className="flex items-center gap-2">
-                  <ShieldCheck className="h-4 w-4 text-primary" aria-hidden="true" />
-                  {locale === 'en' ? 'Large, accessible controls' : 'Nút bấm lớn, dễ truy cập'}
-                </div>
-              </div>
-            </div>
-            <div className="relative min-h-[280px] bg-slate-50">
-              <Image
-                src="/human-resources.png"
-                alt={locale === 'en' ? 'Human resources illustration for employers' : 'Minh hoạ nhân sự dành cho nhà tuyển dụng'}
-                fill
-                sizes="(max-width: 1024px) 100vw, 55vw"
-                className="object-contain p-6"
-              />
-            </div>
-          </CardContent>
-        </Card>
-      </section>
-
       <div className="grid gap-8 lg:grid-cols-[1.45fr_0.75fr]">
-        <Card className="border-none shadow-lg">
+        <Card className="rounded-none border border-border shadow-lg">
           <CardHeader>
             <CardTitle className="text-2xl">{t.sectionTitle}</CardTitle>
           </CardHeader>
@@ -208,7 +146,7 @@ export default async function CreateJobPage({ params }: { params: Promise<{ loca
                     id="salaryMin"
                     type="number"
                     defaultValue={10000000}
-                    className="h-12 w-full rounded-none border-2 border-[#0b0c0c] bg-background px-4 text-base focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#ffdd00] focus-visible:outline-offset-[3px]"
+                  className="h-12 w-full rounded-none border-2 border-[#0b0c0c] bg-background px-4 text-base focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#ffdd00] focus-visible:outline-offset-[3px]"
                   />
                 </div>
                 <div className="space-y-2">
@@ -262,15 +200,35 @@ export default async function CreateJobPage({ params }: { params: Promise<{ loca
                   <label htmlFor="province" className="text-sm font-medium">
                     {t.area}
                   </label>
-                  <select
-                    id="province"
+                  <Select
                     defaultValue={locale === 'en' ? 'Hanoi' : 'Hà Nội'}
-                    className="h-12 w-full rounded-none border-2 border-[#0b0c0c] bg-background px-4 text-base focus-visible:outline focus-visible:outline-[3px] focus-visible:outline-[#ffdd00] focus-visible:outline-offset-[3px]"
+                    items={t.provinces.map((item) => ({ value: item, label: item }))}
                   >
-                    {t.provinces.map((item) => (
-                      <option key={item}>{item}</option>
-                    ))}
-                  </select>
+                    <SelectTrigger
+                      id="province"
+                      aria-label={t.area}
+                      className="h-12 w-full rounded-none border-2 border-[#0b0c0c] bg-background px-4 text-base shadow-none focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00] focus-visible:ring-0"
+                    >
+                      <SelectValue placeholder={locale === 'en' ? 'Hanoi' : 'Hà Nội'} />
+                    </SelectTrigger>
+                    <SelectContent
+                      side="bottom"
+                      align="start"
+                      sideOffset={4}
+                      alignItemWithTrigger={false}
+                      className="w-[min(max(var(--anchor-width),20rem),calc(100vw-1rem))] max-w-[calc(100vw-1rem)] rounded-none border-2 border-[#0b0c0c] bg-white p-1 shadow-none ring-0"
+                    >
+                      {t.provinces.map((item) => (
+                        <SelectItem
+                          key={item}
+                          value={item}
+                          className="flex h-10 cursor-pointer items-center rounded-none px-4 text-base leading-none text-[#0b0c0c] data-highlighted:bg-[#ffdd00] data-highlighted:text-[#0b0c0c] focus-visible:bg-[#ffdd00] focus-visible:text-[#0b0c0c] focus-visible:outline-none"
+                        >
+                          {item}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                 </div>
               </div>
 
@@ -283,10 +241,24 @@ export default async function CreateJobPage({ params }: { params: Promise<{ loca
               </div>
 
               <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
-                <button type="button" className="inline-flex h-11 items-center justify-center rounded-none border-2 border-[#0b0c0c] px-4 text-sm font-medium">
+                <button
+                  type="button"
+                  className={buttonVariants({
+                    variant: 'outline',
+                    className:
+                      'h-11 rounded-none border-[#0b0c0c] bg-white px-4 text-sm font-semibold text-[#0b0c0c] hover:bg-[#ececec] focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00]',
+                  })}
+                >
                   {t.draft}
                 </button>
-                <button type="button" className="inline-flex h-11 items-center justify-center rounded-none bg-primary px-4 text-sm font-medium text-primary-foreground">
+                <button
+                  type="button"
+                  className={buttonVariants({
+                    variant: 'default',
+                    className:
+                      'h-11 rounded-none border-primary bg-primary px-4 text-sm font-semibold text-[#0b0c0c] hover:bg-[#ffdd00] hover:text-[#0b0c0c] focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00] focus-visible:bg-[#ffdd00] focus-visible:text-[#0b0c0c]',
+                  })}
+                >
                   {t.submit}
                 </button>
               </div>
@@ -295,13 +267,13 @@ export default async function CreateJobPage({ params }: { params: Promise<{ loca
         </Card>
 
         <div className="space-y-6 lg:sticky lg:top-24">
-          <Card className="border-none shadow-lg">
+          <Card className="rounded-none border border-border shadow-lg">
             <CardHeader>
               <CardTitle className="text-xl">{t.checklistTitle}</CardTitle>
             </CardHeader>
             <CardContent className="space-y-3 text-sm text-muted-foreground">
               {t.checklist.map((item) => (
-                <div key={item} className="flex gap-3 rounded-none bg-muted/40 p-3">
+                <div key={item} className="flex gap-3 rounded-none border bg-background p-3">
                   <BadgeCheck className="mt-0.5 h-4 w-4 shrink-0 text-primary" aria-hidden="true" />
                   <span>{item}</span>
                 </div>
@@ -309,7 +281,7 @@ export default async function CreateJobPage({ params }: { params: Promise<{ loca
             </CardContent>
           </Card>
 
-          <Card className="border-none shadow-lg">
+          <Card className="rounded-none border border-border shadow-lg">
             <CardHeader>
               <CardTitle className="flex items-center gap-2 text-xl">
                 <Briefcase className="h-5 w-5 text-primary" aria-hidden="true" />
@@ -332,7 +304,14 @@ export default async function CreateJobPage({ params }: { params: Promise<{ loca
                 <p className="text-sm font-medium text-muted-foreground">{t.previewPreview}</p>
                 <p className="mt-1 text-sm leading-relaxed text-muted-foreground">{t.previewNote}</p>
               </div>
-              <Link href="/employer/dashboard" className={buttonVariants({ variant: 'outline', className: 'h-11 w-full rounded-none' })}>
+              <Link
+                href="/employer/dashboard"
+                className={buttonVariants({
+                  variant: 'outline',
+                  className:
+                    'h-11 w-full rounded-none border-[#0b0c0c] bg-white text-[#0b0c0c] hover:bg-[#ececec] focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00]',
+                })}
+              >
                 <Eye className="mr-2 h-4 w-4" aria-hidden="true" />
                 {t.back}
               </Link>
@@ -340,6 +319,7 @@ export default async function CreateJobPage({ params }: { params: Promise<{ loca
           </Card>
         </div>
       </div>
-    </main>
+      </main>
+    </EmployerRouteGate>
   );
 }

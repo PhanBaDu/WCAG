@@ -15,28 +15,37 @@ export const metadata: Metadata = {
 
 const copy = {
   vi: {
-    title: 'Đăng nhập',
-    desc: 'Truy cập hồ sơ, theo dõi đơn ứng tuyển và quản lý tin tuyển dụng của bạn.',
+    titleNKT: 'Đăng nhập người tìm việc',
+    descNKT: 'Truy cập hồ sơ, theo dõi đơn ứng tuyển và tiếp tục hành trình tìm việc.',
+    titleNTD: 'Đăng nhập nhà tuyển dụng',
+    descNTD: 'Truy cập dashboard để quản lý tin đăng và theo dõi ứng viên.',
     back: 'Quay lại trang chủ',
     email: 'Email',
     password: 'Mật khẩu',
     forgot: 'Quên mật khẩu?',
     login: 'Đăng nhập',
     loggingIn: 'Đang đăng nhập…',
-    registerNote: 'Chưa có tài khoản?',
-    register: 'Đăng ký ngay',
-    browse: 'Xem việc làm trước',
+    registerNoteNKT: 'Chưa có tài khoản?',
+    registerNKT: 'Đăng ký ngay',
+    registerNoteNTD: 'Chưa có tài khoản nhà tuyển dụng?',
+    registerNTD: 'Tạo tài khoản',
+    browseNKT: 'Xem việc làm trước',
+    browseNTD: 'Tìm việc',
+    switchLoginNKT: 'Đăng nhập nhà tuyển dụng',
+    switchLoginNTD: 'Đăng nhập người tìm việc',
     benefitsTitle: 'Sau khi đăng nhập, bạn có thể',
-    benefit1: 'Cập nhật hồ sơ và ứng tuyển nhanh hơn.',
-    benefit2: 'Theo dõi tin đã nộp hoặc tin tuyển dụng đã đăng.',
-    demoAccountsTitle: 'Chọn tài khoản demo',
-    demoAccountsHint: 'Bấm vào một thẻ để tự điền email và mật khẩu tương ứng.',
-    demoUseAccount: 'Dùng tài khoản này',
-    demoRoleRule: 'Luồng sau đăng nhập',
+    benefit1NKT: 'Cập nhật hồ sơ và ứng tuyển nhanh hơn.',
+    benefit2NKT: 'Theo dõi tin đã nộp và trạng thái phản hồi.',
+    benefit1NTD: 'Quản lý tin tuyển dụng và theo dõi ứng viên.',
+    benefit2NTD: 'Truy cập dashboard và xử lý hồ sơ nhanh hơn.',
+    roleLabel: 'Dành cho',
+    roleNKT: 'Người tìm việc',
+    roleNTD: 'Nhà tuyển dụng',
     asideTitle: 'AccessJobs VN',
-    asideHeading: 'Chào mừng trở lại',
-    asideDesc:
-      'Đăng nhập để xem việc làm, cập nhật hồ sơ và tiếp tục ứng tuyển — dù bạn đang tìm việc hay tuyển dụng.',
+    asideHeadingNKT: 'Chào mừng bạn quay lại',
+    asideDescNKT: 'Đăng nhập để xem việc làm, cập nhật hồ sơ và tiếp tục ứng tuyển.',
+    asideHeadingNTD: 'Chào mừng nhà tuyển dụng quay lại',
+    asideDescNTD: 'Đăng nhập để quản lý dashboard, đăng tin và theo dõi ứng viên.',
     emailRequired: 'Vui lòng nhập email',
     emailInvalid: 'Email không hợp lệ',
     passwordRequired: 'Vui lòng nhập mật khẩu',
@@ -50,28 +59,37 @@ const copy = {
     fieldComplete: 'Đã hoàn thành',
   },
   en: {
-    title: 'Log in',
-    desc: 'Access your profile, track applications, and manage your job posts.',
+    titleNKT: 'Log in as a job seeker',
+    descNKT: 'Access your profile, track applications, and continue your job search.',
+    titleNTD: 'Log in as an employer',
+    descNTD: 'Access your dashboard to manage postings and review candidates.',
     back: 'Back to home',
     email: 'Email',
     password: 'Password',
     forgot: 'Forgot password?',
     login: 'Log in',
     loggingIn: 'Signing in…',
-    registerNote: "Don't have an account?",
-    register: 'Create one now',
-    browse: 'Browse jobs first',
+    registerNoteNKT: "Don't have an account?",
+    registerNKT: 'Create one now',
+    registerNoteNTD: 'No employer account yet?',
+    registerNTD: 'Create one',
+    browseNKT: 'Browse jobs first',
+    browseNTD: 'Find jobs',
+    switchLoginNKT: 'Employer sign-in',
+    switchLoginNTD: 'Job seeker sign-in',
     benefitsTitle: 'Once you are signed in, you can',
-    benefit1: 'Update your profile and apply faster.',
-    benefit2: 'Track submitted applications or published job posts.',
-    demoAccountsTitle: 'Choose a demo account',
-    demoAccountsHint: 'Click a card to auto-fill the matching email and password.',
-    demoUseAccount: 'Use this account',
-    demoRoleRule: 'Post-login path',
+    benefit1NKT: 'Update your profile and apply faster.',
+    benefit2NKT: 'Track submitted applications and responses.',
+    benefit1NTD: 'Manage job posts and review candidates.',
+    benefit2NTD: 'Access your dashboard and handle applications faster.',
+    roleLabel: 'For',
+    roleNKT: 'Job seeker',
+    roleNTD: 'Employer',
     asideTitle: 'AccessJobs VN',
-    asideHeading: 'Welcome back',
-    asideDesc:
-      'Sign in to browse jobs, update your profile, and continue applying — whether you are hiring or looking for work.',
+    asideHeadingNKT: 'Welcome back',
+    asideDescNKT: 'Sign in to browse jobs, update your profile, and keep applying.',
+    asideHeadingNTD: 'Welcome back, employer',
+    asideDescNTD: 'Sign in to manage your dashboard, publish jobs, and review candidates.',
     emailRequired: 'Please enter your email',
     emailInvalid: 'Enter a valid email address',
     passwordRequired: 'Please enter your password',
@@ -86,18 +104,43 @@ const copy = {
   },
 } as const;
 
-export default async function LoginPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function LoginPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams?: Promise<{ role?: string }>;
+}) {
   const { locale: routeLocale } = await params;
   const locale = routeLocale === 'en' ? 'en' : 'vi';
   const t = copy[locale];
+  const resolvedSearchParams = (await searchParams) ?? {};
+  const role = resolvedSearchParams.role === 'NTD' ? 'NTD' : 'NKT';
+  const title = role === 'NTD' ? t.titleNTD : t.titleNKT;
+  const desc = role === 'NTD' ? t.descNTD : t.descNKT;
+  const asideHeading = role === 'NTD' ? t.asideHeadingNTD : t.asideHeadingNKT;
+  const asideDesc = role === 'NTD' ? t.asideDescNTD : t.asideDescNKT;
+  const benefit1 = role === 'NTD' ? t.benefit1NTD : t.benefit1NKT;
+  const benefit2 = role === 'NTD' ? t.benefit2NTD : t.benefit2NKT;
+  const roleLabel = role === 'NTD' ? t.roleNTD : t.roleNKT;
+  const registerNote = role === 'NTD' ? t.registerNoteNTD : t.registerNoteNKT;
+  const registerText = role === 'NTD' ? t.registerNTD : t.registerNKT;
+  const browseText = role === 'NTD' ? t.browseNTD : t.browseNKT;
+  const switchLoginText = role === 'NTD' ? t.switchLoginNTD : t.switchLoginNKT;
+  const switchLoginHref = role === 'NTD' ? '/login' : '/login?role=NTD';
+  const loginLabels = {
+    ...t,
+    benefit1,
+    benefit2,
+  };
   return (
     <main id="main-content" tabIndex={-1} className="grid min-h-screen outline-none lg:grid-cols-2">
       <div className="hidden bg-black p-10 text-white lg:flex lg:flex-col">
         <SiteBrand tone="inverse" className="border-white/20" />
         <div className="mt-16 max-w-xl space-y-4">
           <p className="text-sm font-medium text-white/70">{t.asideTitle}</p>
-          <h1 className="text-4xl font-bold tracking-tight">{t.asideHeading}</h1>
-          <p className="text-base leading-relaxed text-white/85">{t.asideDesc}</p>
+          <h1 className="text-4xl font-bold tracking-tight">{asideHeading}</h1>
+          <p className="text-base leading-relaxed text-white/85">{asideDesc}</p>
           <div className="pt-4">
             <AuthAsideLottie />
           </div>
@@ -113,23 +156,39 @@ export default async function LoginPage({ params }: { params: Promise<{ locale: 
 
           <Card className="border-none shadow-xl sm:border">
             <CardHeader className="space-y-3 text-center">
-              <CardTitle className="text-2xl font-bold tracking-tight">{t.title}</CardTitle>
-              <CardDescription>{t.desc}</CardDescription>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                {t.roleLabel}: {roleLabel}
+              </p>
+              <CardTitle className="text-2xl font-bold tracking-tight">{title}</CardTitle>
+              <CardDescription>{desc}</CardDescription>
             </CardHeader>
             <CardContent>
               <Suspense fallback={<p className="text-sm text-muted-foreground">{t.loggingIn}</p>}>
-                <LoginForm labels={t} />
+                <LoginForm labels={loginLabels} />
               </Suspense>
             </CardContent>
             <CardFooter className="mx-6 mb-6 flex flex-col gap-3 rounded-xl border-t-0 bg-muted/50 p-6">
               <p className="text-center text-sm text-muted-foreground">
-                {t.registerNote}{' '}
-                <Link href="/register" className="gov-link font-semibold">
-                  {t.register}
+                {registerNote}{' '}
+                <Link href={role === 'NTD' ? '/register?role=NTD' : '/register'} className="gov-link font-semibold">
+                  {registerText}
                 </Link>
               </p>
-              <Link href="/jobs" className={buttonVariants({ variant: 'outline', className: 'h-11 w-full' })}>
-                {t.browse}
+              <Link
+                href={role === 'NTD' ? '/employer/dashboard' : '/jobs'}
+                className={buttonVariants({ variant: 'outline', className: 'h-11 w-full' })}
+              >
+                {browseText}
+              </Link>
+              <Link
+                href={switchLoginHref}
+                className={buttonVariants({
+                  variant: 'outline',
+                  className:
+                    'h-11 w-full rounded-none border-[#0b0c0c] bg-white text-[#0b0c0c] hover:bg-[#ececec] focus-visible:border-[#ffdd00]',
+                })}
+              >
+                {switchLoginText}
               </Link>
             </CardFooter>
           </Card>

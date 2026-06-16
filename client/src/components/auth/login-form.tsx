@@ -9,7 +9,7 @@ import { useWatch } from 'react-hook-form';
 import type { FieldErrors } from 'react-hook-form';
 import { z } from 'zod';
 import { useLoginMutation } from '@/hooks/use-auth';
-import { DEMO_ACCOUNTS, DEMO_LOGIN_EMAIL, DEMO_LOGIN_PASSWORD, type DemoAccount } from '@/lib/auth/demo-credentials';
+import { getDemoAccountByRole } from '@/lib/auth/demo-credentials';
 import { Link, useRouter } from '@/i18n/routing';
 import { FieldError } from '@/components/ui/field-error';
 import { FieldRequiredIndicator } from '@/components/ui/field-required-indicator';
@@ -36,10 +36,6 @@ type LoginFormLabels = {
   showPassword: string;
   hidePassword: string;
   fieldComplete: string;
-  demoAccountsTitle: string;
-  demoAccountsHint: string;
-  demoUseAccount: string;
-  demoRoleRule: string;
 };
 
 type LoginFormProps = {
@@ -63,10 +59,15 @@ function getSafeRedirectPath(role: 'NKT' | 'NTD', redirectTo: string | null) {
   return allowedPrefixes.some((prefix) => redirectTo === prefix || redirectTo.startsWith(`${prefix}/`)) ? redirectTo : null;
 }
 
+function getLastEmailStorageKey(role: 'NKT' | 'NTD') {
+  return `lastEmail:${role}`;
+}
+
 export function LoginForm({ labels }: LoginFormProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [showValidationSummary, setShowValidationSummary] = useState(false);
+  const role = searchParams.get('role') === 'NTD' ? 'NTD' : 'NKT';
 
   const loginSchema = useMemo(
     () =>
@@ -78,30 +79,32 @@ export function LoginForm({ labels }: LoginFormProps) {
   );
 
   type LoginFormValues = z.infer<typeof loginSchema>;
+  const demoAccount = getDemoAccountByRole(role);
 
   const {
     control,
     register,
     handleSubmit,
     setFocus,
-    setValue,
+    reset,
     formState: { errors, isSubmitted },
   } = useForm<LoginFormValues>({
     resolver: zodResolver(loginSchema),
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
     defaultValues: {
-      email: DEMO_LOGIN_EMAIL,
-      password: DEMO_LOGIN_PASSWORD,
+      email: demoAccount.email,
+      password: demoAccount.password,
     },
   });
 
   useEffect(() => {
-    const lastEmail = sessionStorage.getItem('lastEmail');
-    if (lastEmail) {
-      setValue('email', lastEmail);
-    }
-  }, [setValue]);
+    const lastEmail = sessionStorage.getItem(getLastEmailStorageKey(role));
+    reset({
+      email: lastEmail || demoAccount.email,
+      password: demoAccount.password,
+    });
+  }, [demoAccount.email, demoAccount.password, reset, role]);
 
   const email = useWatch({ control, name: 'email' }) ?? '';
   const password = useWatch({ control, name: 'password' }) ?? '';
@@ -110,15 +113,9 @@ export function LoginForm({ labels }: LoginFormProps) {
 
   const { mutate: login, isPending } = useLoginMutation();
 
-  const fillDemoAccount = (account: DemoAccount) => {
-    setValue('email', account.email, { shouldDirty: true, shouldTouch: true });
-    setValue('password', account.password, { shouldDirty: true, shouldTouch: true });
-    window.requestAnimationFrame(() => setFocus('email'));
-  };
-
   const onSubmit = (values: LoginFormValues) => {
     setShowValidationSummary(false);
-    sessionStorage.setItem('lastEmail', values.email);
+    sessionStorage.setItem(getLastEmailStorageKey(role), values.email);
 
     login(values, {
       onSuccess: ({ user }) => {
@@ -167,39 +164,6 @@ export function LoginForm({ labels }: LoginFormProps) {
         </div>
       )}
 
-      <div className="space-y-2 rounded-none border border-[#0b0c0c] bg-muted/20 p-3">
-        <div className="flex items-center justify-between gap-2">
-          <p className="text-xs font-semibold uppercase tracking-[0.14em] text-[#0b0c0c]">{labels.demoAccountsTitle}</p>
-          <p className="text-[11px] text-muted-foreground">{labels.demoAccountsHint}</p>
-        </div>
-        <div className="grid gap-2 sm:grid-cols-2">
-          {DEMO_ACCOUNTS.map((account) => (
-            <button
-              key={account.email}
-              type="button"
-              onClick={() => fillDemoAccount(account)}
-              className={cn(
-                'text-left rounded-none border border-[#0b0c0c] bg-background p-2.5 transition-colors hover:bg-[#ffdd00] focus-visible:bg-[#ffdd00] focus-visible:outline-none',
-              )}
-            >
-              <div className="flex items-center justify-between gap-2">
-                <div className="min-w-0">
-                  <p className="truncate text-xs font-semibold text-[#0b0c0c]">{account.label}</p>
-                  <p className="truncate text-[11px] text-muted-foreground">{account.email}</p>
-                </div>
-                <span className="shrink-0 rounded-none border border-[#0b0c0c] px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-[#0b0c0c]">
-                  {account.role}
-                </span>
-              </div>
-              <p className="mt-1 truncate text-[11px] text-muted-foreground">{account.loginHint}</p>
-              <div className="mt-1 inline-flex text-[11px] font-medium text-[#0b0c0c] underline decoration-1 underline-offset-2">
-                {labels.demoUseAccount}
-              </div>
-            </button>
-          ))}
-        </div>
-      </div>
-
       <div className="gov-field">
         <label htmlFor="email" className="text-sm font-medium">
           {labels.email}
@@ -244,6 +208,7 @@ export function LoginForm({ labels }: LoginFormProps) {
         <PasswordInput
           id="password"
           autoComplete="current-password"
+          placeholder={labels.password}
           aria-required="true"
           aria-invalid={errors.password ? 'true' : 'false'}
           aria-describedby={getDescribedBy(Boolean(errors.password), 'password-error')}

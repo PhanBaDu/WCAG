@@ -73,7 +73,7 @@ export function EmployerDashboard() {
   const [deleteModalOpen, setDeleteModalOpen] = React.useState(false)
   const [jobToDelete, setJobToDelete] = React.useState<JobPosting | null>(null)
 
-  const columnHelper = createColumnHelper<JobPosting>()
+  const columnHelper = React.useMemo(() => createColumnHelper<JobPosting>(), [])
 
   const columns = React.useMemo(() => [
     columnHelper.accessor('title', {
@@ -85,12 +85,12 @@ export function EmployerDashboard() {
       cell: info => {
         const val = info.getValue()
         if (val === 'APPROVED') {
-          return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800"><CheckCircle2 className="mr-1 h-3 w-3" /> {t("statusApproved")}</span>
+          return <span className="inline-flex items-center rounded-none bg-muted/40 px-3 py-1 text-xs font-medium text-foreground"><CheckCircle2 className="mr-1 h-3 w-3" /> {t("statusApproved")}</span>
         }
         if (val === 'PENDING') {
-          return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-yellow-100 text-yellow-800"><Clock className="mr-1 h-3 w-3" /> {t("statusPending")}</span>
+          return <span className="inline-flex items-center rounded-none bg-muted/40 px-3 py-1 text-xs font-medium text-foreground"><Clock className="mr-1 h-3 w-3" /> {t("statusPending")}</span>
         }
-        return <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-800"><Ban className="mr-1 h-3 w-3" /> {t("statusClosed")}</span>
+        return <span className="inline-flex items-center rounded-none bg-muted/40 px-3 py-1 text-xs font-medium text-foreground"><Ban className="mr-1 h-3 w-3" /> {t("statusClosed")}</span>
       },
     }),
     columnHelper.accessor('applicationsCount', {
@@ -108,7 +108,7 @@ export function EmployerDashboard() {
         const job = row.original
         return (
           <DropdownMenu>
-            <DropdownMenuTrigger className="inline-flex items-center justify-center rounded-md text-sm font-medium hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0">
+            <DropdownMenuTrigger className="inline-flex items-center justify-center rounded-none text-sm font-medium hover:bg-accent hover:text-accent-foreground h-8 w-8 p-0">
               <span className="sr-only">Open menu</span>
               <MoreHorizontal className="h-4 w-4" />
             </DropdownMenuTrigger>
@@ -152,7 +152,7 @@ export function EmployerDashboard() {
         )
       },
     }),
-  ], [t, updateStatus, setJobToDelete, setDeleteModalOpen])
+  ], [t, updateStatus, setJobToDelete, setDeleteModalOpen, columnHelper])
 
   const table = useReactTable({
     data: jobs || [],
@@ -167,7 +167,7 @@ export function EmployerDashboard() {
       toast.success(t("jobDeletedSuccess"))
       setDeleteModalOpen(false)
       setJobToDelete(null)
-    } catch (error) {
+    } catch {
       toast.error("Xóa thất bại")
     }
   }
@@ -185,7 +185,7 @@ export function EmployerDashboard() {
         </Link>
       </div>
 
-      <div className="rounded-md border bg-card">
+      <div className="rounded-none border bg-card">
         <div className="overflow-x-auto">
           <table className="w-full text-sm text-left">
             <thead className="bg-muted/50 text-muted-foreground border-b">

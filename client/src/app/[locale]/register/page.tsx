@@ -14,12 +14,16 @@ export const metadata: Metadata = {
 
 const copy = {
   vi: {
-    title: 'Tạo tài khoản',
-    desc: 'Tham gia miễn phí để tìm việc phù hợp hoặc tiếp cận ứng viên trên AccessJobs VN.',
+    titleNKT: 'Tạo tài khoản người tìm việc',
+    descNKT: 'Tham gia miễn phí để tìm việc phù hợp trên AccessJobs VN.',
+    titleNTD: 'Tạo tài khoản nhà tuyển dụng',
+    descNTD: 'Tham gia miễn phí để tiếp cận ứng viên và đăng tin tuyển dụng.',
     back: 'Quay lại trang chủ',
     asideTitle: 'AccessJobs VN',
-    asideHeading: 'Gia nhập AccessJobs VN',
-    asideDesc: 'Miễn phí cho người tìm việc và doanh nghiệp. Chỉ mất vài phút để bắt đầu.',
+    asideHeadingNKT: 'Gia nhập AccessJobs VN',
+    asideDescNKT: 'Miễn phí cho người tìm việc. Chỉ mất vài phút để bắt đầu.',
+    asideHeadingNTD: 'Gia nhập AccessJobs VN với tư cách nhà tuyển dụng',
+    asideDescNTD: 'Tạo tài khoản để đăng tin và quản lý ứng viên ngay trong dashboard.',
     role: 'Bạn đăng ký với tư cách',
     roleNKT: 'Người tìm việc',
     roleNTD: 'Nhà tuyển dụng',
@@ -35,6 +39,8 @@ const copy = {
     loginNote: 'Đã có tài khoản?',
     login: 'Đăng nhập',
     browse: 'Xem việc làm trước',
+    switchRegisterNKT: 'Đăng ký nhà tuyển dụng',
+    switchRegisterNTD: 'Đăng ký người tìm việc',
     emailRequired: 'Vui lòng nhập email',
     emailInvalid: 'Email không hợp lệ',
     passwordRequired: 'Vui lòng nhập mật khẩu',
@@ -52,12 +58,16 @@ const copy = {
     fieldComplete: 'Đã hoàn thành',
   },
   en: {
-    title: 'Create an account',
-    desc: 'Join for free to find suitable roles or reach candidates on AccessJobs VN.',
+    titleNKT: 'Create a job seeker account',
+    descNKT: 'Join for free to find suitable roles on AccessJobs VN.',
+    titleNTD: 'Create an employer account',
+    descNTD: 'Join for free to reach candidates and post jobs.',
     back: 'Back to home',
     asideTitle: 'AccessJobs VN',
-    asideHeading: 'Join AccessJobs VN',
-    asideDesc: 'Free for job seekers and businesses. It only takes a few minutes to get started.',
+    asideHeadingNKT: 'Join AccessJobs VN',
+    asideDescNKT: 'Free for job seekers. It only takes a few minutes to get started.',
+    asideHeadingNTD: 'Join AccessJobs VN as an employer',
+    asideDescNTD: 'Create an account to post jobs and manage candidates in one place.',
     role: 'I am signing up as',
     roleNKT: 'Job seeker',
     roleNTD: 'Employer',
@@ -73,6 +83,8 @@ const copy = {
     loginNote: 'Already have an account?',
     login: 'Log in',
     browse: 'Browse jobs first',
+    switchRegisterNKT: 'Employer registration',
+    switchRegisterNTD: 'Job seeker registration',
     emailRequired: 'Please enter your email',
     emailInvalid: 'Enter a valid email address',
     passwordRequired: 'Please enter a password',
@@ -91,10 +103,24 @@ const copy = {
   },
 } as const;
 
-export default async function RegisterPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function RegisterPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams?: Promise<{ role?: string }>;
+}) {
   const { locale: routeLocale } = await params;
   const locale = routeLocale === 'en' ? 'en' : 'vi';
   const t = copy[locale];
+  const resolvedSearchParams = (await searchParams) ?? {};
+  const role = resolvedSearchParams.role === 'NTD' ? 'NTD' : 'NKT';
+  const title = role === 'NTD' ? t.titleNTD : t.titleNKT;
+  const desc = role === 'NTD' ? t.descNTD : t.descNKT;
+  const asideHeading = role === 'NTD' ? t.asideHeadingNTD : t.asideHeadingNKT;
+  const asideDesc = role === 'NTD' ? t.asideDescNTD : t.asideDescNKT;
+  const switchRegisterText = role === 'NTD' ? t.switchRegisterNKT : t.switchRegisterNTD;
+  const switchRegisterHref = role === 'NTD' ? '/register' : '/register?role=NTD';
 
   return (
     <main id="main-content" tabIndex={-1} className="grid min-h-screen outline-none lg:grid-cols-2">
@@ -102,8 +128,8 @@ export default async function RegisterPage({ params }: { params: Promise<{ local
         <SiteBrand tone="inverse" className="border-white/20" />
         <div className="mt-16 max-w-xl space-y-4">
           <p className="text-sm font-medium text-white/70">{t.asideTitle}</p>
-          <h1 className="text-4xl font-bold tracking-tight">{t.asideHeading}</h1>
-          <p className="text-base leading-relaxed text-white/85">{t.asideDesc}</p>
+          <h1 className="text-4xl font-bold tracking-tight">{asideHeading}</h1>
+          <p className="text-base leading-relaxed text-white/85">{asideDesc}</p>
           <div className="pt-4">
             <AuthAsideLottie />
           </div>
@@ -119,21 +145,34 @@ export default async function RegisterPage({ params }: { params: Promise<{ local
 
           <Card className="border-none shadow-xl sm:border">
             <CardHeader className="space-y-3 text-center">
-              <CardTitle className="text-2xl font-bold tracking-tight">{t.title}</CardTitle>
-              <CardDescription>{t.desc}</CardDescription>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-muted-foreground">
+                {t.role}: {role === 'NTD' ? t.roleNTD : t.roleNKT}
+              </p>
+              <CardTitle className="text-2xl font-bold tracking-tight">{title}</CardTitle>
+              <CardDescription>{desc}</CardDescription>
             </CardHeader>
             <CardContent>
-              <RegisterForm labels={t} />
+              <RegisterForm labels={t} defaultRole={role} />
             </CardContent>
             <CardFooter className="mx-6 mb-6 flex flex-col gap-3 rounded-xl border-t-0 bg-muted/50 p-6">
               <p className="text-center text-sm text-muted-foreground">
                 {t.loginNote}{' '}
-                <Link href="/login" className="gov-link font-semibold">
+                <Link href={role === 'NTD' ? '/login?role=NTD' : '/login'} className="gov-link font-semibold">
                   {t.login}
                 </Link>
               </p>
               <Link href="/jobs" className={buttonVariants({ variant: 'outline', className: 'h-11 w-full' })}>
                 {t.browse}
+              </Link>
+              <Link
+                href={switchRegisterHref}
+                className={buttonVariants({
+                  variant: 'outline',
+                  className:
+                    'h-11 w-full rounded-none border-[#0b0c0c] bg-white text-[#0b0c0c] hover:bg-[#ececec] focus-visible:border-[#ffdd00]',
+                })}
+              >
+                {switchRegisterText}
               </Link>
             </CardFooter>
           </Card>

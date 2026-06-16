@@ -40,3 +40,7 @@ export function getDemoAccountByEmail(email: string) {
   const normalizedEmail = email.trim().toLowerCase();
   return DEMO_ACCOUNTS.find((account) => account.email.toLowerCase() === normalizedEmail) ?? DEMO_ACCOUNTS[0];
 }
+
+export function getDemoAccountByRole(role: UserRole) {
+  return DEMO_ACCOUNTS.find((account) => account.role === role) ?? DEMO_ACCOUNTS[0];
+}

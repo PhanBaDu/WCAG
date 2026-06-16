@@ -4,11 +4,11 @@ import { useMemo, useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Building2, Users } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import { useWatch } from 'react-hook-form';
 import type { FieldErrors } from 'react-hook-form';
 import { z } from 'zod';
 import { useRegisterMutation } from '@/hooks/use-auth';
 import { RegisterRoleSelect } from '@/components/auth/register-role-select';
-import { DEMO_LOGIN_EMAIL, DEMO_LOGIN_PASSWORD } from '@/lib/auth/demo-credentials';
 import { useRouter } from '@/i18n/routing';
 import { FieldError } from '@/components/ui/field-error';
 import { FieldRequiredIndicator } from '@/components/ui/field-required-indicator';
@@ -46,13 +46,14 @@ type RegisterFormLabels = {
 
 type RegisterFormProps = {
   labels: RegisterFormLabels;
+  defaultRole?: 'NKT' | 'NTD';
 };
 
 function getDescribedBy(hasError: boolean, errorId: string) {
   return hasError ? errorId : undefined;
 }
 
-export function RegisterForm({ labels }: RegisterFormProps) {
+export function RegisterForm({ labels, defaultRole = 'NKT' }: RegisterFormProps) {
   const router = useRouter();
   const [showValidationSummary, setShowValidationSummary] = useState(false);
 
@@ -86,26 +87,25 @@ export function RegisterForm({ labels }: RegisterFormProps) {
     control,
     handleSubmit,
     setFocus,
-    watch,
     formState: { errors, isSubmitted },
   } = useForm<RegisterFormValues>({
     resolver: zodResolver(registerSchema),
     mode: 'onSubmit',
     reValidateMode: 'onSubmit',
     defaultValues: {
-      role: 'NKT',
-      name: 'Nguyễn Văn A',
-      email: DEMO_LOGIN_EMAIL,
-      password: DEMO_LOGIN_PASSWORD,
-      confirmPassword: DEMO_LOGIN_PASSWORD,
+      role: defaultRole,
+      name: '',
+      email: '',
+      password: '',
+      confirmPassword: '',
     },
   });
 
-  const role = watch('role');
-  const name = watch('name');
-  const email = watch('email');
-  const password = watch('password');
-  const confirmPassword = watch('confirmPassword');
+  const role = useWatch({ control, name: 'role' });
+  const name = useWatch({ control, name: 'name' });
+  const email = useWatch({ control, name: 'email' });
+  const password = useWatch({ control, name: 'password' });
+  const confirmPassword = useWatch({ control, name: 'confirmPassword' });
 
   const roleComplete = registerSchema.shape.role.safeParse(role).success;
   const nameComplete = registerSchema.shape.name.safeParse(name).success;
@@ -294,6 +294,7 @@ export function RegisterForm({ labels }: RegisterFormProps) {
           <PasswordInput
             id="password"
             autoComplete="new-password"
+            placeholder={labels.password}
             aria-required="true"
             aria-invalid={errors.password ? 'true' : 'false'}
             aria-describedby={getDescribedBy(Boolean(errors.password), 'register-password-error')}
@@ -318,6 +319,7 @@ export function RegisterForm({ labels }: RegisterFormProps) {
           <PasswordInput
             id="confirmPassword"
             autoComplete="new-password"
+            placeholder={labels.confirm}
             aria-required="true"
             aria-invalid={errors.confirmPassword ? 'true' : 'false'}
             aria-describedby={getDescribedBy(

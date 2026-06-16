@@ -1,0 +1,44 @@
+[
+  {
+    "id": "demo-nkt-user",
+    "email": "example@gmail.com",
+    "passwordHash": "$2b$12$TekNr7nf9MWIDAvNFveiUu4n8/3MxvDVzz5X037Mwqg525afYkaVq",
+    "role": "NKT",
+    "fullName": "Nguyễn Minh Anh",
+    "isVerified": true,
+    "isActive": true,
+    "createdAt": "2026-06-17T01:25:00.000Z"
+  },
+  {
+    "id": "demo-ntd-user",
+    "email": "employer@example.com",
+    "passwordHash": "$2b$12$876raqYzNFFHcJiBGC9d.O8nEpEKI8W/wFY4PZrtf1/qBBwYj1Rp2",
+    "role": "NTD",
+    "companyName": "AccessJobs HR",
+    "isVerified": true,
+    "isActive": true,
+    "createdAt": "2026-06-17T01:25:00.000Z"
+  },
+  {
+    "id": "155d74d7-91ee-4262-abae-3f5bff210979",
+    "email": "test@example.com",
+    "passwordHash": "$2b$12$VcvKj3V1EnsoR1fnI5PdpuDZW.q4SEqWpZGotvg2hUfRUkiryKXaW",
+    "role": "NKT",
+    "fullName": "Test User",
+    "isVerified": true,
+    "isActive": true,
+    "createdAt": "2026-06-13T20:41:45.460Z",
+    "lastLoginAt": "2026-06-13T20:41:45.747Z"
+  },
+  {
+    "id": "0cc8f530-e31f-4d3b-8005-5f1efb0ca314",
+    "email": "user@example.com",
+    "passwordHash": "$2b$12$5P21nYFs9D.0e5AMJ8RQvu1h8uDnLVcWzA/zqmwq5WbwSCdvbtTPy",
+    "role": "NKT",
+    "fullName": "Nguyễn Văn A",
+    "isVerified": true,
+    "isActive": true,
+    "createdAt": "2026-06-13T20:45:24.284Z",
+    "lastLoginAt": "2026-06-13T20:45:41.962Z"
+  }
+]

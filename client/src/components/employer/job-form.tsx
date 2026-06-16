@@ -79,11 +79,18 @@ export function JobForm() {
     },
     editorProps: {
       attributes: {
-        class: 'prose dark:prose-invert max-w-none focus:outline-none min-h-[200px] p-4 border rounded-b-md bg-background',
+        class: 'prose dark:prose-invert max-w-none focus:outline-none min-h-[200px] p-4 border rounded-none bg-background',
         'aria-label': 'Job description editor',
       },
     },
   })
+
+  function handleCheckboxEnter(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key !== 'Enter') return
+
+    event.preventDefault()
+    event.currentTarget.click()
+  }
 
   // Auto-save draft every 30s
   React.useEffect(() => {
@@ -141,7 +148,7 @@ export function JobForm() {
             <Label htmlFor="description">{t("description")}</Label>
             
             {/* TipTap Accessible Toolbar */}
-            <div className="border rounded-t-md bg-muted/50 p-1 flex gap-1 flex-wrap" role="toolbar" aria-label="Text formatting">
+            <div className="border rounded-none bg-muted/50 p-1 flex gap-1 flex-wrap" role="toolbar" aria-label="Text formatting">
               <Button
                 type="button" variant="ghost" size="sm"
                 onClick={() => editor?.chain().focus().toggleBold().run()}
@@ -190,7 +197,13 @@ export function JobForm() {
               <div className="flex flex-col gap-2">
                 {['FULL_TIME', 'PART_TIME', 'REMOTE', 'HYBRID'].map(type => (
                   <label key={type} className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" value={type} {...form.register("jobTypes")} className="h-4 w-4 rounded border-input text-primary" />
+                    <input
+                      type="checkbox"
+                      value={type}
+                      {...form.register("jobTypes")}
+                      onKeyDown={handleCheckboxEnter}
+                      className="h-4 w-4 rounded-none border-input text-primary"
+                    />
                     <span className="text-sm">{type}</span>
                   </label>
                 ))}
@@ -203,7 +216,13 @@ export function JobForm() {
               <div className="flex flex-col gap-2">
                 {['MOBILITY', 'VISUAL', 'HEARING', 'SPEECH', 'COGNITIVE'].map(type => (
                   <label key={type} className="flex items-center gap-2 cursor-pointer">
-                    <input type="checkbox" value={type} {...form.register("acceptedDisabilities")} className="h-4 w-4 rounded border-input text-primary" />
+                    <input
+                      type="checkbox"
+                      value={type}
+                      {...form.register("acceptedDisabilities")}
+                      onKeyDown={handleCheckboxEnter}
+                      className="h-4 w-4 rounded-none border-input text-primary"
+                    />
                     <span className="text-sm">{type}</span>
                   </label>
                 ))}
@@ -232,8 +251,13 @@ export function JobForm() {
             />
           </div>
 
-          <label className="flex items-center gap-3 p-4 border rounded-lg bg-muted/20 cursor-pointer hover:bg-muted/50 transition-colors">
-            <input type="checkbox" className="h-5 w-5 rounded border-input text-primary" {...form.register("isDisabilityPriority")} />
+          <label className="flex items-center gap-3 p-4 border rounded-none bg-muted/20 cursor-pointer hover:bg-muted/50 transition-colors">
+            <input
+              type="checkbox"
+              className="h-5 w-5 rounded-none border-input text-primary"
+              {...form.register("isDisabilityPriority")}
+              onKeyDown={handleCheckboxEnter}
+            />
             <div>
               <p className="font-semibold">{t("isPriority")}</p>
               <p className="text-sm text-muted-foreground">Đánh dấu nếu công việc này đặc biệt ưu tiên tuyển dụng người khuyết tật.</p>

@@ -1,6 +1,6 @@
 import { Metadata } from 'next';
 import { ArrowUpRight, Clock3, Plus, Sparkles, Users } from 'lucide-react';
-import Image from 'next/image';
+import { EmployerRouteGate } from '@/components/auth/employer-route-gate';
 import { buttonVariants } from '@/components/ui/button';
 import { PageBreadcrumb } from '@/components/layout/page-breadcrumb';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -14,8 +14,8 @@ export const metadata: Metadata = {
 const copy = {
   vi: {
     eyebrow: 'Nhà tuyển dụng',
-    title: 'Bố cục dashboard tĩnh cho quản lý tin tuyển dụng',
-    desc: 'Màn hình này giữ cấu trúc dashboard, số liệu và bảng quản lý ở dạng minh họa để bạn chốt UI trước.',
+    title: 'Quản lý tin tuyển dụng',
+    desc: 'Dashboard giữ cấu trúc rõ ràng, số liệu dễ quét và các hành động quản lý tin tuyển dụng theo cùng một hệ UI với khu ứng viên.',
     newJob: 'Đăng tin mới',
     stats: [
       ['Tin đang hoạt động', '18', Sparkles],
@@ -33,17 +33,17 @@ const copy = {
     edit: 'Sửa',
     close: 'Đóng',
     delete: 'Xóa',
-    supportTitle: 'Khối hỗ trợ',
-    support1Title: 'Luồng duyệt',
-    support1: 'Cần giữ chỗ cho trạng thái PENDING / ACTIVE / CLOSED và các hành động duyệt/từ chối.',
-    support2Title: 'Bố cục thẻ',
-    support2: 'Card bên phải mô tả số liệu nhanh, giúp dashboard nhìn cân bằng dù chưa có dữ liệu thực.',
+    supportTitle: 'Hướng dẫn nhanh',
+    support1Title: 'Trạng thái tin',
+    support1: 'Giữ PENDING / ACTIVE / CLOSED làm trạng thái chuẩn để thao tác nhất quán.',
+    support2Title: 'Hành động nhanh',
+    support2: 'Đặt các nút sửa, đóng, xoá theo cùng phong cách với các CTA của ứng viên.',
     viewJobs: 'Xem giao diện ứng viên',
   },
   en: {
     eyebrow: 'Employers',
-    title: 'Static dashboard layout for job management',
-    desc: 'This screen keeps the dashboard structure, metrics, and management table as mock content so you can lock the UI first.',
+    title: 'Job posting management',
+    desc: 'The dashboard keeps a clear structure, scannable metrics, and job actions aligned with the candidate-facing UI system.',
     newJob: 'Post a new job',
     stats: [
       ['Active jobs', '18', Sparkles],
@@ -61,12 +61,12 @@ const copy = {
     edit: 'Edit',
     close: 'Close',
     delete: 'Delete',
-    supportTitle: 'Supporting notes',
-    support1Title: 'Review flow',
-    support1: 'Keep placeholders for PENDING / ACTIVE / CLOSED states and the approve/reject actions.',
-    support2Title: 'Card layout',
-    support2: 'The right card shows quick metrics so the dashboard remains balanced even without real data.',
-    viewJobs: 'View applicant UI',
+    supportTitle: 'Quick guide',
+    support1Title: 'Job status',
+    support1: 'Keep PENDING / ACTIVE / CLOSED as the standard states for consistent actions.',
+    support2Title: 'Fast actions',
+    support2: 'Keep edit, close, and delete actions in the same visual language as the candidate CTA buttons.',
+    viewJobs: 'View candidate UI',
   },
 } as const;
 
@@ -86,7 +86,8 @@ export default async function EmployerDashboardPage({ params }: { params: Promis
         { label: 'Bảng điều khiển' },
       ];
   return (
-    <main id="main-content" className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
+    <EmployerRouteGate>
+      <main id="main-content" className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
       <PageBreadcrumb items={crumbs} />
       <div className="mb-8 flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
         <div className="max-w-3xl">
@@ -95,7 +96,13 @@ export default async function EmployerDashboardPage({ params }: { params: Promis
           <p className="mt-4 text-muted-foreground">{t.desc}</p>
         </div>
 
-        <Link href="/employer/jobs/create" className={buttonVariants({ className: 'h-11 rounded-xl' })}>
+        <Link
+          href="/employer/jobs/create"
+          className={buttonVariants({
+            className:
+              'h-11 rounded-none border-[#0b0c0c] bg-[#ffdd00] px-6 text-sm font-semibold text-[#0b0c0c] hover:bg-[#ffe766] focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00]',
+          })}
+        >
           <Plus className="mr-2 h-4 w-4" aria-hidden="true" />
           {t.newJob}
         </Link>
@@ -103,13 +110,13 @@ export default async function EmployerDashboardPage({ params }: { params: Promis
 
       <div className="grid gap-6 md:grid-cols-3">
         {t.stats.map(([label, value, Icon]) => (
-          <Card key={label as string} className="border-none shadow-lg">
+          <Card key={label as string} className="rounded-none border border-border shadow-lg">
             <CardContent className="flex items-center justify-between p-6">
               <div>
                 <p className="text-sm text-muted-foreground">{label as string}</p>
                 <p className="mt-2 text-3xl font-bold tracking-tight">{value as string}</p>
               </div>
-              <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+              <div className="flex h-12 w-12 items-center justify-center rounded-none border border-border bg-background text-primary">
                 <Icon className="h-6 w-6" aria-hidden="true" />
               </div>
             </CardContent>
@@ -117,45 +124,14 @@ export default async function EmployerDashboardPage({ params }: { params: Promis
         ))}
       </div>
 
-      <Card className="mt-8 overflow-hidden border-none shadow-xl">
-        <CardContent className="grid gap-0 p-0 lg:grid-cols-[0.9fr_1.1fr]">
-          <div className="flex flex-col justify-between bg-primary/5 p-6">
-            <div className="space-y-3">
-              <p className="text-sm font-medium uppercase tracking-[0.2em] text-primary">
-                {locale === 'en' ? 'Dashboard visual' : 'Minh hoạ dashboard'}
-              </p>
-              <h2 className="text-2xl font-bold tracking-tight">
-                {locale === 'en' ? 'Keep the dashboard alive with a visual block' : 'Giữ dashboard có điểm nhấn bằng hình ảnh'}
-              </h2>
-              <p className="text-sm leading-relaxed text-muted-foreground">
-                {locale === 'en'
-                  ? 'A clean illustration helps the employer area feel less text-heavy and gives the eye a natural resting point.'
-                  : 'Một minh hoạ sạch sẽ giúp khu nhà tuyển dụng bớt nặng chữ và có điểm nghỉ mắt tự nhiên.'}
-              </p>
-            </div>
-            <p className="mt-6 text-xs leading-relaxed text-muted-foreground">
-              {locale === 'en'
-                ? 'Source: local SVG asset built from project shapes, so no external licensing risk.'
-                : 'Nguồn: SVG nội bộ do project tạo ra, không có rủi ro giấy phép từ bên ngoài.'}
-            </p>
-          </div>
-          <div className="relative min-h-[280px] overflow-hidden bg-slate-50">
-            <Image
-              src="/human-resources.png"
-              alt={locale === 'en' ? 'Human resources illustration for employers' : 'Minh hoạ nhân sự dành cho nhà tuyển dụng'}
-              fill
-              sizes="(max-width: 1024px) 100vw, 55vw"
-              className="object-contain p-6"
-            />
-          </div>
-        </CardContent>
-      </Card>
-
       <div className="mt-8 grid gap-8 lg:grid-cols-[1.5fr_0.9fr]">
-        <Card className="border-none shadow-lg">
+        <Card className="rounded-none border border-border shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between">
             <CardTitle className="text-2xl">{t.tableTitle}</CardTitle>
-            <Link href="/employer/jobs/create" className="gov-link text-sm font-medium">
+            <Link
+              href="/employer/jobs/create"
+              className="inline-flex items-center rounded-none border border-[#0b0c0c] px-3 py-2 text-sm font-medium text-[#0b0c0c] underline underline-offset-4 hover:bg-[#ececec] focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00]"
+            >
               {t.tableLink}
             </Link>
           </CardHeader>
@@ -174,19 +150,42 @@ export default async function EmployerDashboardPage({ params }: { params: Promis
                   <tr key={title} className="border-b last:border-0">
                     <td className="px-4 py-4 font-medium">{title}</td>
                     <td className="px-4 py-4">
-                      <span className="rounded-full bg-primary/10 px-3 py-1 text-xs font-semibold text-primary">{status}</span>
+                      <span className="inline-flex rounded-none border border-[#0b0c0c] bg-white px-3 py-1 text-xs font-semibold text-[#0b0c0c]">
+                        {status}
+                      </span>
                     </td>
                     <td className="px-4 py-4">{applications}</td>
                     <td className="px-4 py-4 text-muted-foreground">{updated}</td>
                     <td className="px-4 py-4">
                       <div className="flex flex-wrap gap-2">
-                        <button type="button" className="rounded-lg border px-3 py-2 text-xs font-medium">
+                        <button
+                          type="button"
+                          className={buttonVariants({
+                            variant: 'outline',
+                            className:
+                              'h-9 rounded-none border-[#0b0c0c] bg-white px-3 text-xs font-medium text-[#0b0c0c] hover:bg-[#ececec] focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00]',
+                          })}
+                        >
                           {t.edit}
                         </button>
-                        <button type="button" className="rounded-lg border px-3 py-2 text-xs font-medium">
+                        <button
+                          type="button"
+                          className={buttonVariants({
+                            variant: 'outline',
+                            className:
+                              'h-9 rounded-none border-[#0b0c0c] bg-white px-3 text-xs font-medium text-[#0b0c0c] hover:bg-[#ececec] focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00]',
+                          })}
+                        >
                           {t.close}
                         </button>
-                        <button type="button" className="rounded-lg border border-destructive/30 px-3 py-2 text-xs font-medium text-destructive">
+                        <button
+                          type="button"
+                          className={buttonVariants({
+                            variant: 'destructive',
+                            className:
+                              'h-9 rounded-none px-3 text-xs font-medium focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00]',
+                          })}
+                        >
                           {t.delete}
                         </button>
                       </div>
@@ -198,26 +197,34 @@ export default async function EmployerDashboardPage({ params }: { params: Promis
           </CardContent>
         </Card>
 
-        <Card className="border-none shadow-lg">
+        <Card className="rounded-none border border-border shadow-lg">
           <CardHeader>
             <CardTitle className="text-2xl">{t.supportTitle}</CardTitle>
           </CardHeader>
           <CardContent className="space-y-4 text-sm text-muted-foreground">
-            <div className="rounded-2xl border bg-background p-4">
+            <div className="rounded-none border bg-background p-4">
               <p className="font-medium text-foreground">{t.support1Title}</p>
               <p className="mt-2">{t.support1}</p>
             </div>
-            <div className="rounded-2xl border bg-background p-4">
+            <div className="rounded-none border bg-background p-4">
               <p className="font-medium text-foreground">{t.support2Title}</p>
               <p className="mt-2">{t.support2}</p>
             </div>
-            <Link href="/jobs" className={buttonVariants({ variant: 'outline', className: 'h-11 w-full rounded-xl' })}>
+            <Link
+              href="/jobs"
+              className={buttonVariants({
+                variant: 'outline',
+                className:
+                  'h-11 w-full rounded-none border-[#0b0c0c] bg-white text-[#0b0c0c] hover:bg-[#ececec] focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00]',
+              })}
+            >
               <ArrowUpRight className="mr-2 h-4 w-4" aria-hidden="true" />
               {t.viewJobs}
             </Link>
           </CardContent>
         </Card>
       </div>
-    </main>
+      </main>
+    </EmployerRouteGate>
   );
 }
