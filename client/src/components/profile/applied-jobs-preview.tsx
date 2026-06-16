@@ -3,9 +3,9 @@
 import Image from 'next/image';
 import { useMemo } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { CalendarDays, CheckCircle2, ArrowRight, MapPin } from 'lucide-react';
+import { ArrowRight, MapPin } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
 import { getCompanyLogoAlt, getCompanyLogoSrc } from '@/lib/jobs/company-logo';
 
@@ -152,75 +152,56 @@ export function AppliedJobsPreview({ locale }: AppliedJobsPreviewProps) {
 
   return (
     <div className="mt-8">
-      <Card className="rounded-none border border-slate-200 bg-white shadow-[0_6px_24px_rgba(15,23,42,0.04)]">
-        <CardHeader className="flex flex-col gap-4 border-b py-5 sm:flex-row sm:items-start sm:justify-between">
-          <div className="flex items-start gap-4">
-            <div className="flex h-16 w-16 shrink-0 items-center justify-center overflow-hidden border border-slate-200 bg-white">
-              <Image src={logoSrc} alt={logoAlt} width={64} height={64} className="h-14 w-14 object-contain p-1" />
-            </div>
-            <div className="space-y-2">
-              <div className="flex flex-wrap items-center gap-2">
-                <span className="inline-flex items-center rounded-none border border-[#0b0c0c] bg-white px-2.5 py-1 text-xs font-medium text-[#0b0c0c]">
-                  {statusLabel}
-                </span>
-                <span className="inline-flex items-center rounded-none border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-[#0b0c0c]">
-                  {locale === 'vi' ? '1 hồ sơ' : '1 application'}
-                </span>
+      <Card className="rounded-none border border-slate-200 bg-white shadow-[0_6px_24px_rgba(15,23,42,0.04)] transition-colors focus-within:border-[#ffdd00]">
+        <CardContent className="p-4 sm:p-5">
+          <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+            <div className="flex min-w-0 items-start gap-4">
+              <div className="flex h-20 w-20 shrink-0 items-center justify-center overflow-hidden border border-slate-200 bg-white">
+                <Image src={logoSrc} alt={logoAlt} width={72} height={72} className="h-16 w-16 object-contain p-1" />
               </div>
-              <CardTitle className="text-xl text-slate-950 sm:text-2xl">{currentItem.title}</CardTitle>
-              <p className="text-sm text-muted-foreground">{currentItem.company}</p>
+
+              <div className="min-w-0 space-y-2">
+                <div className="flex flex-wrap items-center gap-2">
+                  <span className="inline-flex items-center rounded-none border border-[#0b0c0c] bg-white px-2.5 py-1 text-xs font-medium text-[#0b0c0c]">
+                    {statusLabel}
+                  </span>
+                  <span className="inline-flex items-center rounded-none border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-[#0b0c0c]">
+                    {currentItem.location}
+                  </span>
+                  <span className="inline-flex items-center rounded-none border border-slate-200 bg-white px-2.5 py-1 text-xs font-medium text-[#0b0c0c]">
+                    {locale === 'vi' ? 'Dưới 1 năm' : 'Entry level'}
+                  </span>
+                </div>
+
+                <CardTitle className="text-xl font-semibold text-slate-950 sm:text-[1.375rem]">{currentItem.title}</CardTitle>
+                <p className="text-sm uppercase tracking-[0.08em] text-slate-500">{currentItem.company}</p>
+
+                <div className="flex flex-wrap gap-2 pt-1">
+                  {currentItem.tags.slice(0, 3).map((tag) => (
+                    <span key={tag} className="text-sm text-slate-500">
+                      {tag}
+                    </span>
+                  ))}
+                </div>
+              </div>
             </div>
-          </div>
 
-          <div className="space-y-1 text-sm text-muted-foreground sm:text-right">
-            <p className="inline-flex items-center gap-2 sm:justify-end">
-              <CalendarDays className="h-4 w-4" aria-hidden="true" />
-              {currentItem.appliedAt}
-            </p>
-            <p className="inline-flex items-center gap-2 sm:justify-end">
-              <CheckCircle2 className="h-4 w-4" aria-hidden="true" />
-              {locale === 'vi' ? 'Đang theo dõi' : 'Tracking'}
-            </p>
-          </div>
-        </CardHeader>
-
-        <CardContent className="space-y-5 py-5">
-          <div className="grid gap-3 sm:grid-cols-3">
-            <div className="rounded-none border bg-muted/20 p-4">
-              <p className="text-sm font-medium text-muted-foreground">{locale === 'vi' ? 'Địa điểm' : 'Location'}</p>
-              <p className="mt-2 inline-flex items-center gap-2 text-sm font-semibold text-slate-950">
+            <div className="flex shrink-0 flex-col items-start gap-2 sm:items-end">
+              <p className="text-lg font-semibold text-slate-950">{currentItem.salary}</p>
+              <p className="inline-flex items-center gap-2 text-sm text-slate-500">
                 <MapPin className="h-4 w-4" aria-hidden="true" />
-                {currentItem.location}
-              </p>
-            </div>
-            <div className="rounded-none border bg-muted/20 p-4">
-              <p className="text-sm font-medium text-muted-foreground">{locale === 'vi' ? 'Mức lương' : 'Salary'}</p>
-              <p className="mt-2 text-sm font-semibold text-slate-950">{currentItem.salary}</p>
-            </div>
-            <div className="rounded-none border bg-muted/20 p-4">
-              <p className="text-sm font-medium text-muted-foreground">{locale === 'vi' ? 'Mô tả ngắn' : 'Summary'}</p>
-              <p className="mt-2 text-sm font-semibold text-slate-950">
-                {locale === 'vi' ? '1 mục ảo cho tab hiện tại' : '1 mock item for the current tab'}
+                {currentItem.appliedAt}
               </p>
             </div>
           </div>
 
-          <p className="text-sm leading-7 text-slate-600">{note}</p>
-
-          <div className="flex flex-wrap gap-2">
-            {currentItem.tags.slice(0, 3).map((tag) => (
-              <span key={tag} className="rounded-none border border-slate-200 bg-white px-3 py-1 text-xs text-slate-700">
-                {tag}
-              </span>
-            ))}
-          </div>
-
-          <div className="flex flex-wrap gap-3">
+          <div className="mt-5 flex flex-wrap gap-4">
             <Link
               href={`/jobs/${currentItem.slug}`}
               className={buttonVariants({
                 variant: 'outline',
-                className: 'h-11 rounded-none border-[#0b0c0c] bg-white px-4 text-sm font-medium text-[#0b0c0c] hover:bg-[#ececec]',
+                className:
+                  'h-11 min-w-[9.5rem] rounded-none border-[#0b0c0c] bg-white px-4 text-sm font-normal text-[#0b0c0c] shadow-none hover:bg-[#ececec] focus-visible:bg-[#ffdd00] focus-visible:text-[#0b0c0c]',
               })}
             >
               {locale === 'vi' ? 'Xem tin' : 'View job'}
@@ -230,12 +211,15 @@ export function AppliedJobsPreview({ locale }: AppliedJobsPreviewProps) {
               href="/jobs"
               className={buttonVariants({
                 variant: 'outline',
-                className: 'h-11 rounded-none border-[#0b0c0c] bg-white px-4 text-sm font-medium text-[#0b0c0c] hover:bg-[#ececec]',
+                className:
+                  'h-11 min-w-[9.5rem] rounded-none border-[#0b0c0c] bg-white px-4 text-sm font-normal text-[#0b0c0c] shadow-none hover:bg-[#ececec] focus-visible:bg-[#ffdd00] focus-visible:text-[#0b0c0c]',
               })}
             >
               {locale === 'vi' ? 'Tìm việc khác' : 'Find other jobs'}
             </Link>
           </div>
+
+          <p className="mt-4 text-sm leading-7 text-slate-600">{note}</p>
         </CardContent>
       </Card>
     </div>

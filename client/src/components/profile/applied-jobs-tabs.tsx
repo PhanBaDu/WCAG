@@ -22,26 +22,27 @@ type AppliedJobTabKey =
 type AppliedJobTab = {
   key: AppliedJobTabKey;
   label: string;
+  count: number;
 };
 
 const TABS: Record<'vi' | 'en', AppliedJobTab[]> = {
   vi: [
-    { key: 'all', label: 'Tất cả' },
-    { key: 'received', label: 'Tiếp nhận' },
-    { key: 'reviewed', label: 'Đã xem' },
-    { key: 'screening', label: 'Duyệt hồ sơ' },
-    { key: 'considering', label: 'Cân nhắc' },
-    { key: 'matched', label: 'Phù hợp' },
-    { key: 'rejected', label: 'Chưa phù hợp' },
+    { key: 'all', label: 'Tất cả', count: 1 },
+    { key: 'received', label: 'Tiếp nhận', count: 1 },
+    { key: 'reviewed', label: 'Đã xem', count: 1 },
+    { key: 'screening', label: 'Duyệt hồ sơ', count: 1 },
+    { key: 'considering', label: 'Cân nhắc', count: 1 },
+    { key: 'matched', label: 'Phù hợp', count: 1 },
+    { key: 'rejected', label: 'Chưa phù hợp', count: 1 },
   ],
   en: [
-    { key: 'all', label: 'All' },
-    { key: 'received', label: 'Received' },
-    { key: 'reviewed', label: 'Viewed' },
-    { key: 'screening', label: 'Screening' },
-    { key: 'considering', label: 'Considering' },
-    { key: 'matched', label: 'Matched' },
-    { key: 'rejected', label: 'Not suitable' },
+    { key: 'all', label: 'All', count: 1 },
+    { key: 'received', label: 'Received', count: 1 },
+    { key: 'reviewed', label: 'Viewed', count: 1 },
+    { key: 'screening', label: 'Screening', count: 1 },
+    { key: 'considering', label: 'Considering', count: 1 },
+    { key: 'matched', label: 'Matched', count: 1 },
+    { key: 'rejected', label: 'Not suitable', count: 1 },
   ],
 };
 
@@ -90,7 +91,8 @@ export function AppliedJobsTabs({ locale }: AppliedJobsTabsProps) {
             )}
             aria-pressed={selected}
           >
-            {tab.label}
+            <span>{tab.label}</span>
+            <span className="text-[inherit]">({tab.count})</span>
           </button>
         );
       })}

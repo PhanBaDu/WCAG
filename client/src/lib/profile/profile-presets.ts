@@ -98,7 +98,6 @@ export const profilePresets: Record<'vi' | 'en', Record<Exclude<UserRole, 'ADM'>
       sidebarItems: [
         { label: 'Việc làm đã ứng tuyển', href: '/profile/applied-jobs' },
         { label: 'Việc làm phù hợp với bạn', href: '/jobs' },
-        { label: 'Cài đặt gợi ý việc làm', href: '/jobs' },
       ],
       sidebarDescription: 'Truy cập nhanh các mục quản lý việc làm của bạn.',
     },
@@ -216,7 +215,6 @@ export const profilePresets: Record<'vi' | 'en', Record<Exclude<UserRole, 'ADM'>
       sidebarItems: [
         { label: 'Applied jobs', href: '/profile/applied-jobs' },
         { label: 'Jobs matched for you', href: '/jobs' },
-        { label: 'Job suggestion settings', href: '/jobs' },
       ],
       sidebarDescription: 'Quick access to your job management areas.',
     },
