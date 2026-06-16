@@ -4,12 +4,7 @@ import Script from 'next/script';
 import {
   ArrowLeft,
   BadgeCheck,
-  Building2,
-  Briefcase,
   CheckCircle2,
-  Clock3,
-  MapPin,
-  ShieldCheck,
   ArrowUp,
 } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
@@ -17,6 +12,7 @@ import { PageBreadcrumb } from '@/components/layout/page-breadcrumb';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
 import { JobResultCard } from '@/components/jobs/job-result-card';
+import { JobApplyModal } from '@/components/jobs/job-apply-modal';
 import { getHotJobs, getMockJobs } from '@/lib/jobs/mock-jobs';
 import { getCompanyLogoAlt, getCompanyLogoSrc } from '@/lib/jobs/company-logo';
 
@@ -181,13 +177,6 @@ export default async function JobDetailPage({
           { label: title },
         ];
 
-  const facts = [
-    { icon: Building2, label: locale === 'en' ? 'Company' : 'Doanh nghiệp', value: company },
-    { icon: MapPin, label: locale === 'en' ? 'Location' : 'Địa điểm', value: location },
-    { icon: Briefcase, label: locale === 'en' ? 'Work type' : 'Hình thức', value: type },
-    { icon: Clock3, label: locale === 'en' ? 'Posted' : 'Đăng', value: detail.posted },
-  ];
-
   const mustHaveSkills =
     locale === 'en'
       ? ['Excel', 'PowerPoint', 'Communication', 'Office software', 'Teamwork']
@@ -211,10 +200,6 @@ export default async function JobDetailPage({
   const companySize = locale === 'en' ? '500-1000 employees' : '500-1000 nhân viên';
   const companyField = industry;
   const companyAddress = location;
-  const workMode = type;
-  const level = locale === 'en' ? 'Staff' : 'Nhân viên';
-  const education = locale === 'en' ? 'College or above' : 'Cao đẳng trở lên';
-  const openings = locale === 'en' ? '1 position' : '1 người';
   const employmentType = type;
   const summaryCards = [
     { label: locale === 'en' ? 'Salary' : 'Mức lương', value: salary },
@@ -286,9 +271,7 @@ export default async function JobDetailPage({
                 </div>
 
                 <div className="flex flex-wrap gap-3">
-                  <Link href="/register" className={buttonVariants({ className: 'h-11 rounded-none px-6' })}>
-                    {detail.applyNow}
-                  </Link>
+                  <JobApplyModal locale={locale} title={title} company={company} salary={salary} location={location} />
                   <Link href="/jobs" className={buttonVariants({ variant: 'outline', className: 'h-11 rounded-none px-6' })}>
                     {detail.viewMore}
                   </Link>
