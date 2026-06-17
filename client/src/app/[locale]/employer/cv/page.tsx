@@ -1,11 +1,11 @@
 import type { Metadata } from 'next';
-import { ArrowUpRight, BadgeCheck, CalendarDays, Download, FileText, MapPin, Search, Sparkles, Users } from 'lucide-react';
+import { ArrowUpRight, Download, Sparkles } from 'lucide-react';
 import { EmployerRouteGate } from '@/components/auth/employer-route-gate';
-import { CandidateStatusActions } from '@/components/employer/candidate-status-actions';
+import { CandidateApplicationsTable } from '@/components/employer/candidate-applications-table';
+import { EmployerCvExportButton } from '@/components/employer/employer-cv-export-button';
 import { PageBreadcrumb } from '@/components/layout/page-breadcrumb';
 import { buttonVariants } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Card, CardContent } from '@/components/ui/card';
 import { Link } from '@/i18n/routing';
 
 export const metadata: Metadata = {
@@ -45,25 +45,11 @@ const copy = {
     columns: ['Ứng viên', 'Vị trí', 'Khu vực', 'Phù hợp', 'Trạng thái', 'Cập nhật', 'Hành động'],
     openCv: 'Xem CV',
     downloadCv: 'Tải CV',
-    shortlist: 'Lưu ứng viên',
-    invite: 'Mời phỏng vấn',
-    previewTitle: 'Hồ sơ đang mở',
-    previewSubtitle: 'Nguyễn Minh Anh',
-    previewRole: 'Nhân viên nội dung số',
-    previewLocation: 'Hà Nội',
-    previewMatch: '92% phù hợp',
-    previewStatus: 'Mới nhận',
-    previewSummaryTitle: 'Thông tin nhanh',
-    previewSummary1: '4 năm kinh nghiệm viết nội dung, biên tập landing page và phối hợp marketing.',
-    previewSummary2: 'Đã đính kèm CV PDF và portfolio cá nhân.',
-    previewSummary3: 'Có thể bắt đầu trong 2 tuần.',
-    skillTitle: 'Kỹ năng nổi bật',
-    noteTitle: 'Ghi chú nội bộ',
-    noteText: 'Ứng viên phù hợp với vai trò content, nên ưu tiên chuyển sang shortlist trước khi phỏng vấn.',
-    timelineTitle: 'Lịch sử xử lý',
-    timeline1: '10:24 - Hồ sơ được nộp qua job post',
-    timeline2: '10:31 - Nhà tuyển dụng đã mở CV',
-    timeline3: '10:48 - Được gắn mức phù hợp 92%',
+    pagination: {
+      previous: 'Trước',
+      next: 'Sau',
+      page: 'Trang',
+    },
   },
   en: {
     eyebrow: 'Employers',
@@ -96,25 +82,11 @@ const copy = {
     columns: ['Candidate', 'Role', 'Location', 'Match', 'Status', 'Updated', 'Actions'],
     openCv: 'Open CV',
     downloadCv: 'Download CV',
-    shortlist: 'Save candidate',
-    invite: 'Invite to interview',
-    previewTitle: 'Open profile',
-    previewSubtitle: 'Nguyễn Minh Anh',
-    previewRole: 'Content specialist',
-    previewLocation: 'Hanoi',
-    previewMatch: '92% match',
-    previewStatus: 'New',
-    previewSummaryTitle: 'Quick facts',
-    previewSummary1: '4 years writing content, building landing pages, and supporting marketing campaigns.',
-    previewSummary2: 'CV PDF and personal portfolio are attached.',
-    previewSummary3: 'Available in 2 weeks.',
-    skillTitle: 'Top skills',
-    noteTitle: 'Internal note',
-    noteText: 'Strong fit for content roles, so shortlist before scheduling an interview.',
-    timelineTitle: 'Processing history',
-    timeline1: '10:24 - Profile submitted from job post',
-    timeline2: '10:31 - CV opened by employer',
-    timeline3: '10:48 - Match score set to 92%',
+    pagination: {
+      previous: 'Previous',
+      next: 'Next',
+      page: 'Page',
+    },
   },
 } as const;
 
@@ -175,8 +147,6 @@ export default async function EmployerCvPage({ params }: { params: Promise<{ loc
           { label: 'Nhà tuyển dụng', href: '/employer/dashboard' },
           { label: 'CV ứng viên' },
         ];
-  const selected = applications[0];
-
   return (
     <EmployerRouteGate>
       <main
@@ -207,17 +177,10 @@ export default async function EmployerCvPage({ params }: { params: Promise<{ loc
                 <ArrowUpRight className="mr-2 h-4 w-4" aria-hidden="true" />
                 {t.back}
               </Link>
-              <a
-                href="/cv-demo.pdf"
-                download
-                className={buttonVariants({
-                  className:
-                    'h-11 rounded-none border-[#0b0c0c] px-6 text-sm font-semibold text-[#0b0c0c] focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00]',
-                })}
-              >
+              <EmployerCvExportButton href="/cv-demo.pdf">
                 <Download className="mr-2 h-4 w-4" aria-hidden="true" />
                 {t.export}
-              </a>
+              </EmployerCvExportButton>
             </div>
           </div>
 
@@ -238,291 +201,19 @@ export default async function EmployerCvPage({ params }: { params: Promise<{ loc
             ))}
           </div>
 
-          <Card className="min-w-0 rounded-none border border-border shadow-lg">
-            <CardHeader className="border-b">
-              <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-                <div className="space-y-1">
-                  <CardTitle className="text-2xl">{t.candidateTableTitle}</CardTitle>
-                  <p className="text-sm text-muted-foreground">{t.candidateTableNote}</p>
-                </div>
-                <span className="inline-flex items-center gap-2 rounded-none border border-[#0b0c0c] bg-muted/40 px-3 py-1 text-xs font-semibold text-[#0b0c0c]">
-                  <Users className="h-4 w-4" aria-hidden="true" />
-                  {locale === 'en' ? 'CV queue' : 'Hàng chờ xử lý'}
-                </span>
-              </div>
-            </CardHeader>
-            <CardContent className="space-y-4 p-5">
-              <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-[1.2fr_0.6fr_0.6fr_0.6fr]">
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">{locale === 'en' ? 'Search' : 'Tìm kiếm'}</label>
-                  <div className="flex h-12 items-center gap-2 rounded-none border-2 border-[#0b0c0c] bg-background px-4">
-                    <Search className="h-4 w-4 text-muted-foreground" aria-hidden="true" />
-                    <input
-                      type="text"
-                      placeholder={t.searchPlaceholder}
-                      className="h-full w-full bg-transparent text-sm outline-none placeholder:text-muted-foreground"
-                    />
-                  </div>
-                </div>
+          <CandidateApplicationsTable
+            locale={locale}
+            labels={{
+              candidateTableTitle: t.candidateTableTitle,
+              candidateTableNote: t.candidateTableNote,
+              columns: t.columns,
+              openCv: t.openCv,
+              downloadCv: t.downloadCv,
+              pagination: t.pagination,
+            }}
+            applications={applications}
+          />
 
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">{t.statusLabel}</label>
-                  <Select defaultValue="Tất cả">
-                    <SelectTrigger className="h-12 w-full rounded-none border-2 border-[#0b0c0c] bg-background px-4 text-sm shadow-none focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00] focus-visible:ring-0">
-                      <SelectValue placeholder={t.statusAll} />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-none border-2 border-[#0b0c0c] bg-white p-1 shadow-none ring-0">
-                      <SelectItem value="Tất cả">Tất cả</SelectItem>
-                      <SelectItem value="Mới">Mới</SelectItem>
-                      <SelectItem value="Đã xem">Đã xem</SelectItem>
-                      <SelectItem value="Mời phỏng vấn">Mời phỏng vấn</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">{t.jobLabel}</label>
-                  <Select defaultValue="Tất cả vị trí">
-                    <SelectTrigger className="h-12 w-full rounded-none border-2 border-[#0b0c0c] bg-background px-4 text-sm shadow-none focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00] focus-visible:ring-0">
-                      <SelectValue placeholder={t.jobAll} />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-none border-2 border-[#0b0c0c] bg-white p-1 shadow-none ring-0">
-                      <SelectItem value="Tất cả vị trí">Tất cả vị trí</SelectItem>
-                      <SelectItem value="Chuyên viên nội dung số">Chuyên viên nội dung số</SelectItem>
-                      <SelectItem value="Nhân viên hành chính">Nhân viên hành chính</SelectItem>
-                      <SelectItem value="Trợ lý dữ liệu">Trợ lý dữ liệu</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-
-                <div className="space-y-2">
-                  <label className="text-sm font-medium">{t.sortLabel}</label>
-                  <Select defaultValue="Phù hợp nhất">
-                    <SelectTrigger className="h-12 w-full rounded-none border-2 border-[#0b0c0c] bg-background px-4 text-sm shadow-none focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00] focus-visible:ring-0">
-                      <SelectValue placeholder={t.sortMatch} />
-                    </SelectTrigger>
-                    <SelectContent className="rounded-none border-2 border-[#0b0c0c] bg-white p-1 shadow-none ring-0">
-                      <SelectItem value="Mới nhất">Mới nhất</SelectItem>
-                      <SelectItem value="Phù hợp nhất">Phù hợp nhất</SelectItem>
-                      <SelectItem value="Cũ nhất">Cũ nhất</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-
-              <div className="overflow-x-auto">
-                <table className="w-full min-w-[980px] text-left text-sm">
-                  <caption className="sr-only">{t.candidateTableTitle}</caption>
-                  <thead className="border-b text-muted-foreground">
-                    <tr>
-                      {t.columns.map((column) => (
-                        <th key={column} className="px-4 py-3 font-medium">
-                          {column}
-                        </th>
-                      ))}
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {applications.map((item) => (
-                      <tr key={item.name} className="border-b last:border-0">
-                        <td className="px-4 py-4">
-                          <div className="space-y-1">
-                            <p className="font-medium text-foreground">{item.name}</p>
-                            <span className="inline-flex rounded-none bg-muted/40 px-2 py-1 text-xs font-semibold text-foreground">
-                              {item.signal}
-                            </span>
-                          </div>
-                        </td>
-                        <td className="px-4 py-4">{item.role}</td>
-                        <td className="px-4 py-4">
-                          <span className="inline-flex items-center gap-1.5 rounded-none border border-[#0b0c0c] px-3 py-1 text-xs font-semibold text-[#0b0c0c]">
-                            <MapPin className="h-3.5 w-3.5" aria-hidden="true" />
-                            {item.location}
-                          </span>
-                        </td>
-                        <td className="px-4 py-4">
-                          <span className="inline-flex items-center gap-1.5 rounded-none border border-[#0b0c0c] px-3 py-1 text-xs font-semibold text-[#0b0c0c]">
-                            <BadgeCheck className="h-3.5 w-3.5" aria-hidden="true" />
-                            {item.match}
-                          </span>
-                        </td>
-                        <td className="px-4 py-4">
-                          <CandidateStatusActions
-                            initialStatus={
-                              item.status as
-                                | 'Tiếp nhận'
-                                | 'Đã xem'
-                                | 'Duyệt hồ sơ'
-                                | 'Cân nhắc'
-                                | 'Phù hợp'
-                                | 'Chưa phù hợp'
-                            }
-                          />
-                        </td>
-                        <td className="px-4 py-4">
-                          <span className="inline-flex items-center gap-1.5 text-muted-foreground">
-                            <CalendarDays className="h-3.5 w-3.5" aria-hidden="true" />
-                            {item.updated}
-                          </span>
-                        </td>
-                        <td className="px-4 py-4">
-                          <div className="flex flex-wrap gap-2">
-                            <a
-                              href={item.file}
-                              target="_blank"
-                              rel="noreferrer"
-                              className={buttonVariants({
-                                variant: 'outline',
-                                className:
-                                  'h-9 rounded-none border-[#0b0c0c] bg-white px-3 text-xs font-medium text-[#0b0c0c] hover:bg-[#ececec] focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00]',
-                              })}
-                            >
-                              <FileText className="mr-2 h-4 w-4" aria-hidden="true" />
-                              {t.openCv}
-                            </a>
-                            <a
-                              href={item.file}
-                              download
-                              className={buttonVariants({
-                                variant: 'default',
-                                className:
-                                  'h-9 rounded-none px-3 text-xs font-medium focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00]',
-                              })}
-                            >
-                              <Download className="mr-2 h-4 w-4" aria-hidden="true" />
-                              {t.downloadCv}
-                            </a>
-                          </div>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </CardContent>
-          </Card>
-
-          <div className="grid gap-8 lg:grid-cols-[0.95fr_1.05fr]">
-            <Card className="min-w-0 rounded-none border border-border shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-2xl">{t.previewTitle}</CardTitle>
-                <p className="text-sm text-muted-foreground">
-                  {locale === 'en' ? 'Focused candidate review' : 'Xem nhanh ứng viên đang mở'}
-                </p>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="flex flex-col gap-4 rounded-none border bg-background p-4 sm:flex-row sm:items-start sm:justify-between">
-                  <div className="min-w-0 space-y-2">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h2 className="text-xl font-semibold">{t.previewSubtitle}</h2>
-                      <span className="rounded-none bg-muted/40 px-2 py-1 text-xs font-semibold text-foreground">
-                        {t.previewStatus}
-                      </span>
-                    </div>
-                    <p className="text-sm text-muted-foreground">{t.previewRole}</p>
-                    <p className="text-sm text-muted-foreground">{t.previewLocation}</p>
-                  </div>
-                  <span className="inline-flex items-center gap-1.5 rounded-none border border-[#0b0c0c] px-3 py-1 text-xs font-semibold text-[#0b0c0c]">
-                    <Sparkles className="h-3.5 w-3.5" aria-hidden="true" />
-                    {t.previewMatch}
-                  </span>
-                </div>
-
-                <div className="rounded-none border bg-background p-4">
-                  <p className="font-medium text-foreground">{t.previewSummaryTitle}</p>
-                  <ul className="mt-2 space-y-2 text-sm text-muted-foreground">
-                    <li>{t.previewSummary1}</li>
-                    <li>{t.previewSummary2}</li>
-                    <li>{t.previewSummary3}</li>
-                  </ul>
-                </div>
-
-                <div className="rounded-none border bg-background p-4">
-                  <p className="font-medium text-foreground">{t.skillTitle}</p>
-                  <div className="mt-3 flex flex-wrap gap-2">
-                    {['SEO', 'Content', 'Landing page', 'Marketing', 'Research'].map((skill) => (
-                      <span key={skill} className="rounded-none bg-muted/40 px-3 py-1 text-xs font-semibold text-foreground">
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <a
-                    href={selected.file}
-                    target="_blank"
-                    rel="noreferrer"
-                    className={buttonVariants({
-                      variant: 'outline',
-                      className:
-                        'h-12 rounded-none border-[#0b0c0c] bg-white text-[#0b0c0c] hover:bg-[#ececec] focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00]',
-                    })}
-                  >
-                    <FileText className="mr-2 h-4 w-4" aria-hidden="true" />
-                    {t.openCv}
-                  </a>
-                  <a
-                    href={selected.file}
-                    download
-                    className={buttonVariants({
-                      className:
-                        'h-12 rounded-none px-4 text-[#0b0c0c] focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00]',
-                    })}
-                  >
-                    <Download className="mr-2 h-4 w-4" aria-hidden="true" />
-                    {t.downloadCv}
-                  </a>
-                </div>
-              </CardContent>
-            </Card>
-
-            <Card className="rounded-none border border-border shadow-lg">
-              <CardHeader>
-                <CardTitle className="text-2xl">{locale === 'en' ? 'Processing workflow' : 'Quy trình xử lý'}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="rounded-none border bg-background p-4 text-sm text-muted-foreground">
-                  <p className="font-medium text-foreground">{t.noteTitle}</p>
-                  <p className="mt-2">{t.noteText}</p>
-                </div>
-
-                <div className="rounded-none border bg-background p-4">
-                  <p className="font-medium text-foreground">{t.timelineTitle}</p>
-                  <ul className="mt-3 space-y-3 text-sm text-muted-foreground">
-                    {[t.timeline1, t.timeline2, t.timeline3].map((item) => (
-                      <li key={item} className="flex gap-2">
-                        <span className="mt-1 h-2 w-2 shrink-0 rounded-full bg-primary" aria-hidden="true" />
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-
-                <div className="grid gap-3 sm:grid-cols-2">
-                  <button
-                    type="button"
-                    className={buttonVariants({
-                      variant: 'outline',
-                      className:
-                        'h-12 rounded-none border-[#0b0c0c] bg-white text-[#0b0c0c] hover:bg-[#ececec] focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00]',
-                    })}
-                  >
-                    {t.shortlist}
-                  </button>
-                  <button
-                    type="button"
-                    className={buttonVariants({
-                      className:
-                        'h-12 rounded-none px-4 text-[#0b0c0c] focus-visible:border-[#ffdd00] focus-visible:!outline focus-visible:!outline-[3px] focus-visible:!outline-offset-[3px] focus-visible:!outline-[#ffdd00]',
-                    })}
-                  >
-                    {t.invite}
-                  </button>
-                </div>
-              </CardContent>
-            </Card>
-          </div>
         </section>
       </main>
     </EmployerRouteGate>
