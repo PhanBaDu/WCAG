@@ -45,7 +45,7 @@ export function JobResultCard({ job, locale }: JobResultCardProps) {
         <span className="sr-only">{detailLabel}</span>
       </Link>
 
-      <div className="relative z-0 flex gap-4">
+      <div className="relative z-0 flex gap-4 max-sm:flex-col">
         <div className="flex h-16 w-16 shrink-0 items-center justify-center border border-border bg-background p-1.5">
           <Image
             src={getCompanyLogoSrc(job.company)}
@@ -57,12 +57,12 @@ export function JobResultCard({ job, locale }: JobResultCardProps) {
         </div>
 
         <div className="w-full min-w-0 flex-1">
-          <div className="flex items-start justify-between gap-3">
-            <h3 className="text-base font-bold leading-snug text-[#0b0c0c]">{job.title}</h3>
-            <span className="shrink-0 text-sm font-bold text-[#0b0c0c]">{job.salary}</span>
+          <div className="flex flex-col gap-1 sm:flex-row sm:items-start sm:justify-between sm:gap-3">
+            <h3 className="text-base font-bold leading-snug text-[#0b0c0c] break-words">{job.title}</h3>
+            <span className="shrink-0 text-sm font-bold text-[#0b0c0c] whitespace-nowrap">{job.salary}</span>
           </div>
 
-          <p className="mt-1 truncate text-xs font-medium uppercase tracking-wide text-muted-foreground">
+          <p className="mt-1 text-xs font-medium uppercase tracking-wide text-muted-foreground break-words">
             {job.company}
           </p>
 
@@ -71,10 +71,10 @@ export function JobResultCard({ job, locale }: JobResultCardProps) {
             <span className="rounded-none bg-muted px-2.5 py-1 text-xs text-foreground">{job.experience}</span>
           </div>
 
-          <div className="mt-3 flex items-center justify-between gap-3">
-            <p className="min-w-0 truncate text-sm text-muted-foreground">{summaryText}</p>
-            <div className="flex shrink-0 items-center">
-              <span className="whitespace-nowrap text-xs text-muted-foreground">
+          <div className="mt-3 grid gap-1 sm:grid-cols-[minmax(0,1fr)_auto] sm:items-end sm:gap-3">
+            <p className="min-w-0 break-words text-sm leading-relaxed text-muted-foreground">{summaryText}</p>
+            <div className="flex shrink-0 items-center sm:justify-end">
+              <span className="text-xs text-muted-foreground whitespace-nowrap">
                 {postedLabel(job.slug, locale)}
               </span>
             </div>

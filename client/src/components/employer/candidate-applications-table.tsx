@@ -1,6 +1,6 @@
 'use client';
 
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { BadgeCheck, CalendarDays, Download, FileText, MapPin } from 'lucide-react';
 import { buttonVariants } from '@/components/ui/button';
@@ -55,6 +55,7 @@ export function CandidateApplicationsTable({ locale, labels, applications }: Can
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const scrollContainerRef = useRef<HTMLDivElement>(null);
   const pageSize = 2;
 
   const totalPages = Math.max(1, Math.ceil(applications.length / pageSize));
@@ -80,6 +81,26 @@ export function CandidateApplicationsTable({ locale, labels, applications }: Can
     [setPageInUrl],
   );
 
+  const bringFocusIntoView = useCallback((target: HTMLElement) => {
+    const container = scrollContainerRef.current;
+    if (!container) {
+      return;
+    }
+
+    const cell = target.closest('td');
+    const cellIndex = cell?.cellIndex ?? -1;
+
+    if (cellIndex >= 4) {
+      container.scrollLeft = container.scrollWidth;
+      return;
+    }
+
+    target.scrollIntoView({
+      block: 'nearest',
+      inline: 'nearest',
+    });
+  }, []);
+
   useEffect(() => {
     if (searchParams.get('page') !== String(activePage)) {
       setPageInUrl(activePage);
@@ -98,6 +119,7 @@ export function CandidateApplicationsTable({ locale, labels, applications }: Can
       </CardHeader>
       <CardContent className="space-y-4 p-5">
         <div
+          ref={scrollContainerRef}
           data-employer-cv-table-scroll
           className="overflow-x-auto"
           onFocusCapture={(event) => {
@@ -106,10 +128,7 @@ export function CandidateApplicationsTable({ locale, labels, applications }: Can
               return;
             }
 
-            target.scrollIntoView({
-              block: 'nearest',
-              inline: 'nearest',
-            });
+            bringFocusIntoView(target);
           }}
         >
           <table className="w-full min-w-[1100px] table-fixed text-left text-sm">

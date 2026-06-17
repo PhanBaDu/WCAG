@@ -208,10 +208,10 @@ export default async function JobDetailPage({
   ];
 
   return (
-    <main id="main-content" className="mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 lg:px-8 lg:py-12">
-      <PageBreadcrumb items={crumbs} />
+    <main id="main-content" className="mx-auto w-full max-w-7xl px-4 py-10 sm:px-6 lg:px-8 lg:py-14">
+      <PageBreadcrumb items={crumbs} className="mb-4" />
 
-      <div className="mt-4 flex flex-wrap items-center justify-between gap-3">
+      <div className="mt-2 flex flex-wrap items-center justify-between gap-3">
         <Link href="/jobs" className="gov-link inline-flex items-center gap-2 text-sm font-medium">
           <ArrowLeft className="h-4 w-4" aria-hidden="true" />
           {detail.back}
@@ -246,7 +246,7 @@ export default async function JobDetailPage({
       />
 
       <section className="mt-6 space-y-8">
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1.55fr)_minmax(18rem,0.95fr)] lg:items-start">
+        <div className="grid gap-6">
           <Card className="border-none shadow-lg">
             <CardContent className="p-6 sm:p-8">
               <div className="flex flex-wrap gap-2">
@@ -257,11 +257,11 @@ export default async function JobDetailPage({
                 ))}
               </div>
 
-              <div className="mt-5 space-y-5">
+              <div className="mt-6 space-y-5">
                 <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">{title}</h1>
-                <p className="max-w-3xl text-base leading-7 text-muted-foreground">{detail.description}</p>
+                <p className="max-w-3xl break-words text-base leading-8 text-muted-foreground">{detail.description}</p>
 
-                <div className="grid gap-3 md:grid-cols-3">
+                <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                   {summaryCards.map((item) => (
                     <div key={item.label} className="rounded-none border border-border bg-background px-4 py-3">
                       <p className="text-xs font-semibold uppercase tracking-wide text-muted-foreground">{item.label}</p>
@@ -282,7 +282,7 @@ export default async function JobDetailPage({
 
           <Card className="border-none shadow-lg">
             <CardContent className="p-6">
-              <div className="flex items-start gap-4">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
                 <div className="flex h-16 w-16 shrink-0 items-center justify-center border border-border bg-background p-1.5">
                   <Image
                     src={getCompanyLogoSrc(company)}
@@ -301,17 +301,17 @@ export default async function JobDetailPage({
               </div>
 
               <dl className="mt-5 space-y-3 text-sm">
-                <div className="flex justify-between gap-4 border-b pb-3">
+                <div className="grid gap-2 border-b pb-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-4">
                   <dt className="text-muted-foreground">{locale === 'en' ? 'Size' : 'Quy mô'}</dt>
-                  <dd className="font-medium text-[#0b0c0c]">{companySize}</dd>
+                  <dd className="min-w-0 break-words font-medium text-[#0b0c0c] md:text-right">{companySize}</dd>
                 </div>
-                <div className="flex justify-between gap-4 border-b pb-3">
+                <div className="grid gap-2 border-b pb-3 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-4">
                   <dt className="text-muted-foreground">{locale === 'en' ? 'Industry' : 'Lĩnh vực'}</dt>
-                  <dd className="text-right font-medium text-[#0b0c0c]">{companyField}</dd>
+                  <dd className="min-w-0 break-words font-medium text-[#0b0c0c] md:text-right">{companyField}</dd>
                 </div>
-                <div className="flex justify-between gap-4">
+                <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-4">
                   <dt className="text-muted-foreground">{locale === 'en' ? 'Location' : 'Địa điểm'}</dt>
-                  <dd className="text-right font-medium text-[#0b0c0c]">{companyAddress}</dd>
+                  <dd className="min-w-0 break-words font-medium text-[#0b0c0c] md:text-right">{companyAddress}</dd>
                 </div>
               </dl>
 
@@ -324,7 +324,7 @@ export default async function JobDetailPage({
           </Card>
         </div>
 
-        <div className="grid gap-8 lg:grid-cols-[minmax(0,1.55fr)_minmax(18rem,0.95fr)] lg:items-start">
+        <div className="grid gap-8">
           <div className="space-y-6">
             <Card className="border-none shadow-lg">
               <CardHeader className="border-b">
@@ -343,13 +343,13 @@ export default async function JobDetailPage({
                 <CardTitle className="text-2xl">{detail.requirementsTitle}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-5">
-                <div className="flex flex-wrap gap-2">
+                <div className="grid gap-2 sm:grid-cols-2">
                   {[
                     locale === 'en' ? 'No special experience required' : 'Không yêu cầu kinh nghiệm chuyên môn',
                     locale === 'en' ? 'College or above' : 'Từ Cao đẳng trở lên',
                     locale === 'en' ? 'Open to freshers' : 'Chấp nhận Fresher',
                   ].map((item) => (
-                    <span key={item} className="rounded-none bg-muted px-3 py-1 text-xs font-medium text-foreground">
+                    <span key={item} className="rounded-none bg-muted px-3 py-2 text-xs font-medium leading-5 text-foreground">
                       {item}
                     </span>
                   ))}
@@ -371,13 +371,13 @@ export default async function JobDetailPage({
                 <CardTitle className="text-2xl">{detail.benefitsTitle}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-5">
-                <div className="flex flex-wrap gap-2">
+                <div className="grid gap-2 sm:grid-cols-2">
                   {[
                     locale === 'en' ? 'Social insurance' : 'Bảo hiểm xã hội',
                     locale === 'en' ? 'Health insurance' : 'Bảo hiểm sức khỏe',
                     locale === 'en' ? '13th month bonus' : 'Thưởng tháng 13',
                   ].map((item) => (
-                    <span key={item} className="rounded-none bg-muted px-3 py-1 text-xs font-medium text-foreground">
+                    <span key={item} className="rounded-none bg-muted px-3 py-2 text-xs font-medium leading-5 text-foreground">
                       {item}
                     </span>
                   ))}
@@ -439,39 +439,39 @@ export default async function JobDetailPage({
             </Card>
           </div>
 
-          <aside className="space-y-6 lg:sticky lg:top-6 lg:self-start">
+          <aside className="space-y-6">
             <Card className="border-none shadow-lg">
               <CardHeader className="border-b">
                 <CardTitle className="text-xl">{locale === 'en' ? 'General info' : 'Thông tin chung'}</CardTitle>
               </CardHeader>
               <CardContent className="space-y-4 text-sm">
-                <div className="flex items-center justify-between gap-4">
+                <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-4">
                   <span className="text-muted-foreground">{locale === 'en' ? 'Level' : 'Cấp bậc'}</span>
-                  <span className="font-semibold text-[#0b0c0c]">{locale === 'en' ? 'Staff' : 'Nhân viên'}</span>
+                  <span className="min-w-0 break-words font-semibold text-[#0b0c0c] md:text-right">{locale === 'en' ? 'Staff' : 'Nhân viên'}</span>
                 </div>
-                <div className="flex items-center justify-between gap-4">
+                <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-4">
                   <span className="text-muted-foreground">{locale === 'en' ? 'Education' : 'Học vấn'}</span>
-                  <span className="font-semibold text-[#0b0c0c]">{locale === 'en' ? 'College or above' : 'Cao đẳng trở lên'}</span>
+                  <span className="min-w-0 break-words font-semibold text-[#0b0c0c] md:text-right">{locale === 'en' ? 'College or above' : 'Cao đẳng trở lên'}</span>
                 </div>
-                <div className="flex items-center justify-between gap-4">
+                <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-4">
                   <span className="text-muted-foreground">{locale === 'en' ? 'Openings' : 'Số lượng tuyển'}</span>
-                  <span className="font-semibold text-[#0b0c0c]">{locale === 'en' ? '1 person' : '1 người'}</span>
+                  <span className="min-w-0 break-words font-semibold text-[#0b0c0c] md:text-right">{locale === 'en' ? '1 person' : '1 người'}</span>
                 </div>
-                <div className="flex items-center justify-between gap-4">
+                <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-4">
                   <span className="text-muted-foreground">{locale === 'en' ? 'Work format' : 'Hình thức làm việc'}</span>
-                  <span className="text-right font-semibold text-[#0b0c0c]">{type}</span>
+                  <span className="min-w-0 break-words font-semibold text-[#0b0c0c] md:text-right">{type}</span>
                 </div>
-                <div className="flex items-center justify-between gap-4">
+                <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-4">
                   <span className="text-muted-foreground">{locale === 'en' ? 'Job type' : 'Loại hình làm việc'}</span>
-                  <span className="text-right font-semibold text-[#0b0c0c]">{employmentType}</span>
+                  <span className="min-w-0 break-words font-semibold text-[#0b0c0c] md:text-right">{employmentType}</span>
                 </div>
-                <div className="flex items-center justify-between gap-4">
+                <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-4">
                   <span className="text-muted-foreground">{locale === 'en' ? 'Experience' : 'Kinh nghiệm'}</span>
-                  <span className="text-right font-semibold text-[#0b0c0c]">{experience}</span>
+                  <span className="min-w-0 break-words font-semibold text-[#0b0c0c] md:text-right">{experience}</span>
                 </div>
-                <div className="flex items-center justify-between gap-4">
+                <div className="grid gap-2 md:grid-cols-[minmax(0,1fr)_auto] md:items-start md:gap-4">
                   <span className="text-muted-foreground">{locale === 'en' ? 'Industry' : 'Ngành nghề'}</span>
-                  <span className="text-right font-semibold text-[#0b0c0c]">{industry}</span>
+                  <span className="min-w-0 break-words font-semibold text-[#0b0c0c] md:text-right">{industry}</span>
                 </div>
               </CardContent>
             </Card>
@@ -483,9 +483,9 @@ export default async function JobDetailPage({
               <CardContent className="space-y-5">
                 <div>
                   <p className="mb-2 text-sm font-semibold text-[#0b0c0c]">{locale === 'en' ? 'Job category' : 'Danh mục nghề'}</p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="grid gap-2 sm:grid-cols-2">
                     {[category, industry, experience].map((item, index) => (
-                      <span key={`${item}-${index}`} className="rounded-none bg-muted px-3 py-1 text-xs text-foreground">
+                      <span key={`${item}-${index}`} className="rounded-none bg-muted px-3 py-2 text-xs leading-5 text-foreground">
                         {item}
                       </span>
                     ))}
@@ -494,9 +494,9 @@ export default async function JobDetailPage({
 
                 <div>
                   <p className="mb-2 text-sm font-semibold text-[#0b0c0c]">{locale === 'en' ? 'Must-have skills' : 'Kỹ năng cần có'}</p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="grid gap-2 sm:grid-cols-2">
                     {mustHaveSkills.map((item) => (
-                      <span key={item} className="rounded-none bg-muted px-3 py-1 text-xs text-foreground">
+                      <span key={item} className="rounded-none bg-muted px-3 py-2 text-xs leading-5 text-foreground">
                         {item}
                       </span>
                     ))}
@@ -505,9 +505,9 @@ export default async function JobDetailPage({
 
                 <div>
                   <p className="mb-2 text-sm font-semibold text-[#0b0c0c]">{locale === 'en' ? 'Nice-to-have skills' : 'Kỹ năng nên có'}</p>
-                  <div className="flex flex-wrap gap-2">
+                  <div className="grid gap-2 sm:grid-cols-2">
                     {niceSkills.map((item) => (
-                      <span key={item} className="rounded-none bg-muted px-3 py-1 text-xs text-foreground">
+                      <span key={item} className="rounded-none bg-muted px-3 py-2 text-xs leading-5 text-foreground">
                         {item}
                       </span>
                     ))}
@@ -517,9 +517,9 @@ export default async function JobDetailPage({
                 {disabilityTypes.length > 0 ? (
                   <div>
                     <p className="mb-2 text-sm font-semibold text-[#0b0c0c]">{locale === 'en' ? 'Suitable for' : 'Phù hợp với'}</p>
-                    <div className="flex flex-wrap gap-2">
+                    <div className="grid gap-2 sm:grid-cols-2">
                       {disabilityTypes.slice(0, 4).map((item) => (
-                        <span key={item} className="rounded-none bg-primary/10 px-3 py-1 text-xs font-medium text-primary">
+                        <span key={item} className="rounded-none bg-primary/10 px-3 py-2 text-xs font-medium leading-5 text-primary">
                           {item}
                         </span>
                       ))}

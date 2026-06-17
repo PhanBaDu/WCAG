@@ -10,10 +10,12 @@ export function useCompactHeader(deps: unknown[] = []) {
     const measure = measureRef.current;
     if (!container || !measure) return;
 
+    const mediaQuery = window.matchMedia('(max-width: 1023px)');
+
     const update = () => {
       const available = container.clientWidth;
       const required = measure.scrollWidth;
-      setCompact(required > available);
+      setCompact(mediaQuery.matches || required > available);
     };
 
     update();
@@ -21,8 +23,12 @@ export function useCompactHeader(deps: unknown[] = []) {
     const observer = new ResizeObserver(update);
     observer.observe(container);
     observer.observe(measure);
+    mediaQuery.addEventListener('change', update);
 
-    return () => observer.disconnect();
+    return () => {
+      observer.disconnect();
+      mediaQuery.removeEventListener('change', update);
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
 
