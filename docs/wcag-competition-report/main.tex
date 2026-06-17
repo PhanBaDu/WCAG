@@ -9,6 +9,8 @@
 \usepackage{booktabs}
 \usepackage{longtable}
 \usepackage{xcolor}
+\usepackage{graphicx}
+\usepackage{caption}
 \usepackage{hyperref}
 \usepackage{fancyhdr}
 
@@ -261,14 +263,51 @@ Trong giai đoạn tiếp theo, nhóm nên tập trung vào hoàn thiện bằng
 
 \newpage
 \appendix
-\section{Phụ lục: Mermaid use case}
-Bộ sơ đồ Mermaid được tách thành các file riêng trong thư mục \texttt{usecases/}:
+\section{Phụ lục: Sơ đồ use case}
+Bộ sơ đồ use case được mô tả bằng Mermaid trong thư mục \texttt{usecases/} và xuất ảnh minh họa trong \texttt{usecases/images/}. Các hình dưới đây thể hiện mối quan hệ giữa tác nhân, luồng nghiệp vụ và các điểm tiếp cận đã triển khai trên \projectname.
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{usecases/images/usecase-overview.png}
+  \caption{Sơ đồ tổng quan hệ thống: ba tác nhân (khách truy cập, người tìm việc, nhà tuyển dụng) và các luồng cốt lõi — tìm kiếm việc làm, chi tiết tin, xác thực, quản lý hồ sơ và quản lý tin tuyển dụng/CV.}
+  \label{fig:usecase-overview}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{usecases/images/usecase-guest.png}
+  \caption{Luồng khách truy cập: duyệt danh sách, tìm kiếm/lọc, xem chi tiết việc làm, đăng ký, đăng nhập và khôi phục mật khẩu trước khi vào khu vực cá nhân.}
+  \label{fig:usecase-guest}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{usecases/images/usecase-candidate.png}
+  \caption{Luồng người tìm việc: cập nhật hồ sơ, quản lý CV, ứng tuyển, theo dõi hồ sơ đã nộp và xem thông tin hỗ trợ tiếp cận tại nơi làm việc.}
+  \label{fig:usecase-candidate}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{usecases/images/usecase-employer.png}
+  \caption{Luồng nhà tuyển dụng: dashboard tổng quan, tạo/chỉnh sửa tin tuyển dụng, xử lý hộp thư CV, cập nhật trạng thái ứng viên và xuất báo cáo.}
+  \label{fig:usecase-employer}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{usecases/images/usecase-accessibility.png}
+  \caption{Luồng hỗ trợ tiếp cận: skip link, điều hướng bàn phím, focus hiển thị rõ, reflow khi phóng to và điều hướng theo vai trò người dùng.}
+  \label{fig:usecase-accessibility}
+\end{figure}
+
+\noindent Nguồn sơ đồ gốc (Mermaid):
 \begin{itemize}
-  \item \texttt{usecase-overview.mmd} – sơ đồ tổng quan hệ thống.
-  \item \texttt{usecase-guest.mmd} – luồng cho khách truy cập.
-  \item \texttt{usecase-candidate.mmd} – luồng cho người tìm việc.
-  \item \texttt{usecase-employer.mmd} – luồng cho nhà tuyển dụng.
-  \item \texttt{usecase-accessibility.mmd} – luồng hỗ trợ tiếp cận và điều hướng.
+  \item \texttt{usecases/usecase-overview.mmd}
+  \item \texttt{usecases/usecase-guest.mmd}
+  \item \texttt{usecases/usecase-candidate.mmd}
+  \item \texttt{usecases/usecase-employer.mmd}
+  \item \texttt{usecases/usecase-accessibility.mmd}
 \end{itemize}
 
 \section{Phụ lục: Danh sách màn hình đã kiểm thử}
@@ -281,8 +320,191 @@ Bộ sơ đồ Mermaid được tách thành các file riêng trong thư mục \
   \item Dashboard nhà tuyển dụng, đăng tin và hộp thư CV.
 \end{itemize}
 
-\section{Phụ lục: Gợi ý ảnh minh họa}
-Khi chèn ảnh vào bản cuối, ưu tiên dùng ảnh chụp thật của các trang chính và đặt caption ngắn, rõ, đúng ngữ cảnh. Mỗi ảnh nên thể hiện một điểm kiểm thử cụ thể như reflow, keyboard focus, role-based navigation hoặc form accessibility.
+\section{Phụ lục: Ảnh chụp màn hình minh chứng}
+Các ảnh dưới đây được chụp trực tiếp từ phiên bản triển khai của \projectname. Mỗi nhóm màn hình ghi rõ route kiểm thử; các ảnh đánh số \texttt{-1}, \texttt{-2}, \texttt{-3} là các phần khác nhau của cùng một màn hình dài hoặc các trạng thái bổ sung (bộ lọc, cuộn nội dung, focus).
+
+\subsection{Trang công khai}
+
+\subsubsection{Trang chủ}
+\noindent\textbf{Route:} \texttt{/vi} \quad\textbf{Nhóm:} Trang chủ
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/home.png}
+  \caption{Trang chủ: hero giới thiệu sản phẩm, mô tả mục tiêu tiếp cận và hai CTA chính \emph{Tìm việc ngay} / \emph{Đăng tin tuyển dụng}.}
+  \label{fig:screenshot-home}
+\end{figure}
+
+\subsubsection{Danh sách việc làm}
+\noindent\textbf{Route:} \texttt{/vi/jobs} \quad\textbf{Nhóm:} Danh sách việc làm
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/jobs-list-1.png}
+  \caption{Danh sách việc làm (1/2): thanh tìm kiếm theo vị trí và địa điểm, breadcrumb, bộ lọc cơ bản và danh sách job cards có nhãn hỗ trợ tiếp cận (ví dụ \emph{Phù hợp người khiếm thị}).}
+  \label{fig:screenshot-jobs-list-1}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/jobs-list-2.png}
+  \caption{Danh sách việc làm (2/2): bộ lọc kinh nghiệm và danh mục nghề được mở rộng, kết quả thay đổi theo từ khóa tìm kiếm; thể hiện khả năng lọc đa tiêu chí trên cùng trang.}
+  \label{fig:screenshot-jobs-list-2}
+\end{figure}
+
+\subsubsection{Chi tiết việc làm}
+\noindent\textbf{Route:} \texttt{/vi/jobs/chuyen-vien-soan-thao-van-ban-19} \quad\textbf{Nhóm:} Chi tiết việc làm
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/job-detail-1.png}
+  \caption{Chi tiết việc làm (1/3): phần đầu trang gồm tag đặc tính, tiêu đề, tóm tắt vai trò, thông tin nhanh (lương, địa điểm, kinh nghiệm) và nút \emph{Ứng tuyển ngay}.}
+  \label{fig:screenshot-job-detail-1}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/job-detail-2.png}
+  \caption{Chi tiết việc làm (2/3): thông tin doanh nghiệp, mô tả công việc và mục yêu cầu được chia theo heading, danh sách và khối đọc nhanh.}
+  \label{fig:screenshot-job-detail-2}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/job-detail-3.png}
+  \caption{Chi tiết việc làm (3/3): quyền lợi, địa điểm làm việc và danh sách việc làm tương tự; nội dung dài được cuộn theo chiều dọc mà không mất thứ bậc thông tin.}
+  \label{fig:screenshot-job-detail-3}
+\end{figure}
+
+\subsection{Đăng nhập, đăng ký và khôi phục mật khẩu}
+
+\subsubsection{Đăng nhập người tìm việc}
+\noindent\textbf{Route:} \texttt{/vi/login?role=NKT} \quad\textbf{Nhóm:} Đăng nhập người tìm việc
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/login-candidate.png}
+  \caption{Đăng nhập người tìm việc: form có nhãn rõ, copy \emph{Dành cho: Người tìm việc}, liên kết quên mật khẩu và các hành động phụ phù hợp role NKT.}
+  \label{fig:screenshot-login-candidate}
+\end{figure}
+
+\subsubsection{Đăng nhập nhà tuyển dụng}
+\noindent\textbf{Route:} \texttt{/vi/login?role=NTD} \quad\textbf{Nhóm:} Đăng nhập nhà tuyển dụng
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/login-employer.png}
+  \caption{Đăng nhập nhà tuyển dụng: cùng layout nhưng copy và hành động chuyển sang ngữ cảnh NTD, thể hiện đăng nhập theo vai trò.}
+  \label{fig:screenshot-login-employer}
+\end{figure}
+
+\subsubsection{Đăng ký người tìm việc}
+\noindent\textbf{Route:} \texttt{/vi/register?role=NKT} \quad\textbf{Nhóm:} Đăng ký người tìm việc
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/register-candidate.png}
+  \caption{Đăng ký người tìm việc: form đăng ký với role NKT, nhãn trường và điều hướng quay lại đăng nhập.}
+  \label{fig:screenshot-register-candidate}
+\end{figure}
+
+\subsubsection{Đăng ký nhà tuyển dụng}
+\noindent\textbf{Route:} \texttt{/vi/register?role=NTD} \quad\textbf{Nhóm:} Đăng ký nhà tuyển dụng
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/register-employer.png}
+  \caption{Đăng ký nhà tuyển dụng: form đăng ký employer với copy và trường nhập phù hợp role NTD.}
+  \label{fig:screenshot-register-employer}
+\end{figure}
+
+\subsubsection{Quên mật khẩu}
+\noindent\textbf{Route:} \texttt{/vi/forgot-password} \quad\textbf{Nhóm:} Quên mật khẩu
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/forgot-password.png}
+  \caption{Quên mật khẩu: form yêu cầu khôi phục qua email, có hướng dẫn và liên kết quay lại đăng nhập.}
+  \label{fig:screenshot-forgot-password}
+\end{figure}
+
+\subsubsection{Đặt lại mật khẩu}
+\noindent\textbf{Route:} \texttt{/vi/reset-password} \quad\textbf{Nhóm:} Đặt lại mật khẩu
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/reset-password.png}
+  \caption{Đặt lại mật khẩu: form nhập mật khẩu mới kèm helper text và xác nhận, phục vụ luồng khôi phục hoàn chỉnh.}
+  \label{fig:screenshot-reset-password}
+\end{figure}
+
+\subsection{Khu vực ứng viên}
+
+\subsubsection{Hồ sơ ứng viên}
+\noindent\textbf{Route:} \texttt{/vi/profile} \quad\textbf{Nhóm:} Hồ sơ ứng viên
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/profile-1.png}
+  \caption{Hồ sơ ứng viên (1/2): thông tin cá nhân và mục tiêu nghề nghiệp với label gắn từng trường, sidebar quản lý tìm việc.}
+  \label{fig:screenshot-profile-1}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/profile-2.png}
+  \caption{Hồ sơ ứng viên (2/2): phần CV và tài liệu, các nút \emph{Xem chi tiết CV} / \emph{Tải CV} / \emph{Xoá CV} có viền focus rõ khi thao tác bàn phím.}
+  \label{fig:screenshot-profile-2}
+\end{figure}
+
+\subsubsection{Việc làm đã ứng tuyển}
+\noindent\textbf{Route:} \texttt{/vi/profile/applied-jobs} \quad\textbf{Nhóm:} Việc làm đã ứng tuyển
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/applied-jobs.png}
+  \caption{Việc làm đã ứng tuyển: bộ lọc theo trạng thái, thẻ hồ sơ và thanh tiến trình từng bước (tiếp nhận, đã xem, duyệt, cân nhắc\ldots).}
+  \label{fig:screenshot-applied-jobs}
+\end{figure}
+
+\subsection{Khu vực nhà tuyển dụng}
+
+\subsubsection{Dashboard nhà tuyển dụng}
+\noindent\textbf{Route:} \texttt{/vi/employer/dashboard} \quad\textbf{Nhóm:} Dashboard nhà tuyển dụng
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/employer-dashboard.png}
+  \caption{Dashboard nhà tuyển dụng: thẻ KPI tổng quan, danh sách tin đăng và các thao tác quản trị chính.}
+  \label{fig:screenshot-employer-dashboard}
+\end{figure}
+
+\subsubsection{Tạo tin tuyển dụng}
+\noindent\textbf{Route:} \texttt{/vi/employer/jobs/create} \quad\textbf{Nhóm:} Tạo tin tuyển dụng
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/employer-create-job-1.png}
+  \caption{Tạo tin tuyển dụng (1/2): form nhập tiêu đề, mô tả, lương, loại công việc và dạng khuyết tật được hỗ trợ; kèm checklist và preview nhanh bên phải.}
+  \label{fig:screenshot-employer-create-job-1}
+\end{figure}
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/employer-create-job-2.png}
+  \caption{Tạo tin tuyển dụng (2/2): phần cuối form gồm ngành nghề, khu vực, ghi chú hỗ trợ và nút \emph{Lưu nháp} / \emph{Đăng tin}.}
+  \label{fig:screenshot-employer-create-job-2}
+\end{figure}
+
+\subsubsection{Hộp thư CV ứng viên}
+\noindent\textbf{Route:} \texttt{/vi/employer/cv} \quad\textbf{Nhóm:} Hộp thư CV ứng viên
+
+\begin{figure}[htbp]
+  \centering
+  \includegraphics[width=\textwidth]{screenshots/images/employer-cv.png}
+  \caption{Hộp thư CV ứng viên: bảng danh sách hồ sơ, cập nhật trạng thái từng ứng viên, phân trang và nút \emph{Xuất báo cáo}.}
+  \label{fig:screenshot-employer-cv}
+\end{figure}
 
 \section{Phụ lục: Tài liệu tham khảo}
 \begin{itemize}
