@@ -1,0 +1,19 @@
+flowchart LR
+  anyUser([Người dùng bất kỳ])
+
+  subgraph accessibilityFlow[Luồng hỗ trợ tiếp cận]
+    skipLink["Bỏ qua điều hướng để vào nội dung chính"]
+    keyboardNav["Điều hướng bằng bàn phím"]
+    visibleFocus["Nhận biết focus rõ ràng"]
+    reflowZoom["Đọc nội dung khi phóng to / reflow"]
+    roleAwareNav["Điều hướng theo vai trò"]
+  end
+
+  anyUser --> skipLink
+  anyUser --> keyboardNav
+  anyUser --> visibleFocus
+  anyUser --> reflowZoom
+  anyUser --> roleAwareNav
+
+  keyboardNav --> visibleFocus
+  skipLink --> roleAwareNav

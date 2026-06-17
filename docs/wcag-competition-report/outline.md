@@ -1,59 +1,37 @@
 # Bố cục báo cáo WCAG 2.2
 
-Tài liệu này là bản khung soạn nội dung theo đúng bố cục trong ảnh. Có thể dùng để viết báo cáo hoàn chỉnh, đồng thời giữ cho phần trình bày, thứ tự mục và cách chia chương nhất quán.
+Khung này dùng để soạn bản báo cáo hoàn chỉnh theo đúng nhịp trình bày của `main.tex`. Mục tiêu là giữ văn phong thống nhất, tập trung vào nghiệp vụ, minh chứng tiếp cận và những điểm còn cần hoàn thiện trước khi nộp.
 
-## Trang bìa
-- Tên dự án
-- Phiên bản
-- Ngày đánh giá
-- Người thực hiện
-- Người phê duyệt
-- Link website/demo
-- Công nghệ chính
-- Tiêu chuẩn mục tiêu: WCAG 2.2 AA
-
-## Phần 1 - Tổng quan
-Mục này nên trình bày ngắn gọn:
-- Mục tiêu cuộc thi và mục tiêu của sản phẩm
+## 1. Tổng quan
+- Mục tiêu cuộc thi và mục tiêu của `AccessJobs`
 - Phạm vi đánh giá
-- 4 nguyên tắc POUR được áp dụng như thế nào
-- Phương pháp đánh giá: tự động, thủ công, thực tế
-- Các màn hình/luồng đã kiểm tra
+- Phương pháp kiểm thử: bàn phím, zoom/reflow, cấu trúc ngữ nghĩa, tương phản
+- Các màn hình và luồng chính đã kiểm tra
+- Mô hình tác nhân: khách truy cập, người tìm việc, nhà tuyển dụng
 
-## Phần 2 - Kết quả tổng hợp
-Nên có 2 phần:
+## 2. Kết quả tổng hợp
+Nên có hai phần:
 
-### 2.1 Bảng thống kê trạng thái
-Ví dụ các nhóm:
-- Hoàn thành
-- Một phần
+### 2.1 Bảng trạng thái tổng hợp
+- Đã hoàn thành
+- Hoàn thành một phần
 - Chưa hoàn thành
 
-### 2.2 Biểu đồ tổng quan
-Hiển thị trực quan tỷ lệ:
-- 69% hoàn thành
-- 31% còn lại cần cải thiện
+### 2.2 Nhận xét tổng quan
+- Nêu ngắn gọn điểm mạnh nổi bật
+- Nêu những khu vực còn cần chốt minh chứng hoặc tối ưu thêm
 
-Có thể dùng biểu đồ tròn hoặc thanh tiến độ, miễn là dễ đọc và nhất quán với toàn bộ báo cáo.
+## 3. Các điểm đã hoàn thành
+Mỗi dòng nên có:
+- Hạng mục hoặc tiêu chí
+- Trang / component liên quan
+- Mô tả cách đã triển khai
+- Ghi chú kiểm thử hoặc bằng chứng
 
-## Phần 3 - Các điểm ĐÃ hoàn thành
-Mục này nên liệt kê từng tiêu chí hoặc từng nhóm tiêu chí đã đạt chuẩn:
-- Có badge màu xanh lá
-- Mô tả cụ thể hành vi/triển khai
-- Ghi rõ màn hình hoặc component liên quan
-- Có thể thêm ảnh chụp minh họa nếu cần
+Ưu tiên ghi theo luồng nghiệp vụ thay vì chỉ liệt kê component kỹ thuật.
 
-Gợi ý trình bày:
-- Tên tiêu chí
-- Mức độ
-- Trạng thái
-- Mô tả đạt chuẩn
-- Ghi chú kiểm thử
-
-## Phần 4 - Bảng chi tiết 28 tiêu chí WCAG 2.2
-Đây là bảng quan trọng nhất của báo cáo.
-
-Nên có các cột:
+## 4. Bảng chi tiết 28 tiêu chí WCAG 2.2
+Đây là phần chính của báo cáo. Nên có các cột:
 - Mã tiêu chí
 - Tên tiêu chí
 - Mức
@@ -61,70 +39,51 @@ Nên có các cột:
 - Bằng chứng triển khai
 - Ghi chú
 
-Nên dùng màu phân biệt rõ:
-- Xanh: đạt
-- Vàng: một phần
-- Đỏ: chưa đạt
+Nên bao phủ các nhóm quan trọng:
+- cấu trúc và quan hệ nội dung
+- bàn phím và focus
+- reflow / zoom / target size
+- nhãn, form và trạng thái
+- tiêu chí mới của WCAG 2.2 như Focus Not Obscured, Focus Appearance, Dragging Movements, Target Size
 
-Ngoài các tiêu chí nền tảng, cần nhấn mạnh 5 tiêu chí mới của WCAG 2.2:
-- 2.4.11 Focus Not Obscured
-- 2.4.12 Focus Not Obscured (Enhanced)
-- 2.4.13 Focus Appearance
-- 2.5.7 Dragging Movements
-- 2.5.8 Target Size
-
-## Phần 5 - Các điểm CHƯA hoàn thành
-Mục này nên phân loại theo 3 mức ưu tiên:
+## 5. Các điểm chưa hoàn thành
+Phân loại theo ưu tiên:
 - Cao
 - Trung bình
 - Thấp
 
-Mỗi dòng nên mô tả:
+Mỗi mục nên mô tả:
 - Vấn đề cụ thể
 - Tác động tới người dùng
-- Nguyên nhân hiện tại
-- Giải pháp đề xuất
-- Độ ưu tiên
+- Hướng xử lý đề xuất
+- Component / page liên quan
 
-Nếu có thể, nên gắn thêm:
-- component/page liên quan
-- ước lượng effort
-- rủi ro nếu để lại
-
-## Phần 6 - Kế hoạch hành động
-Lập bảng 7 hành động khắc phục theo sprint.
-
-Khuyến nghị các cột:
+## 6. Kế hoạch hành động
+Lập 7 hành động khắc phục gần hạn nhất. Mỗi dòng nên có:
 - STT
 - Hành động
-- Trang/component liên quan
+- Trang / component liên quan
 - Mức ưu tiên
 - Sprint dự kiến
 - Deadline
 - Người phụ trách
 - Trạng thái
 
-Nên chọn 7 việc có giá trị nhất để đưa vào kế hoạch gần hạn, thay vì dàn trải quá nhiều mục nhỏ.
-
-## Phần 7 - Kết luận
+## 7. Kết luận
 Phần chốt báo cáo nên nêu:
-- Điểm mạnh nổi bật
-- Những tiêu chí đã đáp ứng tốt nhất
-- Các điểm cần ưu tiên cải thiện
+- Điểm mạnh nổi bật của sản phẩm
+- Những tiêu chí đã đáp ứng tốt
+- Các điểm cần ưu tiên hoàn thiện
 - Cam kết hoàn thiện trước khi nộp
-- Ô ký tên/người duyệt nếu cần
 
 ## Phụ lục
-Nên bổ sung:
-- Tài liệu tham khảo W3C chính thức
-- Link WCAG 2.2
+- Tài liệu tham khảo W3C
+- Danh sách màn hình đã kiểm thử
 - Ảnh chụp màn hình minh họa
-- Danh sách trang đã kiểm thử
-- Ghi chú build/lint/test nếu cần
+- Bộ use case Mermaid trong `usecases/`
 
 ## Ghi chú khi hoàn thiện
-- Giữ cách trình bày thống nhất giữa các bảng.
-- Không để xen kẽ tiếng Anh nếu bản báo cáo là tiếng Việt.
-- Nêu rõ bằng chứng kỹ thuật thay vì mô tả chung chung.
-- Nếu có số liệu, nên ghi nguồn đo và thời điểm đo.
+- Giữ tiếng Việt nhất quán trong toàn bộ báo cáo
+- Ưu tiên bằng chứng kỹ thuật, không mô tả chung chung
+- Nếu có số liệu thì ghi rõ nguồn đo và thời điểm đo
 

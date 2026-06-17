@@ -1,0 +1,24 @@
+flowchart LR
+  guestVisitor([Khách truy cập])
+  candidateUser([Người tìm việc])
+  employerUser([Nhà tuyển dụng])
+
+  subgraph accessJobsSystem[AccessJobs]
+    publicSearch["Tìm kiếm và xem việc làm"]
+    jobDetail["Xem chi tiết việc làm"]
+    authFlow["Đăng ký / Đăng nhập"]
+    candidateFlow["Quản lý hồ sơ và ứng tuyển"]
+    employerFlow["Quản lý tin tuyển dụng và CV"]
+  end
+
+  guestVisitor --> publicSearch
+  guestVisitor --> jobDetail
+  guestVisitor --> authFlow
+
+  candidateUser --> candidateFlow
+  candidateUser --> publicSearch
+  candidateUser --> jobDetail
+  candidateUser --> authFlow
+
+  employerUser --> employerFlow
+  employerUser --> authFlow

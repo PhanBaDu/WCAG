@@ -1,0 +1,22 @@
+flowchart LR
+  guestVisitor([Khách truy cập])
+
+  subgraph publicArea[Luồng công khai]
+    browseJobs["Xem danh sách việc làm"]
+    searchJobs["Tìm kiếm / lọc việc làm"]
+    viewJobDetail["Xem chi tiết việc làm"]
+    registerAccount["Đăng ký tài khoản"]
+    loginAccount["Đăng nhập"]
+    recoverPassword["Quên mật khẩu / đặt lại mật khẩu"]
+  end
+
+  guestVisitor --> browseJobs
+  guestVisitor --> searchJobs
+  guestVisitor --> viewJobDetail
+  guestVisitor --> registerAccount
+  guestVisitor --> loginAccount
+  guestVisitor --> recoverPassword
+
+  searchJobs --> browseJobs
+  viewJobDetail --> browseJobs
+  registerAccount --> loginAccount

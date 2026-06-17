@@ -1,0 +1,21 @@
+flowchart LR
+  employerUser([Nhà tuyển dụng])
+
+  subgraph employerArea[Luồng nhà tuyển dụng]
+    viewDashboard["Xem dashboard tổng quan"]
+    createJob["Tạo tin tuyển dụng"]
+    editJob["Chỉnh sửa / đóng / xóa tin"]
+    reviewCvInbox["Xem hộp thư CV ứng viên"]
+    updateCandidateStatus["Cập nhật trạng thái ứng viên"]
+    exportReport["Xuất báo cáo / danh sách"]
+  end
+
+  employerUser --> viewDashboard
+  employerUser --> createJob
+  employerUser --> editJob
+  employerUser --> reviewCvInbox
+  employerUser --> updateCandidateStatus
+  employerUser --> exportReport
+
+  reviewCvInbox --> updateCandidateStatus
+  viewDashboard --> exportReport

@@ -1,0 +1,20 @@
+flowchart LR
+  candidateUser([Người tìm việc])
+
+  subgraph candidateArea[Luồng ứng viên]
+    manageProfile["Cập nhật hồ sơ cá nhân"]
+    manageCv["Xem / quản lý CV"]
+    applyJob["Ứng tuyển việc làm"]
+    trackApplications["Theo dõi việc làm đã ứng tuyển"]
+    viewApplicationStatus["Xem trạng thái hồ sơ"]
+    viewAccessibilityInfo["Xem thông tin hỗ trợ tiếp cận"]
+  end
+
+  candidateUser --> manageProfile
+  candidateUser --> manageCv
+  candidateUser --> applyJob
+  candidateUser --> trackApplications
+  candidateUser --> viewAccessibilityInfo
+
+  applyJob --> manageCv
+  trackApplications --> viewApplicationStatus

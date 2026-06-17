@@ -2,7 +2,8 @@
 
 ## Files
 - `main.tex`: XeLaTeX report template for the WCAG 2.2 competition.
-- `outline.md`: editable report outline that follows the seven-part structure in the brief.
+- `outline.md`: working outline that matches the 7-part report structure.
+- `usecases/`: Mermaid files for the core business use cases and accessibility flow.
 
 ## Build
 Run the following from this folder on a machine with XeLaTeX installed:
@@ -20,6 +21,6 @@ latexmk -xelatex main.tex
 
 ## Notes
 - The document is written in Vietnamese Unicode.
-- It is designed as a polished competition report for the current project.
-- Update the title, team information, screenshots, and submission details before exporting the final PDF.
-- If you want a faster draft workflow, fill `outline.md` first, then sync the content into `main.tex`.
+- The report now follows the 7-part structure from the outline.
+- Add screenshots to the appendix before the final submission if you want the PDF to be fully illustrated.
+- The Mermaid use case files are separated by actor so they can be rendered independently or embedded later.

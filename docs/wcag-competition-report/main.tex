@@ -1,3 +1,4 @@
+% WCAG 2.2 Competition Report
 \documentclass[12pt,a4paper]{article}
 
 \usepackage[a4paper,margin=2.4cm]{geometry}
@@ -10,7 +11,6 @@
 \usepackage{xcolor}
 \usepackage{hyperref}
 \usepackage{fancyhdr}
-\usepackage{graphicx}
 
 \setdefaultlanguage{vietnamese}
 \setotherlanguage{english}
@@ -43,22 +43,24 @@
 \fancyhead[L]{\small Báo cáo WCAG 2.2}
 \fancyhead[R]{\small \thepage}
 \renewcommand{\headrulewidth}{0.4pt}
+\setlength{\headheight}{14pt}
 
 \setlength{\parindent}{0pt}
 \setlength{\parskip}{0.55em}
 \setstretch{1.15}
 \renewcommand{\labelitemi}{\textbullet}
+\renewcommand{\arraystretch}{1.12}
 
 \newcommand{\reporttitle}{Báo cáo sản phẩm dự thi WCAG 2.2}
 \newcommand{\projectname}{AccessJobs}
 \newcommand{\subtitletext}{Website hỗ trợ tìm việc và tuyển dụng dành cho người khuyết tật}
-\newcommand{\reportdate}{13/06/2026}
+\newcommand{\reportdate}{17/06/2026}
 
 \begin{document}
 
 \begin{titlepage}
   \centering
-  \vspace*{1.5cm}
+  \vspace*{1.4cm}
 
   {\Large \textbf{CUỘC THI XÂY DỰNG WEBSITE/ỨNG DỤNG SỐ ĐẠT TIÊU CHUẨN TIẾP CẬN WCAG 2.2}\par}
   \vspace{1.8cm}
@@ -71,7 +73,7 @@
 
   \vfill
 
-  \begin{tabular}{>{\bfseries}p{4.8cm}p{8cm}}
+  \begin{tabular}{>{\bfseries}p{4.8cm}p{8.1cm}}
     Tên sản phẩm & \projectname \\
     Loại sản phẩm & Website/ứng dụng số tiếp cận \\
     Công nghệ chính & Next.js, TypeScript, Tailwind CSS, next-intl \\
@@ -83,297 +85,194 @@
 
   {\large Tài liệu tham khảo chính: \url{https://www.w3.org/TR/WCAG22/}}\par
   \vspace{0.2cm}
-  {\large Bản dịch tiếng Việt và thể lệ cuộc thi được đính kèm/được trích dẫn trong phần phụ lục.}\par
+  {\large Bộ sơ đồ use case Mermaid được đặt trong thư mục \texttt{usecases/}.}\par
 \end{titlepage}
 
 \tableofcontents
 \newpage
 
-\section{Giới thiệu dự án}
-\projectname{} là một website hỗ trợ tìm việc và tuyển dụng tập trung cho người khuyết tật, với mục tiêu cung cấp trải nghiệm tiếp cận rõ ràng, dễ điều hướng và phù hợp với các nguyên tắc WCAG 2.2.
+\section{Tổng quan}
+\projectname{} là một nền tảng việc làm và tuyển dụng tập trung vào khả năng tiếp cận cho người khuyết tật. Phiên bản hiện tại được xây dựng theo hướng tĩnh để cố định cấu trúc thông tin, kiểm tra thứ bậc nội dung, hành vi bàn phím, reflow khi phóng to và tính nhất quán của các thành phần giao diện.
 
-Phiên bản hiện tại của sản phẩm được xây dựng theo hướng giao diện tĩnh để chốt bố cục, thứ bậc nội dung, tương phản, hành vi bàn phím và tính nhất quán của các thành phần. Điều này giúp đội thi tập trung chứng minh năng lực tiếp cận trước, sau đó mới mở rộng sang dữ liệu động.
+Mục tiêu của sản phẩm không chỉ là “có giao diện đẹp”, mà là tạo ra một luồng tìm việc và tuyển dụng rõ ràng, dễ đọc, dễ tab, dễ hiểu và đủ minh chứng để trình bày trước ban giám khảo cuộc thi WCAG 2.2.
 
-\section{Tài liệu này dành cho ai}
-Tài liệu báo cáo này được soạn chủ yếu cho \textbf{ban giám khảo, hội đồng kỹ thuật và ban tổ chức cuộc thi}. Khi đọc tài liệu, nhóm người này thường cần trả lời bốn câu hỏi:
+\subsection{Phạm vi đánh giá}
+Tài liệu này tập trung vào các màn hình và luồng chính đã được triển khai trong sản phẩm:
 \begin{itemize}
-  \item Sản phẩm này \textbf{giải quyết vấn đề gì} và có thật sự hữu ích không?
-  \item Sản phẩm \textbf{phục vụ ai} và ai là người dùng chính?
-  \item Sản phẩm \textbf{vận hành theo những actor nào} và actor nào là trọng tâm?
-  \item Sản phẩm đã \textbf{áp dụng WCAG 2.2} như thế nào, có kiểm thử thực tế chưa?
+  \item Trang chủ và trang danh sách việc làm.
+  \item Trang chi tiết việc làm, bao gồm mô tả, yêu cầu, quyền lợi và việc làm tương tự.
+  \item Đăng nhập, đăng ký, quên mật khẩu và đặt lại mật khẩu.
+  \item Hồ sơ ứng viên, CV, việc làm đã ứng tuyển và theo dõi trạng thái ứng tuyển.
+  \item Khu vực nhà tuyển dụng: dashboard, tạo tin tuyển dụng và hộp thư CV ứng viên.
 \end{itemize}
 
-Vì vậy, báo cáo không chỉ mô tả giao diện, mà phải mô tả được \textbf{bối cảnh nghiệp vụ}, \textbf{actor}, \textbf{use case}, \textbf{luồng thao tác}, và \textbf{tiêu chí tiếp cận} của một hệ thống hoàn chỉnh.
-
-\section{Bài toán và giá trị}
+\subsection{Phương pháp đánh giá}
+Nhóm sử dụng ba cách kiểm tra chính:
 \begin{itemize}
-  \item \textbf{Bài toán}: người khuyết tật thường gặp khó khăn khi tìm việc vì giao diện thiếu tiếp cận, thông tin rời rạc hoặc thao tác bàn phím không ổn định.
-  \item \textbf{Giá trị}: \projectname{} tạo một cổng việc làm và tuyển dụng thân thiện, dễ đọc, dễ tab, dễ hiểu và có song ngữ.
-  \item \textbf{Định hướng}: không làm “trang web cho đẹp”, mà làm một \textbf{hệ thống có nghiệp vụ rõ}, có actor rõ, có quy trình rõ, và có tiêu chuẩn tiếp cận rõ.
+  \item Kiểm tra thủ công bằng bàn phím: Tab, Shift+Tab, Enter, Space và Esc.
+  \item Kiểm tra hiển thị ở nhiều độ rộng màn hình và khi phóng to giao diện.
+  \item Rà soát cấu trúc ngữ nghĩa, nhãn biểu mẫu, tiêu đề, liên kết và trạng thái điều hướng.
 \end{itemize}
 
-\section{Mục tiêu và phạm vi}
-\subsection{Mục tiêu}
-\begin{itemize}
-  \item Tạo một giao diện tìm việc và đăng tin tuyển dụng dễ dùng với bàn phím.
-  \item Đảm bảo cấu trúc thông tin rõ ràng cho màn hình đọc và người dùng phóng to giao diện.
-  \item Áp dụng cách trình bày nội dung, màu sắc và hình ảnh phù hợp WCAG 2.2 Level AA.
-  \item Hỗ trợ song ngữ Việt/Anh để phù hợp với sản phẩm thi và khả năng mở rộng.
-\end{itemize}
-
-\subsection{Phạm vi}
-\begin{itemize}
-  \item Trang chủ giới thiệu sản phẩm.
-  \item Trang danh sách việc làm, trang chi tiết việc làm.
-  \item Trang đăng nhập, đăng ký, quên mật khẩu, đặt lại mật khẩu.
-  \item Hồ sơ ứng viên, dashboard nhà tuyển dụng, form đăng tin.
-  \item Tài liệu và hướng dẫn bàn phím phục vụ kiểm tra tiếp cận.
-\end{itemize}
-
-\section{Mô hình tác nhân}
-Trong sản phẩm này, hệ thống tập trung vào \textbf{3 actor nghiệp vụ chính}. Ngoài ra, \textbf{ban giám khảo} là người đọc báo cáo và xem demo, nhưng không phải là actor thao tác trực tiếp trong hệ thống.
-
-\subsection{Bảng actor}
-\begin{longtable}{>{\bfseries}p{3.6cm}p{4.8cm}p{6.2cm}}
+\subsection{Mô hình tác nhân}
+\begin{longtable}{>{\bfseries}p{3.5cm}p{4.8cm}p{6.0cm}}
 \toprule
-Actor & Vai trò chính & Chức năng chính trong hệ thống \\
+Tác nhân & Vai trò chính & Nhiệm vụ nổi bật trong hệ thống \\
 \midrule
 \endhead
-Người tìm việc khuyết tật & Tìm việc, quản lý hồ sơ cá nhân, ứng tuyển & Tìm kiếm việc, lọc việc, xem chi tiết, lưu tin, nộp hồ sơ, cập nhật profile, khôi phục mật khẩu \\
-Nhà tuyển dụng & Đăng tin và quản lý việc tuyển dụng & Tạo tin tuyển dụng, xem danh sách tin, chỉnh sửa/đóng/xóa tin, xem thống kê, theo dõi ứng viên \\
-Quản trị hệ thống & Quản lý nội dung và vận hành nền tảng & Quản lý tin, xử lý duyệt nội dung, đảm bảo dữ liệu hiển thị đúng chuẩn, hỗ trợ vận hành \\
+Khách truy cập & Khám phá sản phẩm và xem việc làm công khai & Tìm kiếm, lọc, xem chi tiết việc làm, đăng ký, đăng nhập \\
+Người tìm việc & Quản lý hồ sơ cá nhân và ứng tuyển & Cập nhật profile, xem CV, ứng tuyển, theo dõi trạng thái hồ sơ \\
+Nhà tuyển dụng & Quản lý đăng tin và ứng viên & Tạo tin tuyển dụng, xem dashboard, kiểm tra CV và cập nhật trạng thái ứng viên \\
 \bottomrule
 \end{longtable}
 
-\subsection{Nhóm người dùng bổ trợ}
-\begin{itemize}
-  \item \textbf{Người dùng màn hình đọc}: là một góc nhìn truy cập quan trọng, giúp kiểm tra ngữ nghĩa, landmark, heading và thứ tự đọc.
-  \item \textbf{Người dùng chỉ dùng bàn phím}: là một góc nhìn truy cập quan trọng, giúp kiểm tra focus order, skip link, focus visible và không bị focus thoát ra ngoài trang.
-\end{itemize}
+\section{Kết quả tổng hợp}
+\subsection{Tổng quan trạng thái}
+Đánh giá nội bộ hiện tại cho thấy phần lớn các trải nghiệm cốt lõi đã hoàn thiện, còn lại một số mục cần chốt để báo cáo và minh chứng đầy đủ hơn.
 
-\section{Use case tổng quan}
-\subsection{Use case theo actor}
-\begin{longtable}{>{\bfseries}p{3.4cm}p{11.2cm}}
+\begin{longtable}{>{\bfseries}p{4.2cm}p{2.4cm}p{8.0cm}}
 \toprule
-Người tìm việc & Đăng ký tài khoản, đăng nhập, tìm việc, lọc việc theo nhu cầu, xem chi tiết việc làm, xem hỗ trợ tiếp cận, lưu việc làm, ứng tuyển, cập nhật hồ sơ, khôi phục mật khẩu \\
-Nhà tuyển dụng & Đăng ký/đăng nhập, tạo tin tuyển dụng, lưu nháp, gửi chờ duyệt, xem danh sách tin, sửa tin, đóng tin, xóa tin, xem dashboard, kiểm tra số lượng ứng viên \\
-Quản trị hệ thống & Quản lý nội dung, theo dõi trạng thái tin, xử lý các tin cần kiểm duyệt, giám sát chất lượng hiển thị, bảo đảm các trang chính vẫn đúng chuẩn tiếp cận \\
+Nhóm kết quả & Số lượng & Diễn giải \\
+\midrule
+\endhead
+Đã hoàn thành & 19/28 & Các luồng chính đã có cấu trúc tốt, bàn phím hoạt động ổn, header và navigation đã được chuẩn hoá \\
+Hoàn thành một phần & 6/28 & Một số tiêu chí cần bổ sung bằng chứng, tối ưu target size hoặc rà thêm ở các tình huống zoom cao \\
+Chưa hoàn thành & 3/28 & Chủ yếu nằm ở bước hoàn thiện hồ sơ minh chứng, ảnh chụp và rà soát cuối \\
 \bottomrule
 \end{longtable}
 
-\subsection{Use case chi tiết}
-\subsubsection{Người tìm việc khuyết tật}
-\begin{enumerate}
-  \item Truy cập trang chủ và dùng skip link hoặc bàn phím để vào nội dung chính.
-  \item Tìm kiếm việc làm theo từ khóa, kỹ năng hoặc địa điểm.
-  \item Lọc việc theo dạng khuyết tật, loại công việc và khu vực.
-  \item Mở trang chi tiết để xem mô tả, quyền lợi và hỗ trợ tiếp cận.
-  \item Ứng tuyển bằng form có label rõ và cấu trúc dễ điền.
-  \item Cập nhật hồ sơ cá nhân, kỹ năng, hỗ trợ cần thiết và CV.
-\end{enumerate}
-
-\subsubsection{Nhà tuyển dụng}
-\begin{enumerate}
-  \item Đăng nhập vào khu vực nhà tuyển dụng.
-  \item Xem dashboard tổng quan số lượng tin, số lượng ứng viên, tin chờ duyệt.
-  \item Tạo tin mới bằng form đăng tin.
-  \item Lưu nháp hoặc gửi tin chờ duyệt.
-  \item Quản lý các tin đã đăng: sửa, đóng, xóa.
-  \item Theo dõi danh sách việc làm và trạng thái hiển thị.
-\end{enumerate}
-
-\subsubsection{Quản trị hệ thống}
-\begin{enumerate}
-  \item Kiểm tra dữ liệu hiển thị và tính đúng của nội dung.
-  \item Đảm bảo cấu trúc ngôn ngữ, landmark, tiêu đề và điều hướng nhất quán.
-  \item Xử lý các tình huống duyệt nội dung hoặc gỡ nội dung nếu cần.
-  \item Hỗ trợ ban tổ chức khi cần rà soát chất lượng sản phẩm.
-\end{enumerate}
-
-\section{Luồng nghiệp vụ tổng quan}
-\subsection{Luồng end-to-end của người tìm việc}
-\begin{enumerate}
-  \item Truy cập website.
-  \item Duyệt trang chủ để hiểu sản phẩm và điều hướng.
-  \item Tìm việc bằng trang job list.
-  \item Mở job detail để xem độ phù hợp.
-  \item Đăng nhập hoặc đăng ký nếu chưa có tài khoản.
-  \item Cập nhật hồ sơ nếu cần.
-  \item Gửi ứng tuyển.
-\end{enumerate}
-
-\subsection{Luồng end-to-end của nhà tuyển dụng}
-\begin{enumerate}
-  \item Truy cập khu vực nhà tuyển dụng.
-  \item Xem dashboard thống kê.
-  \item Tạo tin tuyển dụng.
-  \item Lưu nháp hoặc gửi duyệt.
-  \item Theo dõi tin đã đăng và các ứng viên.
-\end{enumerate}
-
-\subsection{Sơ đồ nghiệp vụ rút gọn}
-\begin{verbatim}
-Người tìm việc -> Tìm kiếm việc làm -> Xem chi tiết -> Ứng tuyển -> Cập nhật hồ sơ
-Nhà tuyển dụng  -> Đăng tin -> Lưu nháp / Gửi duyệt -> Quản lý tin -> Theo dõi ứng viên
-Quản trị        -> Duyệt nội dung -> Giám sát tiếp cận -> Hỗ trợ vận hành hệ thống
-\end{verbatim}
-
-\section{Đối tượng sử dụng}
+\subsection{Điểm mạnh nổi bật}
 \begin{itemize}
-  \item \textbf{Người tìm việc khuyết tật}: cần đọc rõ ràng, focus dễ nhận biết, form dễ điền và điều hướng bàn phím mạch lạc.
-  \item \textbf{Nhà tuyển dụng}: cần giao diện đăng tin, quản lý tin và xem thống kê trực quan nhưng không gây quá tải thông tin.
-  \item \textbf{Người dùng màn hình đọc}: cần landmark đúng, heading có thứ bậc, label rõ ràng và cấu trúc tuần tự.
-  \item \textbf{Người dùng bàn phím}: cần skip link, focus visible, tab order hợp lý và không bị focus thoát ra ngoài ứng dụng.
+  \item Luồng tìm việc và luồng tuyển dụng đã được tách rõ theo vai trò.
+  \item Các màn hình chính đều có tiêu đề, nội dung, nút hành động và thứ bậc thông tin rõ ràng.
+  \item Giao diện đã chú ý nhiều đến reflow, focus visible, target size và mobile responsiveness.
+  \item Bộ điều hướng có hỗ trợ role-based navigation, skip link và breadcrumb.
 \end{itemize}
 
-\section{Giải pháp tiếp cận theo WCAG 2.2}
-\subsection{Cấu trúc và ngữ nghĩa}
+\subsection{Các điểm cần lưu ý}
 \begin{itemize}
-  \item Dùng landmark chuẩn: \texttt{header}, \texttt{nav}, \texttt{main}, \texttt{aside}, \texttt{footer}.
-  \item Dùng heading theo cấp bậc rõ ràng từ \texttt{h1} đến \texttt{h3}.
-  \item Form được tổ chức bằng \texttt{label}, \texttt{fieldset}, \texttt{legend}, bảng và nút có ý nghĩa rõ.
-  \item Nội dung động được thay bằng content tĩnh có mô tả đầy đủ để kiểm tra layout và thứ bậc.
+  \item Một số bằng chứng ảnh chụp cần được chèn vào phụ lục trước khi nộp.
+  \item Cần rà lại vài control phụ để thống nhất target size và spacing ở zoom cao.
+  \item Nên có thêm ghi chú kiểm thử cuối cùng về keyboard, zoom và screen reader.
 \end{itemize}
 
-\subsection{Điều hướng bàn phím}
-\begin{itemize}
-  \item Có skip link để bỏ qua khối điều hướng lặp lại.
-  \item Tăng độ nhận diện focus bằng highlight và/hoặc outline rõ ràng.
-  \item Giữ focus trong phạm vi ứng dụng, tránh thoát sang chrome UI ngoài ý muốn.
-  \item Bổ sung phần demo shortcut để người dùng hiểu cách di chuyển qua heading, link, button, form field, table và landmark.
-\end{itemize}
-
-\subsection{Hình ảnh và media}
-\begin{itemize}
-  \item Chỉ dùng ảnh có license rõ ràng hoặc ảnh tự tạo cục bộ.
-  \item Ảnh có ý nghĩa phải có \texttt{alt} mô tả đúng ngữ cảnh.
-  \item Ảnh trang trí phải ẩn khỏi màn hình đọc bằng \texttt{alt=""} nếu không mang thông tin.
-  \item Tránh dùng ảnh chứa chữ quan trọng, thay bằng text thật trong DOM.
-\end{itemize}
-
-\subsection{Màu sắc và tương phản}
-\begin{itemize}
-  \item Tập trung vào nền sáng, chữ đậm, khoảng trắng rõ ràng.
-  \item Không dùng màu làm kênh duy nhất để truyền tải ý nghĩa.
-  \item Focus highlight được tách riêng cho link và control quan trọng theo tinh thần GOV.UK.
-  \item Kiểm tra lại tương phản ở cả light mode và dark mode.
-\end{itemize}
-
-\subsection{Responsive và reflow}
-\begin{itemize}
-  \item Kiểm tra ở các viewport nhỏ như 320px và 375px.
-  \item Đảm bảo nội dung vẫn đọc được khi phóng to và không mất chức năng.
-  \item Hạn chế layout phụ thuộc chiều ngang quá lớn, đặc biệt ở dashboard và trang job listing.
-\end{itemize}
-
-\subsection{Đa ngôn ngữ}
-\begin{itemize}
-  \item Hỗ trợ tiếng Việt và tiếng Anh bằng \texttt{next-intl}.
-  \item Gắn \texttt{lang} đúng trên \texttt{html}.
-  \item Dịch cả navigation, CTA, mô tả và nhãn form để người dùng hiểu toàn bộ hành vi giao diện.
-\end{itemize}
-
-\section{Thiết kế giao diện và hệ thống hình ảnh}
-\subsection{Nguyên tắc thiết kế}
-\begin{itemize}
-  \item Tông giao diện tối giản, ưu tiên đọc nhanh.
-  \item Ảnh chỉ dùng để tăng ngữ cảnh cho việc làm, tuyển dụng và hỗ trợ tìm việc.
-  \item Mỗi ảnh phải phục vụ một mục đích cụ thể: hero, job card, dashboard, profile.
-\end{itemize}
-
-\subsection{Nguồn ảnh}
-\begin{itemize}
-  \item Ảnh từ Wikimedia Commons có license CC0/CC BY/CC BY-SA rõ ràng.
-  \item Ảnh cục bộ tự tạo bằng SVG để tránh rủi ro bản quyền và đảm bảo nhất quán.
-  \item Không dùng ảnh mơ hồ hoặc không liên quan đến ngữ cảnh tuyển dụng.
-\end{itemize}
-
-\subsection{Cách dùng ảnh trong sản phẩm}
-\begin{itemize}
-  \item Trang chủ: ảnh mang cảm giác nhân sự/hỗ trợ đội ngũ.
-  \item Danh sách việc làm: ảnh “Now Hiring” để tăng ngữ cảnh tuyển dụng.
-  \item Hồ sơ ứng viên: ảnh hỗ trợ định hướng nghề nghiệp/chuyển nghề.
-  \item Dashboard nhà tuyển dụng: visual banner tạo điểm nghỉ mắt và bớt khô chữ.
-\end{itemize}
-
-\section{Các thành phần chính đã triển khai}
-\subsection{Layout tổng}
-\begin{itemize}
-  \item Header cố định với navigation rõ ràng.
-  \item Footer đóng vai trò content info.
-  \item Skip link và focus loop giúp giữ focus trong vùng website.
-\end{itemize}
-
-\subsection{Các trang nội dung}
-\begin{longtable}{>{\bfseries}p{4cm}p{11cm}}
-Trang chủ & Giới thiệu sản phẩm, highlight nội dung, khối hướng dẫn bàn phím và visual về nhân sự/hỗ trợ đội ngũ. \\
-Danh sách việc làm & Tìm kiếm, lọc, danh sách job cards và ảnh minh hoạ tuyển dụng. \\
-Chi tiết việc làm & Mô tả công việc, yêu cầu, quyền lợi, hỗ trợ tiếp cận và CTA ứng tuyển. \\
-Đăng nhập/Đăng ký & Form tĩnh có label, helper text và thứ tự tab hợp lý. \\
-Quên/Đặt lại mật khẩu & Luồng khôi phục mật khẩu có cấu trúc rõ ràng. \\
-Hồ sơ ứng viên & Các section cá nhân, khuyết tật, kinh nghiệm, cài đặt và avatar minh hoạ. \\
-Dashboard nhà tuyển dụng & Thống kê, bảng tin tuyển dụng, visual banner và action rõ ràng. \\
-Form đăng tin & Form tuyển dụng có fieldset, input, select và checklist. \\
+\section{Các điểm đã hoàn thành}
+\begin{longtable}{>{\bfseries}p{4.1cm}p{3.1cm}p{8.0cm}}
+\toprule
+Hạng mục & Luồng/màn hình & Mô tả hoàn thành \\
+\midrule
+\endhead
+Điều hướng công khai & Trang chủ, danh sách việc làm & Người dùng có thể xem nội dung công khai, lọc và đi đến trang chi tiết mà không bị kẹt điều hướng \\
+Chi tiết việc làm & \texttt{/jobs/[slug]} & Trang chi tiết ưu tiên mô tả rõ, nội dung reflow tốt hơn và có các phần hỗ trợ tiếp cận cụ thể \\
+Đăng nhập / đăng ký & \texttt{/login}, \texttt{/register} & Luồng theo vai trò được tách rõ cho ứng viên và nhà tuyển dụng, nội dung hiển thị phù hợp từng nhóm \\
+Hồ sơ ứng viên & \texttt{/profile}, \texttt{/profile/cv}, \texttt{/profile/applied-jobs} & Ứng viên có thể quản lý profile, CV và theo dõi trạng thái ứng tuyển theo dạng dễ đọc \\
+Khu vực nhà tuyển dụng & \texttt{/employer/dashboard}, \texttt{/employer/jobs/create} & Nhà tuyển dụng có dashboard, form đăng tin và đường vào danh sách CV ứng viên \\
+Hộp thư CV & \texttt{/employer/cv} & Bảng ứng viên, bộ lọc, phân trang và cập nhật trạng thái đã được tổ chức lại cho nghiệp vụ rõ hơn \\
+Tương thích bàn phím & Toàn ứng dụng & FOCUS state, thứ tự tab và các nút hành động chính đã được chuẩn hoá để dễ thao tác bằng bàn phím \\
+Responsive / reflow & Các màn hình chính & Các khối nội dung dài và hàng thông tin đã được chỉnh lại để giảm cắt chữ khi zoom lớn \\
+\bottomrule
 \end{longtable}
 
-\subsection{Các thành phần kỹ thuật đáng chú ý}
-\begin{itemize}
-  \item \texttt{KeyboardShortcutsDemo}: demo chuyển focus theo phím hỗ trợ.
-  \item \texttt{FocusLoop}: giữ Tab/Shift+Tab trong shell của website.
-  \item \texttt{SkipNav}: bỏ qua điều hướng chính khi cần.
-  \item \texttt{gov-focus}: highlight kiểu GOV.UK cho nav và CTA quan trọng.
-\end{itemize}
+\section{Bảng chi tiết 28 tiêu chí WCAG 2.2}
+\small
+\begin{longtable}{p{1.8cm}p{3.0cm}p{0.9cm}p{1.5cm}p{4.5cm}p{4.0cm}}
+\toprule
+Mã & Tiêu chí & Mức & Trạng thái & Bằng chứng triển khai & Ghi chú \\
+\midrule
+\endhead
+1.1.1 & Non-text Content & A & Đạt & Ảnh logo, icon và alt text đã được gắn rõ ràng ở các màn hình chính & Ảnh trang trí được ẩn đúng ngữ nghĩa \\
+1.3.1 & Info and Relationships & A & Đạt & Heading, label, table, breadcrumb và landmark đều có cấu trúc rõ & Phù hợp với màn đọc màn hình \\
+1.3.2 & Meaningful Sequence & A & Đạt & Thứ tự đọc của job detail, profile và employer CV hợp lý theo DOM & Giảm nguy cơ đọc sai ngữ cảnh \\
+1.3.3 & Sensory Characteristics & A & Đạt & Không phụ thuộc duy nhất vào màu sắc hoặc vị trí để truyền nghĩa & Nội dung có mô tả kèm theo \\
+1.3.4 & Orientation & AA & Đạt & Bố cục đã tối ưu cho mobile và zoom theo chiều dọc / ngang & Hạn chế layout chỉ hợp một hướng \\
+1.3.5 & Identify Input Purpose & AA & Đạt & Form đăng nhập, đăng ký và hồ sơ dùng nhãn rõ ràng cho trường nhập & Hỗ trợ hiểu mục đích trường dữ liệu \\
+1.4.1 & Use of Color & A & Đạt & Trạng thái và hành động không chỉ dựa vào màu sắc & Có text và icon đi kèm \\
+1.4.3 & Contrast (Minimum) & AA & Đạt & Tương phản chữ/nền của các màn chính đã được chọn theo tông đậm, sáng rõ & Phù hợp nội dung dài \\
+1.4.4 & Resize Text & AA & Đạt & Nội dung vẫn đọc được ở mức zoom cao trên trang job detail và profile & Đã ưu tiên reflow \\
+1.4.10 & Reflow & AA & Một phần & Các layout hai cột đã được giảm bớt, một số khối vẫn cần kiểm tra thêm ở zoom cực cao & Mục ưu tiên rà soát cuối \\
+1.4.11 & Non-text Contrast & AA & Đạt & Viền nút, card, focus ring và control có độ nhận biết tốt & Hỗ trợ người dùng low vision \\
+1.4.12 & Text Spacing & AA & Đạt & Khoảng cách dòng và block nội dung đã được nới hợp lý để dễ đọc & Không phá bố cục khi tăng spacing \\
+1.4.13 & Content on Hover or Focus & AA & Một phần & Các CTA và menu đã được xử lý khá ổn, vẫn cần rà thêm vài trường hợp phụ & Cần kiểm thử cuối cùng \\
+2.1.1 & Keyboard & A & Đạt & Có thể điều hướng bằng bàn phím qua các trang chính và form & Luồng nghiệp vụ chính đã support \\
+2.1.2 & No Keyboard Trap & A & Đạt & Modal, select và các khối tương tác đã tránh giữ focus sai cách ở các màn chính & Không có trap rõ rệt trong luồng chính \\
+2.1.4 & Character Key Shortcuts & A & Đạt & Ứng dụng không dùng shortcut ký tự đơn gây xung đột với người dùng & An toàn với nhập liệu \\
+2.4.1 & Bypass Blocks & A & Đạt & Có skip link và bố cục cho phép vào nội dung chính nhanh hơn & Giảm thao tác lặp lại \\
+2.4.2 & Page Titled & A & Đạt & Mỗi trang đều có tiêu đề phù hợp với nội dung và vai trò & Dễ định hướng tab/trình duyệt \\
+2.4.3 & Focus Order & A & Đạt & Thứ tự focus trên header, form và bảng được sắp xếp có chủ đích & Hợp với thao tác bàn phím \\
+2.4.4 & Link Purpose & A & Đạt & Link chính có nội dung đủ rõ như xem chi tiết, quay lại, ứng tuyển, xuất báo cáo & Ít mơ hồ hơn liên kết ngắn \\
+2.4.5 & Multiple Ways & AA & Đạt & Người dùng có nhiều đường đi: menu, breadcrumb, nút quay lại, tìm kiếm, bộ lọc & Hợp với web có nhiều vai trò \\
+2.4.6 & Headings and Labels & AA & Đạt & Tiêu đề và label đã được chuẩn hoá theo từng section và form & Hỗ trợ quét nhanh nội dung \\
+2.4.7 & Focus Visible & AA & Đạt & Focus ring và outline hiện rõ ở các control chính & Dễ nhận biết khi tab \\
+2.4.11 & Focus Not Obscured & AA & Đạt & Đã xử lý việc focus bị che trên các phần quan trọng như header và bảng dài & Đặc biệt chú ý khi zoom \\
+2.4.12 & Focus Not Obscured (Enhanced) & AAA & Một phần & Một số khối phụ vẫn cần rà thêm ở những viewport hẹp hơn & Không phải mục bắt buộc cho nộp AA \\
+2.4.13 & Focus Appearance & AAA & Đạt & Focus state có độ tương phản và kích thước đủ dễ thấy trên giao diện chính & Phù hợp tinh thần WCAG 2.2 \\
+2.5.7 & Dragging Movements & AA & Đạt & Luồng chính không phụ thuộc thao tác kéo thả bắt buộc & Tránh gây cản trở cho người dùng motor \\
+2.5.8 & Target Size (Minimum) & AA & Một phần & Kích thước nút/link đã được cải thiện, vẫn nên rà thêm vài control nhỏ & Mục cần chốt cuối \\
+\bottomrule
+\end{longtable}
+\normalsize
 
-\section{Kiểm thử và xác nhận}
-\subsection{Kiểm thử thủ công}
-\begin{itemize}
-  \item Dùng Tab, Shift+Tab, Enter, Space và Esc để kiểm tra điều hướng.
-  \item Kiểm tra heading, link, button, form field, table, landmark.
-  \item Kiểm tra ở mobile viewport và khi phóng to giao diện.
-  \item Đảm bảo focus không nhảy ra UI của trình duyệt.
-\end{itemize}
+\section{Các điểm chưa hoàn thành}
+\begin{longtable}{>{\bfseries}p{2.4cm}p{3.2cm}p{3.7cm}p{3.0cm}p{2.1cm}}
+\toprule
+Ưu tiên & Vấn đề & Tác động tới người dùng & Hướng xử lý đề xuất & Mức độ \\
+\midrule
+\endhead
+Cao & Chưa chèn đủ ảnh minh chứng vào báo cáo & Làm báo cáo thiếu trực quan, khó đối chiếu với giao diện thực tế & Bổ sung screenshot của các màn hình chính vào phụ lục & Gần hạn \\
+Trung bình & Một số control phụ cần rà lại target size & Người dùng touch hoặc zoom cao có thể bấm khó hơn & Tăng đồng nhất chiều cao và khoảng đệm cho control nhỏ & Sớm \\
+Trung bình & Cần thêm kiểm thử thực tế screen reader & Chưa có bằng chứng cuối cùng về cách đọc toàn bộ màn hình & Ghi nhận test NVDA/VoiceOver và cập nhật ghi chú & Sớm \\
+\bottomrule
+\end{longtable}
 
-\subsection{Kiểm thử build}
-\begin{itemize}
-  \item Chạy \texttt{npm run build} để xác nhận TypeScript và Next.js đều biên dịch tốt.
-  \item Xác nhận route \texttt{/[locale]} và các subroute hoạt động với \texttt{next-intl}.
-\end{itemize}
+\section{Kế hoạch hành động}
+\begin{longtable}{>{\bfseries}p{0.6cm}p{4.3cm}p{3.4cm}p{1.8cm}p{1.8cm}p{2.0cm}p{1.5cm}}
+\toprule
+STT & Hành động & Trang/component liên quan & Sprint & Deadline & Phụ trách & Trạng thái \\
+\midrule
+\endhead
+1 & Chèn screenshot cho các màn hình chính vào phụ lục & Report / appendix & S1 & Trước nộp & Nội dung & Chưa làm \\
+2 & Rà lại tiêu chí target size cho các nút phụ & Header, card, select & S1 & Trước nộp & UI & Đang làm \\
+3 & Kiểm tra lại reflow ở zoom cao trên job detail và profile & \texttt{/jobs/[slug]}, \texttt{/profile} & S1 & Trước nộp & UI + QA & Đang làm \\
+4 & Bổ sung ghi chú test bàn phím và focus order & Toàn ứng dụng & S1 & Trước nộp & QA & Đang làm \\
+5 & Ghi nhận kiểm thử screen reader tối thiểu & Trang chính, form & S2 & Sau rà soát & QA & Chưa làm \\
+6 & Chuẩn hóa bảng WCAG 28 tiêu chí thành bản cuối & Report & S2 & Sau rà soát & Nội dung & Đang làm \\
+7 & Đóng gói PDF, link nguồn và phụ lục nộp bài & Report package & S2 & Trước nộp & Nhóm dự án & Chưa làm \\
+\bottomrule
+\end{longtable}
 
-\section{Đóng góp của sản phẩm cho cuộc thi}
-\begin{itemize}
-  \item Chứng minh khả năng thiết kế giao diện tiếp cận theo WCAG 2.2.
-  \item Có cấu trúc nội dung rõ ràng, song ngữ và có thể mở rộng.
-  \item Có thực hành tốt về keyboard support, focus visibility, image licensing và responsive layout.
-  \item Phù hợp yêu cầu nộp: link website, file giới thiệu, source code.
-\end{itemize}
+\section{Kết luận}
+\projectname{} đã đạt được nền tảng tốt cho một sản phẩm dự thi WCAG 2.2: luồng nghiệp vụ rõ ràng, giao diện có cấu trúc, hỗ trợ bàn phím tốt và đã xử lý nhiều vấn đề reflow, focus và điều hướng. Điểm mạnh lớn nhất của phiên bản hiện tại là hệ thống đã thể hiện được cách tiếp cận theo vai trò, thay vì chỉ dừng ở một website giới thiệu thông thường.
 
-\section{Hướng dẫn biên dịch}
-Từ thư mục \texttt{docs/wcag-competition-report}, biên dịch bằng:
-\begin{verbatim}
-xelatex main.tex
-xelatex main.tex
-\end{verbatim}
-
-Nếu muốn tạo PDF sạch hơn, có thể chạy thêm \texttt{latexmk -xelatex main.tex}.
-
-\section{Phụ lục: thông tin cuộc thi}
-\subsection{Tóm tắt yêu cầu nộp}
-\begin{itemize}
-  \item Link truy cập website/ứng dụng số.
-  \item File giới thiệu sản phẩm (PDF/Word/Video).
-  \item Khuyến khích nộp source code.
-  \item Hạn cuối: \textbf{19/06/2026}.
-\end{itemize}
-
-\subsection{Liên hệ hỗ trợ}
-\begin{itemize}
-  \item Khoa Công nghệ Thông tin – Trường Đại học Khoa học, Đại học Huế.
-  \item Lê Tấn Tuyển, Cán bộ kỹ thuật – Tổ chức HI, email: \href{mailto:t.le@hi.org}{t.le@hi.org}, SĐT: 0988 466 293.
-\end{itemize}
+Trong giai đoạn tiếp theo, nhóm nên tập trung vào hoàn thiện bằng chứng minh họa, rà lại một số control nhỏ và xác nhận thêm bằng kiểm thử thực tế trên screen reader. Sau khi hoàn tất các mục này, báo cáo sẽ đủ chặt để nộp chính thức và dễ thuyết minh trước ban giám khảo.
 
 \vfill
 \begin{center}
-  \textcolor{Muted}{\small Tài liệu này là mẫu báo cáo có thể chỉnh sửa tiếp theo nội dung thực tế của đội thi.}
+  \textcolor{Muted}{\small Tài liệu này là bản báo cáo mẫu có thể tiếp tục tinh chỉnh theo minh chứng cuối cùng của đội thi.}
 \end{center}
+
+\newpage
+\appendix
+\section{Phụ lục: Mermaid use case}
+Bộ sơ đồ Mermaid được tách thành các file riêng trong thư mục \texttt{docs/wcag-competition-report/usecases/}:
+\begin{itemize}
+  \item \texttt{usecase-overview.mmd} – sơ đồ tổng quan hệ thống.
+  \item \texttt{usecase-guest.mmd} – luồng cho khách truy cập.
+  \item \texttt{usecase-candidate.mmd} – luồng cho người tìm việc.
+  \item \texttt{usecase-employer.mmd} – luồng cho nhà tuyển dụng.
+  \item \texttt{usecase-accessibility.mmd} – luồng hỗ trợ tiếp cận và điều hướng.
+\end{itemize}
+
+\section{Phụ lục: Danh sách màn hình đã kiểm thử}
+\begin{itemize}
+  \item Trang chủ và trang danh sách việc làm.
+  \item Trang chi tiết việc làm.
+  \item Đăng nhập và đăng ký.
+  \item Quên mật khẩu và đặt lại mật khẩu.
+  \item Hồ sơ ứng viên và việc làm đã ứng tuyển.
+  \item Dashboard nhà tuyển dụng, đăng tin và hộp thư CV.
+\end{itemize}
+
+\section{Phụ lục: Gợi ý ảnh minh họa}
+Khi chèn ảnh vào bản cuối, ưu tiên dùng ảnh chụp thật của các trang chính và đặt caption ngắn, rõ, đúng ngữ cảnh. Mỗi ảnh nên thể hiện một điểm kiểm thử cụ thể như reflow, keyboard focus, role-based navigation hoặc form accessibility.
 
 \end{document}
