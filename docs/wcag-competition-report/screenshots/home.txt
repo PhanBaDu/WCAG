@@ -1,0 +1,3 @@
+Route: /vi
+Nhom man hinh: Trang chu
+Noi dung can chup: Tong quan san pham, hero, dieu huong chinh, call-to-action.

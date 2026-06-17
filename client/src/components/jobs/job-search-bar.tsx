@@ -24,7 +24,7 @@ type JobSearchBarProps = {
   locations: string[];
   locationOptions: JobLocationOption[];
   labels: JobSearchBarLabels;
-  queryInputRef?: RefObject<HTMLInputElement>;
+  queryInputRef?: RefObject<HTMLInputElement | null>;
   onQueryChange: (value: string) => void;
   onLocationsChange: (values: string[]) => void;
   onSubmit: () => void;

@@ -24,7 +24,7 @@ type CandidateApplicationsTableProps = {
   labels: {
     candidateTableTitle: string;
     candidateTableNote: string;
-    columns: string[];
+    columns: readonly string[];
     openCv: string;
     downloadCv: string;
     pagination: {
@@ -33,7 +33,7 @@ type CandidateApplicationsTableProps = {
       page: string;
     };
   };
-  applications: CandidateApplication[];
+  applications: readonly CandidateApplication[];
 };
 
 function getPageWindow(currentPage: number, totalPages: number) {

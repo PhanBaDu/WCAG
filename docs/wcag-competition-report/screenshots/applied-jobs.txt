@@ -1,0 +1,3 @@
+Route: /vi/profile/applied-jobs
+Nhom man hinh: Viec lam da ung tuyen
+Noi dung can chup: Danh sach trang thai ho so, bo loc trang thai, preview tien trinh ung tuyen.

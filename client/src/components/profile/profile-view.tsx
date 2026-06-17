@@ -29,7 +29,7 @@ function getRole(userRole?: 'NKT' | 'NTD' | 'ADM') {
 
 function IconFor({ icon }: { icon: ProfileIconKey }) {
   const Icon = profileIcons[icon];
-  return <Icon className="h-5 w-5" aria-hidden="true" />;
+  return <Icon className="h-5 w-5" aria-hidden={true} />;
 }
 
 type EditableValues = Record<string, string>;
@@ -155,7 +155,9 @@ function ProfileSelectField({
         }}
         value={value}
         onValueChange={(nextValue) => {
-          onChange(nextValue);
+          if (nextValue) {
+            onChange(nextValue);
+          }
           setOpen(false);
         }}
         items={options.map((option) => ({ value: option, label: option }))}
@@ -392,10 +394,9 @@ function ProfileSection({
                     >
                       {value}
                     </a>
-                  ) : usesSelect ? (
+                  ) : usesSelect && selectOptions ? (
                     <div>
                       <ProfileSelectField
-                        fieldKeyValue={key}
                         label={field.label}
                         value={value}
                         options={selectOptions}

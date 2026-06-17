@@ -1,0 +1,3 @@
+Route: /vi/employer/cv
+Nhom man hinh: Hop thu CV ung vien
+Noi dung can chup: Bang ung vien, bo loc, cap nhat status, pagination, button xuat bao cao.

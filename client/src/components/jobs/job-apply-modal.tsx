@@ -328,7 +328,15 @@ export function JobApplyModal({ locale, title, company, salary, location }: JobA
                 <label className="text-sm font-semibold text-[#0b0c0c]" htmlFor="apply-location">
                   {copy.locationLabel}
                 </label>
-                <Select value={selectedLocation} onValueChange={setSelectedLocation} items={locationOptions.map((item) => ({ value: item, label: item }))}>
+                <Select
+                  value={selectedLocation}
+                  onValueChange={(value) => {
+                    if (value) {
+                      setSelectedLocation(value);
+                    }
+                  }}
+                  items={locationOptions.map((item) => ({ value: item, label: item }))}
+                >
                   <SelectTrigger
                     id="apply-location"
                     aria-label={copy.locationLabel}

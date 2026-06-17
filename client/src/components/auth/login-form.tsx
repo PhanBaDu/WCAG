@@ -10,6 +10,7 @@ import type { FieldErrors } from 'react-hook-form';
 import { z } from 'zod';
 import { useLoginMutation } from '@/hooks/use-auth';
 import { getDemoAccountByRole } from '@/lib/auth/demo-credentials';
+import type { UserRole } from '@/lib/types/auth';
 import { Link, useRouter } from '@/i18n/routing';
 import { FieldError } from '@/components/ui/field-error';
 import { FieldRequiredIndicator } from '@/components/ui/field-required-indicator';
@@ -46,16 +47,25 @@ function getDescribedBy(hasError: boolean, errorId: string) {
   return hasError ? errorId : undefined;
 }
 
-function getRoleLandingPath(role: 'NKT' | 'NTD') {
-  return role === 'NTD' ? '/employer/dashboard' : '/jobs';
+function getRoleLandingPath(role: UserRole) {
+  if (role === 'NTD') {
+    return '/employer/dashboard';
+  }
+
+  if (role === 'ADM') {
+    return '/admin';
+  }
+
+  return '/jobs';
 }
 
-function getSafeRedirectPath(role: 'NKT' | 'NTD', redirectTo: string | null) {
+function getSafeRedirectPath(role: UserRole, redirectTo: string | null) {
   if (!redirectTo || !redirectTo.startsWith('/') || redirectTo.startsWith('//')) {
     return null;
   }
 
-  const allowedPrefixes = role === 'NTD' ? ['/employer'] : ['/jobs', '/profile'];
+  const allowedPrefixes =
+    role === 'NTD' ? ['/employer'] : role === 'ADM' ? ['/admin'] : ['/jobs', '/profile'];
   return allowedPrefixes.some((prefix) => redirectTo === prefix || redirectTo.startsWith(`${prefix}/`)) ? redirectTo : null;
 }
 

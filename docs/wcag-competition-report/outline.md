@@ -78,6 +78,7 @@ Phần chốt báo cáo nên nêu:
 
 ## Phụ lục
 - Tài liệu tham khảo W3C
+- Tài liệu tham khảo GOV.UK và TopCV
 - Danh sách màn hình đã kiểm thử
 - Ảnh chụp màn hình minh họa
 - Bộ use case Mermaid trong `usecases/`
