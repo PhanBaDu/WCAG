@@ -7,15 +7,15 @@
 \contentsline {subsection}{\numberline {2.1}Sơ đồ use case tổng quan}{3}{subsection.2.1}%
 \contentsline {subsection}{\numberline {2.2}Luồng hỗ trợ tiếp cận}{4}{subsection.2.2}%
 \contentsline {subsection}{\numberline {2.3}Luồng khách truy cập}{5}{subsection.2.3}%
-\contentsline {subsubsection}{\numberline {2.3.1}Trang chủ và điều hướng tổng quan}{5}{subsubsection.2.3.1}%
+\contentsline {subsubsection}{\numberline {2.3.1}Trang chủ và điều hướng tổng quan}{6}{subsubsection.2.3.1}%
 \contentsline {subsubsection}{\numberline {2.3.2}Tìm kiếm và danh sách việc làm}{7}{subsubsection.2.3.2}%
 \contentsline {subsubsection}{\numberline {2.3.3}Chi tiết việc làm}{8}{subsubsection.2.3.3}%
 \contentsline {subsubsection}{\numberline {2.3.4}Đăng ký và đăng nhập theo vai trò}{9}{subsubsection.2.3.4}%
-\contentsline {subsection}{\numberline {2.4}Luồng người tìm việc}{10}{subsection.2.4}%
-\contentsline {subsubsection}{\numberline {2.4.1}Hồ sơ ứng viên và quản lý CV}{10}{subsubsection.2.4.1}%
-\contentsline {subsubsection}{\numberline {2.4.2}Theo dõi trạng thái ứng tuyển}{11}{subsubsection.2.4.2}%
-\contentsline {subsection}{\numberline {2.5}Luồng nhà tuyển dụng}{11}{subsection.2.5}%
-\contentsline {subsubsection}{\numberline {2.5.1}Dashboard nhà tuyển dụng}{13}{subsubsection.2.5.1}%
-\contentsline {subsubsection}{\numberline {2.5.2}Tạo tin tuyển dụng}{13}{subsubsection.2.5.2}%
-\contentsline {subsubsection}{\numberline {2.5.3}Quản lý CV ứng viên}{14}{subsubsection.2.5.3}%
-\contentsline {section}{\numberline {A}Tài liệu tham khảo}{16}{appendix.A}%
+\contentsline {subsection}{\numberline {2.4}Luồng người tìm việc}{11}{subsection.2.4}%
+\contentsline {subsubsection}{\numberline {2.4.1}Hồ sơ ứng viên và quản lý CV}{11}{subsubsection.2.4.1}%
+\contentsline {subsubsection}{\numberline {2.4.2}Theo dõi trạng thái ứng tuyển}{12}{subsubsection.2.4.2}%
+\contentsline {subsection}{\numberline {2.5}Luồng nhà tuyển dụng}{13}{subsection.2.5}%
+\contentsline {subsubsection}{\numberline {2.5.1}Dashboard nhà tuyển dụng}{14}{subsubsection.2.5.1}%
+\contentsline {subsubsection}{\numberline {2.5.2}Tạo tin tuyển dụng}{15}{subsubsection.2.5.2}%
+\contentsline {subsubsection}{\numberline {2.5.3}Quản lý CV ứng viên}{16}{subsubsection.2.5.3}%
+\contentsline {section}{\numberline {A}Tài liệu tham khảo}{18}{appendix.A}%
